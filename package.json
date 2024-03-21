@@ -9,7 +9,9 @@
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha"
   },
   "keywords": [
-    "worktech"
+    "worktech",
+    "work-manager",
+    "work-orders"
   ],
   "homepage": "https://github.com/cityssm/node-worktech-api#readme",
   "bugs": {

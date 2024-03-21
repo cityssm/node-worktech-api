@@ -1,0 +1,33 @@
+{
+  "name": "@cityssm/worktech-api",
+  "version": "0.1.0",
+  "description": "Integrations with the WorkTech work order management system.",
+  "type": "module",
+  "exports": "./index.js",
+  "scripts": {
+    "test": "mocha",
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha"
+  },
+  "keywords": [
+    "worktech"
+  ],
+  "homepage": "https://github.com/cityssm/node-worktech-api#readme",
+  "bugs": {
+    "url": "https://github.com/cityssm/node-worktech-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cityssm/node-worktech-api.git"
+  },
+  "author": "The Corporation of the City of Sault Ste. Marie",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/mssql": "^9.1.5",
+    "eslint-config-cityssm": "^1.4.2"
+  },
+  "dependencies": {
+    "@cityssm/mssql-multi-pool": "^3.0.0",
+    "mssql": "^10.0.2"
+  }
+}

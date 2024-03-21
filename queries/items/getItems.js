@@ -1,0 +1,45 @@
+import { connect } from '@cityssm/mssql-multi-pool';
+const sql = `SELECT [ITMSysID] as itemSystemId,
+  [Item_ID] as itemId,
+  coalesce([DESC], '') as itemDescription,
+  coalesce([ItemClass], '') as itemClass,
+  coalesce([Type], '') as itemType,
+  coalesce([Brand], '') as itemBrand,
+  coalesce([Model], '') as itemModel,
+  coalesce([Serial], '') as serialNumber,
+  coalesce([Status], '') as itemStatus,
+  coalesce([Location], '') as location,
+  coalesce([Dept], '') as department,
+  coalesce([Division], '') as division,
+  coalesce([Company], '') as company,
+  coalesce([FlType], '') as fuelType,
+  coalesce([ExJob_ID], '') as expenseJob,
+  coalesce([ExActv_ID], '') as expenseActivity,
+  coalesce([ExObjCode], '') as expenseObjectCode,
+  coalesce([RevJob_ID], '') as revenueJob,
+  coalesce([RevActv_ID], '') as revenueActivity,
+  coalesce([RevObjCode], '') as revenueObjectCode,
+  [Stock] as stock,
+  coalesce([Units], '') as unit,
+  [UnitCost] as unitCost,
+  [QtyHand] as quantityOnHand,
+  coalesce([ExtItem_ID], '') as externalItemId,
+  coalesce([Comments], '') as comments
+  FROM [WMITM]`;
+/**
+ * Retrieves an item.
+ * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
+ * @param {string} itemId - The item id.
+ * @returns {Promise<ResourceItem | undefined>} - The item, if available.
+ */
+export async function _getItemByItemId(mssqlConfig, itemId) {
+    const pool = await connect(mssqlConfig);
+    const itemResult = await pool
+        .request()
+        .input('itemId', itemId)
+        .query(sql + ' where Item_ID = @itemId');
+    if (itemResult.recordset.length > 0) {
+        return itemResult.recordset[0];
+    }
+    return undefined;
+}

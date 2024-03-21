@@ -11,7 +11,7 @@ const sql = `SELECT [SRISysID] as serviceRequestItemSystemId,
   [WorkDesc] as workDescription,
   [EndDateTime] as endDateTime,
   [Step] as step
-  FROM [AMSRI]`;
+  FROM [AMSRI] WITH (NOLOCK)`;
 /**
  * Retrieves a list of work order resources.
  * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.

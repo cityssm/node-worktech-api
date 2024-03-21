@@ -32,7 +32,7 @@ const sql = `SELECT [ITMSysID] as itemSystemId,
   [QtyHand] as quantityOnHand,
   coalesce([ExtItem_ID], '') as externalItemId,
   coalesce([Comments], '') as comments
-  FROM [WMITM]`
+  FROM [WMITM] WITH (NOLOCK)`
 
 const cache = new NodeCache({
   stdTTL: cacheTimeToLiveSeconds

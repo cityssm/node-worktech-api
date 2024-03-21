@@ -48,7 +48,7 @@ const sql = `SELECT [SRQISysID] as serviceRequestSystemId,
   coalesce([UserDef4], '') as userDefined4,
   coalesce([UserDef5], '') as userDefined5
   
-  FROM [AMSRQI]`
+  FROM [AMSRQI] WITH (NOLOCK)`
 
 const cache = new NodeCache({
   stdTTL: cacheTimeToLiveSeconds

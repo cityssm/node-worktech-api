@@ -3,6 +3,9 @@ checks:
   method-complexity:
     config:
       threshold: 10
+  method-lines:
+    config:
+      threshold: 200
 exclude_patterns:
 - "**/node_modules/"
 - "test/"

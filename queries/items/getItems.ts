@@ -1,5 +1,8 @@
 import { connect } from '@cityssm/mssql-multi-pool'
 import type { IResult, config as MSSQLConfig } from 'mssql'
+import NodeCache from 'node-cache'
+
+import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
 
 import type { ResourceItem } from './types.js'
 
@@ -31,6 +34,10 @@ const sql = `SELECT [ITMSysID] as itemSystemId,
   coalesce([Comments], '') as comments
   FROM [WMITM]`
 
+const cache = new NodeCache({
+  stdTTL: cacheTimeToLiveSeconds
+})
+
 /**
  * Retrieves an item.
  * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
@@ -41,6 +48,12 @@ export async function _getItemByItemId(
   mssqlConfig: MSSQLConfig,
   itemId: string
 ): Promise<ResourceItem | undefined> {
+  let item: ResourceItem | undefined = cache.get(itemId)
+
+  if (item !== undefined) {
+    return item
+  }
+
   const pool = await connect(mssqlConfig)
 
   const itemResult: IResult<ResourceItem> = await pool
@@ -48,9 +61,13 @@ export async function _getItemByItemId(
     .input('itemId', itemId)
     .query(sql + ' where Item_ID = @itemId')
 
-  if (itemResult.recordset.length > 0) {
-    return itemResult.recordset[0]
+  if (itemResult.recordset.length === 0) {
+    return undefined
   }
 
-  return undefined
+  item = itemResult.recordset[0]
+
+  cache.set(itemId, item)
+
+  return item
 }

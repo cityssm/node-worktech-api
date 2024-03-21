@@ -1,4 +1,6 @@
 import { connect } from '@cityssm/mssql-multi-pool';
+import NodeCache from 'node-cache';
+import { cacheTimeToLiveSeconds } from '../../apiConfig.js';
 const sql = `SELECT [SRQISysID] as serviceRequestSystemId,
   [WONOs] as workOrderNumber,
   coalesce([Proj_ID], '') as project,
@@ -42,6 +44,9 @@ const sql = `SELECT [SRQISysID] as serviceRequestSystemId,
   coalesce([UserDef5], '') as userDefined5
   
   FROM [AMSRQI]`;
+const cache = new NodeCache({
+    stdTTL: cacheTimeToLiveSeconds
+});
 /**
  * Retrieves a work order.
  * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
@@ -49,13 +54,19 @@ const sql = `SELECT [SRQISysID] as serviceRequestSystemId,
  * @returns {Promise<WorkOrder | undefined>} - The work order, if available.
  */
 export async function _getWorkOrderByWorkOrderNumber(mssqlConfig, workOrderNumber) {
+    let workOrder = cache.get(workOrderNumber);
+    if (workOrder !== undefined) {
+        return workOrder;
+    }
     const pool = await connect(mssqlConfig);
     const workOrderResult = await pool
         .request()
         .input('workOrderNumber', workOrderNumber)
         .query(sql + ' where WONOs = @workOrderNumber');
-    if (workOrderResult.recordset.length > 0) {
-        return workOrderResult.recordset[0];
+    if (workOrderResult.recordset.length === 0) {
+        return undefined;
     }
-    return undefined;
+    workOrder = workOrderResult.recordset[0];
+    cache.set(workOrderNumber, workOrder);
+    return workOrder;
 }

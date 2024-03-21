@@ -1,5 +1,5 @@
 import type { BigIntString } from '../types.js';
-export declare enum ResourceItemStock {
+export declare const enum ResourceItemStock {
     No = 0,
     Yes = 1,
     'Non-Inventory' = 2

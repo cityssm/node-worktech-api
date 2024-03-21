@@ -75,7 +75,7 @@ export async function _getWorkOrderByWorkOrderNumber(
   const workOrderResult: IResult<WorkOrder> = await pool
     .request()
     .input('workOrderNumber', workOrderNumber)
-    .query(sql + ' where WONOs = @workOrderNumber')
+    .query(`${sql} where WONOs = @workOrderNumber`)
 
   if (workOrderResult.recordset.length === 0) {
     return undefined

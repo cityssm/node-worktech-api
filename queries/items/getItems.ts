@@ -59,7 +59,7 @@ export async function _getItemByItemId(
   const itemResult: IResult<ResourceItem> = await pool
     .request()
     .input('itemId', itemId)
-    .query(sql + ' where Item_ID = @itemId')
+    .query(`${sql} where Item_ID = @itemId`)
 
   if (itemResult.recordset.length === 0) {
     return undefined

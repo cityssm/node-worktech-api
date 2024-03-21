@@ -23,6 +23,6 @@ export async function _getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, workO
     const resourcesResult = await pool
         .request()
         .input('workOrderNumber', workOrderNumber)
-        .query(sql + ' where WONOs = @workOrderNumber');
+        .query(`${sql} where WONOs = @workOrderNumber`);
     return resourcesResult.recordset;
 }

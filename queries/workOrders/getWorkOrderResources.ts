@@ -32,7 +32,7 @@ export async function _getWorkOrderResourcesByWorkOrderNumber(
   const resourcesResult: IResult<WorkOrderResource> = await pool
     .request()
     .input('workOrderNumber', workOrderNumber)
-    .query(sql + ' where WONOs = @workOrderNumber')
+    .query(`${sql} where WONOs = @workOrderNumber`)
 
   return resourcesResult.recordset
 }

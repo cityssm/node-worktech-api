@@ -62,7 +62,7 @@ export async function _getWorkOrderByWorkOrderNumber(mssqlConfig, workOrderNumbe
     const workOrderResult = await pool
         .request()
         .input('workOrderNumber', workOrderNumber)
-        .query(sql + ' where WONOs = @workOrderNumber');
+        .query(`${sql} where WONOs = @workOrderNumber`);
     if (workOrderResult.recordset.length === 0) {
         return undefined;
     }

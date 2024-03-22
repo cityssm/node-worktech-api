@@ -2,9 +2,11 @@ import assert from 'node:assert'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
 
-import { _addWorkOrderResource } from '../queries/workOrders/addWorkOrderResource.js'
-import { _getWorkOrderResourcesByWorkOrderNumber } from '../queries/workOrders/getWorkOrderResources.js'
-import { _getWorkOrderByWorkOrderNumber } from '../queries/workOrders/getWorkOrders.js'
+import {
+  addWorkOrderResource,
+  getWorkOrderByWorkOrderNumber,
+  getWorkOrderResourcesByWorkOrderNumber
+} from '../index.js'
 
 import {
   invalidWorkOrderNumber,
@@ -20,7 +22,7 @@ describe('queries/workOrders', () => {
 
   describe('getWorkOrders()', () => {
     it('Retrieves a work order', async () => {
-      const workOrder = await _getWorkOrderByWorkOrderNumber(
+      const workOrder = await getWorkOrderByWorkOrderNumber(
         mssqlConfig,
         validWorkOrderNumber
       )
@@ -32,7 +34,7 @@ describe('queries/workOrders', () => {
     })
 
     it('Returns "undefined" when no work order is available.', async () => {
-      const workOrder = await _getWorkOrderByWorkOrderNumber(
+      const workOrder = await getWorkOrderByWorkOrderNumber(
         mssqlConfig,
         invalidWorkOrderNumber
       )
@@ -43,7 +45,7 @@ describe('queries/workOrders', () => {
 
   describe('getWorkOrderResources()', () => {
     it('Retrieves an array of resources', async () => {
-      const resources = await _getWorkOrderResourcesByWorkOrderNumber(
+      const resources = await getWorkOrderResourcesByWorkOrderNumber(
         mssqlConfig,
         validWorkOrderNumber
       )
@@ -56,7 +58,12 @@ describe('queries/workOrders', () => {
 
   describe('addWorkOrderResource()', () => {
     it('Adds a resource to a work order', async () => {
-      const systemId = await _addWorkOrderResource(mssqlConfig, {
+      const resourcesBefore = await getWorkOrderResourcesByWorkOrderNumber(
+        mssqlConfig,
+        validWorkOrderNumber
+      )
+
+      const systemId = await addWorkOrderResource(mssqlConfig, {
         workOrderNumber: validWorkOrderNumber,
         itemId: validItemId,
         quantity: 25,
@@ -64,6 +71,19 @@ describe('queries/workOrders', () => {
       })
 
       assert.ok(systemId !== undefined)
+
+      const resourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(
+        mssqlConfig,
+        validWorkOrderNumber
+      )
+
+      assert.strictEqual(resourcesBefore.length + 1, resourcesAfter.length)
+
+      assert.ok(
+        resourcesAfter.some((resource) => {
+          return resource.serviceRequestItemSystemId === systemId
+        })
+      )
     })
   })
 })

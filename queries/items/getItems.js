@@ -15,11 +15,11 @@ const sql = `SELECT [ITMSysID] as itemSystemId,
   coalesce([Division], '') as division,
   coalesce([Company], '') as company,
   coalesce([FlType], '') as fuelType,
-  coalesce([ExJob_ID], '') as expenseJob,
-  coalesce([ExActv_ID], '') as expenseActivity,
+  coalesce([ExJob_ID], '') as expenseJobId,
+  coalesce([ExActv_ID], '') as expenseActivityId,
   coalesce([ExObjCode], '') as expenseObjectCode,
-  coalesce([RevJob_ID], '') as revenueJob,
-  coalesce([RevActv_ID], '') as revenueActivity,
+  coalesce([RevJob_ID], '') as revenueJobId,
+  coalesce([RevActv_ID], '') as revenueActivityId,
   coalesce([RevObjCode], '') as revenueObjectCode,
   [Stock] as stock,
   coalesce([Units], '') as unit,
@@ -37,7 +37,7 @@ const cache = new NodeCache({
  * @param {string} itemId - The item id.
  * @returns {Promise<ResourceItem | undefined>} - The item, if available.
  */
-export async function _getItemByItemId(mssqlConfig, itemId) {
+export async function getItemByItemId(mssqlConfig, itemId) {
     let item = cache.get(itemId);
     if (item !== undefined) {
         return item;

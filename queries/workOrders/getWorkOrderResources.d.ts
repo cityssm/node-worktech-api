@@ -6,4 +6,4 @@ import type { WorkOrderResource } from './types.js';
  * @param {string} workOrderNumber - The work order number.
  * @returns {Promise<WorkOrderResource[]>} - An array of resources associated with a work order.
  */
-export declare function _getWorkOrderResourcesByWorkOrderNumber(mssqlConfig: MSSQLConfig, workOrderNumber: string): Promise<WorkOrderResource[]>;
+export declare function getWorkOrderResourcesByWorkOrderNumber(mssqlConfig: MSSQLConfig, workOrderNumber: string): Promise<WorkOrderResource[]>;

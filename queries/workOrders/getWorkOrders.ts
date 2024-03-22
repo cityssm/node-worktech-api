@@ -28,8 +28,9 @@ const sql = `SELECT [SRQISysID] as serviceRequestSystemId,
   coalesce([Details], '') as details,
   coalesce([Priority], '') as priority,
 
-  coalesce([ExJob_ID], '') as job,
-  coalesce([Actv_ID], '') as activity,
+  coalesce([ExJob_ID], '') as jobId,
+  coalesce([Actv_ID], '') as activityId,
+  coalesce([ObjCode], '') as objectCode,
   coalesce([ServiceClass], '') as serviceClass,
   coalesce([ServiceType], '') as serviceType,
   coalesce([Year], '') as fiscalYear,
@@ -60,7 +61,7 @@ const cache = new NodeCache({
  * @param {string} workOrderNumber - The work order number.
  * @returns {Promise<WorkOrder | undefined>} - The work order, if available.
  */
-export async function _getWorkOrderByWorkOrderNumber(
+export async function getWorkOrderByWorkOrderNumber(
   mssqlConfig: MSSQLConfig,
   workOrderNumber: string
 ): Promise<WorkOrder | undefined> {

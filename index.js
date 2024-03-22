@@ -1,26 +1,60 @@
-import { _getItemByItemId } from './queries/items/getItems.js';
-import { _addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
-import { _getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
-import { _getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
+import { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
+import { getItemByItemId } from './queries/items/getItems.js';
+import { getActivitiesAssignedToJobByFiscalYear, getActivityByActivityId } from './queries/jobs/getActivities.js';
+import { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js';
+import { getJobByJobId } from './queries/jobs/getJobs.js';
+import { getObjectCodeAssignedToJobByObjectCodeAndFiscalYear, getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear } from './queries/jobs/getObjectCodes.js';
+import { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
+import { getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
+import { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
 export class WorkTechAPI {
     #mssqlConfig;
     constructor(mssqlConfig) {
         this.#mssqlConfig = mssqlConfig;
     }
     async getItemByItemId(itemId) {
-        return await _getItemByItemId(this.#mssqlConfig, itemId);
+        return await getItemByItemId(this.#mssqlConfig, itemId);
     }
     async getWorkOrderByWorkOrderNumber(workOrderNumber) {
-        return await _getWorkOrderByWorkOrderNumber(this.#mssqlConfig, workOrderNumber);
+        return await getWorkOrderByWorkOrderNumber(this.#mssqlConfig, workOrderNumber);
     }
     async getWorkOrderResourcesByWorkOrderNumber(workOrderNumber) {
-        return await _getWorkOrderResourcesByWorkOrderNumber(this.#mssqlConfig, workOrderNumber);
+        return await getWorkOrderResourcesByWorkOrderNumber(this.#mssqlConfig, workOrderNumber);
     }
     async addWorkOrderResource(workOrderResource) {
-        return await _addWorkOrderResource(this.#mssqlConfig, workOrderResource);
+        return await addWorkOrderResource(this.#mssqlConfig, workOrderResource);
+    }
+    async getJobByJobId(jobId) {
+        return await getJobByJobId(this.#mssqlConfig, jobId);
+    }
+    async getActivityByActivityId(activityId) {
+        return await getActivityByActivityId(this.#mssqlConfig, activityId);
+    }
+    async getActivitiesAssignedToJobByFiscalYear(jobId, fiscalYear) {
+        return await getActivitiesAssignedToJobByFiscalYear(this.#mssqlConfig, jobId, fiscalYear);
+    }
+    async getObjectCodeByObjectCode(objectCode) {
+        return await getObjectCodeByObjectCode(this.#mssqlConfig, objectCode);
+    }
+    async getObjectCodesAssignedToJobByFiscalYear(jobId, fiscalYear) {
+        return await getObjectCodesAssignedToJobByFiscalYear(this.#mssqlConfig, jobId, fiscalYear);
+    }
+    async getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(jobId, objectCode, fiscalYear) {
+        return await getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(this.#mssqlConfig, jobId, objectCode, fiscalYear);
+    }
+    async getJobActivityObjectCodeByKeys(jobId, activityId, objectCode, fiscalYear) {
+        return await getJobActivityObjectCodeByKeys(this.#mssqlConfig, jobId, activityId, objectCode, fiscalYear);
+    }
+    async getAccountNumberByWorkOrderNumberAndObjectCode(workOrderNumber, optionalObjectCode) {
+        return await getAccountNumberByWorkOrderNumberAndObjectCode(this.#mssqlConfig, workOrderNumber, optionalObjectCode);
     }
 }
-export { _getItemByItemId as getItemByItemId } from './queries/items/getItems.js';
-export { _addWorkOrderResource as addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
-export { _getWorkOrderByWorkOrderNumber as getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
-export { _getWorkOrderResourcesByWorkOrderNumber as getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
+export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
+export { getItemByItemId } from './queries/items/getItems.js';
+export { getActivityByActivityId, getActivitiesAssignedToJobByFiscalYear } from './queries/jobs/getActivities.js';
+export { getJobByJobId } from './queries/jobs/getJobs.js';
+export { getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear, getObjectCodeAssignedToJobByObjectCodeAndFiscalYear } from './queries/jobs/getObjectCodes.js';
+export { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js';
+export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
+export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
+export { getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';

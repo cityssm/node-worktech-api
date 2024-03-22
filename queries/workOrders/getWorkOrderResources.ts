@@ -23,7 +23,7 @@ const sql = `SELECT [SRISysID] as serviceRequestItemSystemId,
  * @param {string} workOrderNumber - The work order number.
  * @returns {Promise<WorkOrderResource[]>} - An array of resources associated with a work order.
  */
-export async function _getWorkOrderResourcesByWorkOrderNumber(
+export async function getWorkOrderResourcesByWorkOrderNumber(
   mssqlConfig: MSSQLConfig,
   workOrderNumber: string
 ): Promise<WorkOrderResource[]> {

@@ -6,4 +6,4 @@ import type { ResourceItem } from './types.js';
  * @param {string} itemId - The item id.
  * @returns {Promise<ResourceItem | undefined>} - The item, if available.
  */
-export declare function _getItemByItemId(mssqlConfig: MSSQLConfig, itemId: string): Promise<ResourceItem | undefined>;
+export declare function getItemByItemId(mssqlConfig: MSSQLConfig, itemId: string): Promise<ResourceItem | undefined>;

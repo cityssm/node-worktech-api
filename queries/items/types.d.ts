@@ -21,11 +21,11 @@ export interface ResourceItem {
     department: string;
     division: string;
     company: string;
-    expenseJob: string;
-    expenseActivity: string;
+    expenseJobId: string;
+    expenseActivityId: string;
     expenseObjectCode: string;
-    revenueJob: string;
-    revenueActivity: string;
+    revenueJobId: string;
+    revenueActivityId: string;
     revenueObjectCode: string;
     /**
      * 0 = No,

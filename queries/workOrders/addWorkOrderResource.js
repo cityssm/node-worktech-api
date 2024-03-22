@@ -1,19 +1,22 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable unicorn/no-null */
 import { connect } from '@cityssm/mssql-multi-pool';
-import { _getItemByItemId } from '../items/getItems.js';
+import { dateToString, dateToTimeString } from '@cityssm/utils-datetime';
+import { getItemByItemId } from '../items/getItems.js';
 import { getLastSystemId, incrementLastSystemId } from '../systemId.js';
-import { _getWorkOrderByWorkOrderNumber } from './getWorkOrders.js';
+import { getWorkOrderByWorkOrderNumber } from './getWorkOrders.js';
 /**
  * Adds a resource to a work order.
  * @param {MSSQLConfig} mssqlConfig - SQL Service configuration.
  * @param {AddWorkOrderResource} workOrderResource - The work order resource fields.
  * @returns {BigIntString} - The system id for the new resource record.
  */
-export async function _addWorkOrderResource(mssqlConfig, workOrderResource) {
+export async function addWorkOrderResource(mssqlConfig, workOrderResource) {
     /*
      * Get Work Order Id
      */
     let serviceRequestSystemId = workOrderResource.serviceRequestSystemId;
-    const workOrder = await _getWorkOrderByWorkOrderNumber(mssqlConfig, workOrderResource.workOrderNumber);
+    const workOrder = await getWorkOrderByWorkOrderNumber(mssqlConfig, workOrderResource.workOrderNumber);
     if (workOrder === undefined) {
         throw new Error(`Work Order not found: ${workOrderResource.workOrderNumber}`);
     }
@@ -24,13 +27,21 @@ export async function _addWorkOrderResource(mssqlConfig, workOrderResource) {
      * Get Item Id
      */
     let itemSystemId = workOrderResource.itemSystemId;
-    const item = await _getItemByItemId(mssqlConfig, workOrderResource.itemId);
+    const item = await getItemByItemId(mssqlConfig, workOrderResource.itemId);
     if (item === undefined) {
         throw new Error(`Item not found: ${workOrderResource.itemId}`);
     }
     if (itemSystemId === undefined) {
         itemSystemId = item.itemSystemId;
     }
+    /*
+     * Calculate dates
+     */
+    const startDate = workOrderResource.startDateTime ?? new Date();
+    const startDateTimeString = `${dateToString(startDate)} ${dateToTimeString(startDate)}`;
+    const endDateTimeString = workOrderResource.endDateTime === undefined
+        ? null
+        : `${dateToString(workOrderResource.endDateTime)} ${dateToTimeString(workOrderResource.endDateTime)}`;
     /*
      * Calculate base amount
      */
@@ -53,7 +64,7 @@ export async function _addWorkOrderResource(mssqlConfig, workOrderResource) {
             .request()
             .input('serviceRequestItemSystemId', serviceRequestItemSystemId)
             .input('serviceRequestSystemId', serviceRequestSystemId)
-            .input('startDateTime', workOrderResource.startDateTime ?? new Date())
+            .input('startDateTime', startDateTimeString)
             .input('itemSystemId', itemSystemId)
             .input('itemId', workOrderResource.itemId)
             .input('quantity', quantity)
@@ -61,8 +72,7 @@ export async function _addWorkOrderResource(mssqlConfig, workOrderResource) {
             .input('baseAmount', baseAmount)
             .input('workOrderNumber', workOrderResource.workOrderNumber)
             .input('workDescription', workOrderResource.workDescription ?? item.itemDescription ?? '')
-            // eslint-disable-next-line unicorn/no-null
-            .input('endDateTime', workOrderResource.endDateTime ?? null)
+            .input('endDateTime', endDateTimeString)
             .input('step', workOrderResource.step ?? '').query(`INSERT INTO AMSRI (
         SRISYSID, SRQISYSID,
         PPSYSID, PROJ_ID, P_ID, PMD_TASK, WORKSOURCE,

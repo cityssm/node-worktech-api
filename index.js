@@ -42,8 +42,8 @@ export class WorkTechAPI {
     async getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(jobId, objectCode, fiscalYear) {
         return await getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(this.#mssqlConfig, jobId, objectCode, fiscalYear);
     }
-    async getJobActivityObjectCodeByKeys(jobId, activityId, objectCode, fiscalYear) {
-        return await getJobActivityObjectCodeByKeys(this.#mssqlConfig, jobId, activityId, objectCode, fiscalYear);
+    async getJobActivityObjectCodeByKeys(keys) {
+        return await getJobActivityObjectCodeByKeys(this.#mssqlConfig, keys);
     }
     async getAccountNumberByWorkOrderNumberAndObjectCode(workOrderNumber, optionalObjectCode) {
         return await getAccountNumberByWorkOrderNumberAndObjectCode(this.#mssqlConfig, workOrderNumber, optionalObjectCode);

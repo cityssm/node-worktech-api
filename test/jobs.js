@@ -54,7 +54,12 @@ describe('queries/jobs', () => {
     });
     describe('getJobActivityObjectCodes()', () => {
         it('Retrieves a job - activity - object code', async () => {
-            const code = await getJobActivityObjectCodeByKeys(mssqlConfig, validJobId, validActivityId, validObjectCode, new Date().getFullYear() - 1);
+            const code = await getJobActivityObjectCodeByKeys(mssqlConfig, {
+                jobId: validJobId,
+                activityId: validActivityId,
+                objectCode: validObjectCode,
+                fiscalYear: new Date().getFullYear() - 1
+            });
             console.log(code);
             assert.ok(code !== undefined);
             assert.strictEqual(code.jobId, validJobId);
@@ -62,7 +67,12 @@ describe('queries/jobs', () => {
             assert.strictEqual(code.objectCode, validObjectCode);
         });
         it('Returns "undefined" when no job - activity - object code is available.', async () => {
-            const code = await getJobActivityObjectCodeByKeys(mssqlConfig, invalidJobId, validActivityId, validObjectCode, new Date().getFullYear());
+            const code = await getJobActivityObjectCodeByKeys(mssqlConfig, {
+                jobId: invalidJobId,
+                activityId: validActivityId,
+                objectCode: validObjectCode,
+                fiscalYear: new Date().getFullYear()
+            });
             assert.strictEqual(code, undefined);
         });
     });

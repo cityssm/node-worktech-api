@@ -20,7 +20,12 @@ export async function getAccountNumberByWorkOrderNumberAndObjectCode(mssqlConfig
      * Get job - activity - object code
      */
     if (workOrder.activityId !== '') {
-        const code = await getJobActivityObjectCodeByKeys(mssqlConfig, workOrder.jobId, workOrder.activityId, objectCode, workOrder.fiscalYear);
+        const code = await getJobActivityObjectCodeByKeys(mssqlConfig, {
+            jobId: workOrder.jobId,
+            activityId: workOrder.activityId,
+            objectCode,
+            fiscalYear: workOrder.fiscalYear
+        });
         if (code !== undefined && code.accountNumber !== '') {
             return {
                 accountNumberSource: 'jobActivityObjectCode',

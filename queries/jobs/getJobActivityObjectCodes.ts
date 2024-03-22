@@ -13,27 +13,30 @@ const sql = `SELECT [Job_ID] as jobId,
 /**
  * Retrieves a job - activity - object code.
  * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param {string} jobId - The job id.
- * @param {string} activityId - The activity id.
- * @param {string} objectCode - The object code.
- * @param {number | string} fiscalYear - The fiscal year.
+ * @param keys - The keys to search on.
+ * @param {string} keys.jobId - The job id.
+ * @param {string} keys.activityId - The activity id.
+ * @param {string} keys.objectCode - The object code.
+ * @param {string} keys.fiscalYear - The fiscal year.
  * @returns {Promise<JobActivityObjectCode | undefined>} - The job - activity - object code combination if available.
  */
 export async function getJobActivityObjectCodeByKeys(
   mssqlConfig: MSSQLConfig,
-  jobId: string,
-  activityId: string,
-  objectCode: string,
-  fiscalYear: number | string
+  keys: {
+    jobId: string
+    activityId: string
+    objectCode: string
+    fiscalYear: number | string
+  }
 ): Promise<JobActivityObjectCode | undefined> {
   const pool = await connect(mssqlConfig)
 
   const result: IResult<JobActivityObjectCode> = await pool
     .request()
-    .input('jobId', jobId)
-    .input('activityId', activityId)
-    .input('objectCode', objectCode)
-    .input('fiscalYear', fiscalYear).query(`${sql}
+    .input('jobId', keys.jobId)
+    .input('activityId', keys.activityId)
+    .input('objectCode', keys.objectCode)
+    .input('fiscalYear', keys.fiscalYear).query(`${sql}
       where Job_ID = @jobId
       and Actv_ID = @activityId
       and ObjCode = @objectCode

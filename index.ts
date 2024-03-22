@@ -122,19 +122,13 @@ export class WorkTechAPI {
     )
   }
 
-  async getJobActivityObjectCodeByKeys(
-    jobId: string,
-    activityId: string,
-    objectCode: string,
+  async getJobActivityObjectCodeByKeys(keys: {
+    jobId: string
+    activityId: string
+    objectCode: string
     fiscalYear: number | string
-  ): Promise<JobActivityObjectCode | undefined> {
-    return await getJobActivityObjectCodeByKeys(
-      this.#mssqlConfig,
-      jobId,
-      activityId,
-      objectCode,
-      fiscalYear
-    )
+  }): Promise<JobActivityObjectCode | undefined> {
+    return await getJobActivityObjectCodeByKeys(this.#mssqlConfig, keys)
   }
 
   async getAccountNumberByWorkOrderNumberAndObjectCode(

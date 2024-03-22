@@ -18,7 +18,12 @@ export declare class WorkTechAPI {
     getObjectCodeByObjectCode(objectCode: string): Promise<ObjectCode | undefined>;
     getObjectCodesAssignedToJobByFiscalYear(jobId: string, fiscalYear: number | string): Promise<JobAssignedObjectCode[]>;
     getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(jobId: string, objectCode: string, fiscalYear: number | string): Promise<JobAssignedObjectCode | undefined>;
-    getJobActivityObjectCodeByKeys(jobId: string, activityId: string, objectCode: string, fiscalYear: number | string): Promise<JobActivityObjectCode | undefined>;
+    getJobActivityObjectCodeByKeys(keys: {
+        jobId: string;
+        activityId: string;
+        objectCode: string;
+        fiscalYear: number | string;
+    }): Promise<JobActivityObjectCode | undefined>;
     getAccountNumberByWorkOrderNumberAndObjectCode(workOrderNumber: string, optionalObjectCode?: string): Promise<AccountNumberSource | undefined>;
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';

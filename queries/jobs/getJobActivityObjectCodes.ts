@@ -7,13 +7,13 @@ const sql = `SELECT [Job_ID] as jobId,
   [Actv_ID] as activityId,
   [ObjCode] as objectCode,
   rtrim([Year]) as fiscalYear,
-  [AcctSeg] as accountNumber
+  coalesce([AcctSeg], '') as accountNumber
   FROM [WMABCA] WITH (NOLOCK)`
 
 /**
  * Retrieves a job - activity - object code.
  * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param keys - The keys to search on.
+ * @param {object} keys - The keys to search on.
  * @param {string} keys.jobId - The job id.
  * @param {string} keys.activityId - The activity id.
  * @param {string} keys.objectCode - The object code.

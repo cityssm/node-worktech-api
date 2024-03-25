@@ -1,5 +1,8 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/indent */
 import { getJobActivityObjectCodeByKeys } from '../queries/jobs/getJobActivityObjectCodes.js';
-import { getObjectCodeAssignedToJobByObjectCodeAndFiscalYear } from '../queries/jobs/getObjectCodes.js';
+import { getJobByJobId } from '../queries/jobs/getJobs.js';
+import { getObjectCodeAssignedToJobByObjectCodeAndFiscalYear, getObjectCodeByObjectCode } from '../queries/jobs/getObjectCodes.js';
 import { getWorkOrderByWorkOrderNumber } from '../queries/workOrders/getWorkOrders.js';
 export async function getAccountNumberByWorkOrderNumberAndObjectCode(mssqlConfig, workOrderNumber, optionalObjectCode) {
     /*
@@ -28,7 +31,7 @@ export async function getAccountNumberByWorkOrderNumberAndObjectCode(mssqlConfig
         });
         if (code !== undefined && code.accountNumber !== '') {
             return {
-                accountNumberSource: 'jobActivityObjectCode',
+                accountNumberSource: 'assignedJobActivityObjectCode',
                 accountNumber: code.accountNumber
             };
         }
@@ -39,9 +42,29 @@ export async function getAccountNumberByWorkOrderNumberAndObjectCode(mssqlConfig
     const code = await getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(mssqlConfig, workOrder.jobId, objectCode, workOrder.fiscalYear);
     if (code !== undefined && code.accountNumber !== '') {
         return {
-            accountNumberSource: 'jobObjectCode',
+            accountNumberSource: 'assignedJobObjectCode',
             accountNumber: code.accountNumber
         };
     }
-    return undefined;
+    /*
+     * Build from job and object code
+     */
+    const jobObject = await getJobByJobId(mssqlConfig, workOrder.jobId);
+    if (jobObject === undefined) {
+        throw new Error(`Job not found: ${workOrder.jobId}`);
+    }
+    else if (jobObject.accountSegment === '') {
+        throw new Error(`Job has no associated account segment: ${workOrder.jobId}`);
+    }
+    const objectCodeObject = await getObjectCodeByObjectCode(mssqlConfig, objectCode);
+    if (objectCodeObject === undefined) {
+        throw new Error(`Object code not found: ${objectCode}`);
+    }
+    else if (objectCodeObject.accountSegment === '') {
+        throw new Error(`Object code has no associated account segment: ${objectCode}`);
+    }
+    return {
+        accountNumberSource: 'jobObjectCode',
+        accountNumber: jobObject.accountSegment + '-' + objectCodeObject.accountSegment
+    };
 }

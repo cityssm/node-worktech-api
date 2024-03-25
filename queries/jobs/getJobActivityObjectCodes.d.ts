@@ -3,7 +3,7 @@ import type { JobActivityObjectCode } from './types.js';
 /**
  * Retrieves a job - activity - object code.
  * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param keys - The keys to search on.
+ * @param {object} keys - The keys to search on.
  * @param {string} keys.jobId - The job id.
  * @param {string} keys.activityId - The activity id.
  * @param {string} keys.objectCode - The object code.

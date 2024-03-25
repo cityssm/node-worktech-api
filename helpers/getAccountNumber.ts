@@ -11,6 +11,8 @@ import {
 } from '../queries/jobs/getObjectCodes.js'
 import { getWorkOrderByWorkOrderNumber } from '../queries/workOrders/getWorkOrders.js'
 
+const accountSegmentSeparator = '-'
+
 export interface AccountNumberSource {
   accountNumber: string
   accountNumberSource:
@@ -119,6 +121,6 @@ export async function getAccountNumberByWorkOrderNumberAndObjectCode(
 
   return {
     accountNumberSource: 'jobObjectCode',
-    accountNumber: `${jobObject.accountSegment}-${objectCodeObject.accountSegment}`
+    accountNumber: `${jobObject.accountSegment}${accountSegmentSeparator}${objectCodeObject.accountSegment}`
   }
 }

@@ -2,7 +2,7 @@ import assert from 'node:assert'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
 
-import { getAccountNumberByWorkOrderNumberAndObjectCode } from '../helpers/getAccountNumber.js'
+import { getAccountNumberByWorkOrderNumberAndObjectCode } from '../index.js'
 
 import {
   accountNumberObjectCode,

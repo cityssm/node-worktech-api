@@ -1,0 +1,55 @@
+import assert from 'node:assert';
+import { releaseAll } from '@cityssm/mssql-multi-pool';
+import { WorkTechAPI } from '../index.js';
+import { accountNumberObjectCode, accountNumberWorkOrderNumber, mssqlConfig, validActivityId, validItemId, validJobId, validObjectCode, validWorkOrderNumber } from './config.js';
+describe('WorkTechAPI()', () => {
+    const api = new WorkTechAPI(mssqlConfig);
+    after(() => {
+        releaseAll();
+    });
+    it('Retrieves a work order', async () => {
+        const workOrder = await api.getWorkOrderByWorkOrderNumber(validWorkOrderNumber);
+        assert.ok(workOrder !== undefined);
+    });
+    it('Retrieves an array of resources', async () => {
+        const resources = await api.getWorkOrderResourcesByWorkOrderNumber(validWorkOrderNumber);
+        assert.ok(resources.length > 0);
+    });
+    it('Retrieves an item', async () => {
+        const item = await api.getItemByItemId(validItemId);
+        assert.ok(item !== undefined);
+    });
+    it('Retrieves a job', async () => {
+        const job = await api.getJobByJobId(validJobId);
+        assert.ok(job !== undefined);
+    });
+    it('Retrieves an activity', async () => {
+        const activity = await api.getActivityByActivityId(validActivityId);
+        assert.ok(activity !== undefined);
+    });
+    it('Retrieve activities for a given job', async () => {
+        const activities = await api.getActivitiesAssignedToJobByFiscalYear(validJobId, new Date().getFullYear() - 1);
+        assert.ok(activities.length > 0);
+    });
+    it('Retrieves an object code', async () => {
+        const objectCode = await api.getObjectCodeByObjectCode(validObjectCode);
+        assert.ok(objectCode !== undefined);
+    });
+    it('Retrieve object codes for a given job', async () => {
+        const objectCodes = await api.getObjectCodesAssignedToJobByFiscalYear(validJobId, new Date().getFullYear() - 1);
+        assert.ok(objectCodes.length > 0);
+    });
+    it('Retrieves a job - activity - object code', async () => {
+        const code = await api.getJobActivityObjectCodeByKeys({
+            jobId: validJobId,
+            activityId: validActivityId,
+            objectCode: validObjectCode,
+            fiscalYear: new Date().getFullYear() - 1
+        });
+        assert.ok(code !== undefined);
+    });
+    it('Retrieves an account number', async () => {
+        const accountNumber = await api.getAccountNumberByWorkOrderNumberAndObjectCode(accountNumberWorkOrderNumber, accountNumberObjectCode);
+        assert.ok(accountNumber !== undefined);
+    });
+});

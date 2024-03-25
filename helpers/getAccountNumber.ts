@@ -19,6 +19,13 @@ export interface AccountNumberSource {
     | 'jobObjectCode'
 }
 
+/**
+ * Retrieves an account number for a given work order.
+ * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
+ * @param {string} workOrderNumber - The work order number.
+ * @param {string} optionalObjectCode - An optional object code.
+ * @returns {Promise<AccountNumberSource | undefined>} - The account number and its source, if available.
+ */
 export async function getAccountNumberByWorkOrderNumberAndObjectCode(
   mssqlConfig: MSSQLConfig,
   workOrderNumber: string,
@@ -112,7 +119,6 @@ export async function getAccountNumberByWorkOrderNumberAndObjectCode(
 
   return {
     accountNumberSource: 'jobObjectCode',
-    accountNumber:
-      jobObject.accountSegment + '-' + objectCodeObject.accountSegment
+    accountNumber: `${jobObject.accountSegment}-${objectCodeObject.accountSegment}`
   }
 }

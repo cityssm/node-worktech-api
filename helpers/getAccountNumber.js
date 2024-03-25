@@ -4,6 +4,13 @@ import { getJobActivityObjectCodeByKeys } from '../queries/jobs/getJobActivityOb
 import { getJobByJobId } from '../queries/jobs/getJobs.js';
 import { getObjectCodeAssignedToJobByObjectCodeAndFiscalYear, getObjectCodeByObjectCode } from '../queries/jobs/getObjectCodes.js';
 import { getWorkOrderByWorkOrderNumber } from '../queries/workOrders/getWorkOrders.js';
+/**
+ * Retrieves an account number for a given work order.
+ * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
+ * @param {string} workOrderNumber - The work order number.
+ * @param {string} optionalObjectCode - An optional object code.
+ * @returns {Promise<AccountNumberSource | undefined>} - The account number and its source, if available.
+ */
 export async function getAccountNumberByWorkOrderNumberAndObjectCode(mssqlConfig, workOrderNumber, optionalObjectCode) {
     /*
      * Get work order
@@ -65,6 +72,6 @@ export async function getAccountNumberByWorkOrderNumberAndObjectCode(mssqlConfig
     }
     return {
         accountNumberSource: 'jobObjectCode',
-        accountNumber: jobObject.accountSegment + '-' + objectCodeObject.accountSegment
+        accountNumber: `${jobObject.accountSegment}-${objectCodeObject.accountSegment}`
     };
 }

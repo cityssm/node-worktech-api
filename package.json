@@ -26,7 +26,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.6",
     "@types/mssql": "^9.1.5",
-    "eslint-config-cityssm": "^1.4.2"
+    "eslint-config-cityssm": "^1.4.3"
   },
   "dependencies": {
     "@cityssm/mssql-multi-pool": "^3.0.0",

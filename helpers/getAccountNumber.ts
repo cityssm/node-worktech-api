@@ -3,6 +3,7 @@
 
 import type { config as MSSQLConfig } from 'mssql'
 
+import { accountSegmentSeparator } from '../apiConfig.js'
 import { getJobActivityObjectCodeByKeys } from '../queries/jobs/getJobActivityObjectCodes.js'
 import { getJobByJobId } from '../queries/jobs/getJobs.js'
 import {
@@ -10,8 +11,6 @@ import {
   getObjectCodeByObjectCode
 } from '../queries/jobs/getObjectCodes.js'
 import { getWorkOrderByWorkOrderNumber } from '../queries/workOrders/getWorkOrders.js'
-
-const accountSegmentSeparator = '-'
 
 export interface AccountNumberSource {
   accountNumber: string

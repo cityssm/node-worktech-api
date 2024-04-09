@@ -1,4 +1,4 @@
-import type { config as MSSQLConfig } from 'mssql';
+import type { config as MSSQLConfig } from '@cityssm/mssql-multi-pool';
 export interface AccountNumberSource {
     accountNumber: string;
     accountNumberSource: 'assignedJobActivityObjectCode' | 'assignedJobObjectCode' | 'jobObjectCode';

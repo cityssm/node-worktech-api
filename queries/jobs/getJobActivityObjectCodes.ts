@@ -1,5 +1,8 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import type { IResult, config as MSSQLConfig } from 'mssql'
+import {
+  type IResult,
+  type config as MSSQLConfig,
+  connect
+} from '@cityssm/mssql-multi-pool'
 
 import type { JobActivityObjectCode } from './types.js'
 
@@ -29,6 +32,7 @@ export async function getJobActivityObjectCodeByKeys(
     fiscalYear: number | string
   }
 ): Promise<JobActivityObjectCode | undefined> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const result: IResult<JobActivityObjectCode> = await pool

@@ -23,6 +23,7 @@ export async function getActivityByActivityId(mssqlConfig, activityId) {
     if (activityObject !== undefined) {
         return activityObject;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const result = await pool
         .request()
@@ -44,6 +45,7 @@ export async function getActivityByActivityId(mssqlConfig, activityId) {
  * @returns {Promise<Activity>} - An array of activities.
  */
 export async function getActivityAssignedToJobByActivityIdAndFiscalYear(mssqlConfig, jobId, activityId, fiscalYear) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const result = await pool
         .request()
@@ -65,6 +67,7 @@ export async function getActivityAssignedToJobByActivityIdAndFiscalYear(mssqlCon
  * @returns {Promise<Activity[]>} - An array of activities.
  */
 export async function getActivitiesAssignedToJobByFiscalYear(mssqlConfig, jobId, fiscalYear) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const result = await pool
         .request()

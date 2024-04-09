@@ -1,5 +1,8 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import type { IResult, config as MSSQLConfig } from 'mssql'
+import {
+  type IResult,
+  type config as MSSQLConfig,
+  connect
+} from '@cityssm/mssql-multi-pool'
 import NodeCache from 'node-cache'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
@@ -35,6 +38,7 @@ export async function getActivityByActivityId(
     return activityObject
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const result: IResult<Activity> = await pool
@@ -67,6 +71,7 @@ export async function getActivityAssignedToJobByActivityIdAndFiscalYear(
   activityId: string,
   fiscalYear: number | string
 ): Promise<Activity | undefined> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const result: IResult<Activity> = await pool
@@ -98,6 +103,7 @@ export async function getActivitiesAssignedToJobByFiscalYear(
   jobId: string,
   fiscalYear: number | string
 ): Promise<Activity[]> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const result: IResult<Activity> = await pool

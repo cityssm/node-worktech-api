@@ -1,5 +1,8 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import type { IResult, config as MSSQLConfig } from 'mssql'
+import {
+  type IResult,
+  type config as MSSQLConfig,
+  connect
+} from '@cityssm/mssql-multi-pool'
 import NodeCache from 'node-cache'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
@@ -54,6 +57,7 @@ export async function getItemByItemId(
     return item
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const itemResult: IResult<ResourceItem> = await pool

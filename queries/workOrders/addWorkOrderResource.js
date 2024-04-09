@@ -51,6 +51,7 @@ export async function addWorkOrderResource(mssqlConfig, workOrderResource) {
     /*
      * Do the transaction
      */
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const transaction = pool.transaction();
     try {

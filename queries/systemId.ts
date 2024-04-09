@@ -1,4 +1,4 @@
-import type { IResult, Transaction } from 'mssql'
+import type { IResult, Transaction } from '@cityssm/mssql-multi-pool'
 
 const tableId = 'SRISYSID'
 

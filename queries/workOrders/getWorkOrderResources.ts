@@ -1,5 +1,8 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import type { IResult, config as MSSQLConfig } from 'mssql'
+import {
+  type IResult,
+  type config as MSSQLConfig,
+  connect
+} from '@cityssm/mssql-multi-pool'
 
 import type { WorkOrderResource } from './types.js'
 
@@ -27,6 +30,7 @@ export async function getWorkOrderResourcesByWorkOrderNumber(
   mssqlConfig: MSSQLConfig,
   workOrderNumber: string
 ): Promise<WorkOrderResource[]> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const resourcesResult: IResult<WorkOrderResource> = await pool

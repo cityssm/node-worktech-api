@@ -1,7 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/indent */
 
-import type { config as MSSQLConfig } from 'mssql'
+import type { config as MSSQLConfig } from '@cityssm/mssql-multi-pool'
 
 import { accountSegmentSeparator } from '../apiConfig.js'
 import { getJobActivityObjectCodeByKeys } from '../queries/jobs/getJobActivityObjectCodes.js'

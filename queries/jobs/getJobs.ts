@@ -1,5 +1,8 @@
-import { connect } from '@cityssm/mssql-multi-pool'
-import type { IResult, config as MSSQLConfig } from 'mssql'
+import {
+  type IResult,
+  type config as MSSQLConfig,
+  connect
+} from '@cityssm/mssql-multi-pool'
 import NodeCache from 'node-cache'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
@@ -47,6 +50,7 @@ export async function getJobByJobId(
     return jobObject
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const jobResult: IResult<Job> = await pool

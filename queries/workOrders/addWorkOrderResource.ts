@@ -1,9 +1,11 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable unicorn/no-null */
 
-import { connect } from '@cityssm/mssql-multi-pool'
+import {
+  type config as MSSQLConfig,
+  connect
+} from '@cityssm/mssql-multi-pool'
 import { dateToString, dateToTimeString } from '@cityssm/utils-datetime'
-import type { config as MSSQLConfig } from 'mssql'
 
 import { getItemByItemId } from '../items/getItems.js'
 import { getLastSystemId, incrementLastSystemId } from '../systemId.js'
@@ -92,6 +94,7 @@ export async function addWorkOrderResource(
    * Do the transaction
    */
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const transaction = pool.transaction()

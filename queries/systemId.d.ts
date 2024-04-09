@@ -1,4 +1,4 @@
-import type { Transaction } from 'mssql';
+import type { Transaction } from '@cityssm/mssql-multi-pool';
 /**
  * Returns the last used system id.
  * @param {Transaction} transaction - An open database transaction.

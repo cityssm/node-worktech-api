@@ -1,4 +1,4 @@
-import type { config as MSSQLConfig } from 'mssql';
+import { type config as MSSQLConfig } from '@cityssm/mssql-multi-pool';
 import type { BigIntString } from '../types.js';
 import type { WorkOrderResource } from './types.js';
 export interface AddWorkOrderResource extends Partial<WorkOrderResource> {

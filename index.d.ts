@@ -1,4 +1,4 @@
-import type { config as MSSQLConfig } from 'mssql';
+import type { config as MSSQLConfig } from '@cityssm/mssql-multi-pool';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
 import type { ResourceItem } from './queries/items/types.js';
 import type { Activity, Job, JobActivityObjectCode, JobAssignedObjectCode, ObjectCode } from './queries/jobs/types.js';

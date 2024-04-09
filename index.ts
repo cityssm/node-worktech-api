@@ -1,4 +1,4 @@
-import type { config as MSSQLConfig } from '@cityssm/mssql-multi-pool'
+import type { config } from '@cityssm/mssql-multi-pool'
 
 import {
   type AccountNumberSource,
@@ -36,17 +36,33 @@ import type {
   WorkOrderResource
 } from './queries/workOrders/types.js'
 
+/**
+ * WorkTech API
+ */
 export class WorkTechAPI {
-  readonly #mssqlConfig: MSSQLConfig
+  readonly #mssqlConfig: config
 
-  constructor(mssqlConfig: MSSQLConfig) {
+  /**
+   * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
+   */
+  constructor(mssqlConfig: config) {
     this.#mssqlConfig = mssqlConfig
   }
 
+  /**
+   * Retrieves an item.
+   * @param {string} itemId - The item id.
+   * @returns {Promise<ResourceItem | undefined>} - The item, if available.
+   */
   async getItemByItemId(itemId: string): Promise<ResourceItem | undefined> {
     return await getItemByItemId(this.#mssqlConfig, itemId)
   }
 
+  /**
+   * Retrieves a work order.
+   * @param {string} workOrderNumber - The work order number.
+   * @returns {Promise<WorkOrder | undefined>} - The work order, if available.
+   */
   async getWorkOrderByWorkOrderNumber(
     workOrderNumber: string
   ): Promise<WorkOrder | undefined> {
@@ -56,6 +72,11 @@ export class WorkTechAPI {
     )
   }
 
+  /**
+   * Retrieves a list of work order resources.
+   * @param {string} workOrderNumber - The work order number.
+   * @returns {Promise<WorkOrderResource[]>} - An array of resources associated with a work order.
+   */
   async getWorkOrderResourcesByWorkOrderNumber(
     workOrderNumber: string
   ): Promise<WorkOrderResource[]> {
@@ -65,22 +86,43 @@ export class WorkTechAPI {
     )
   }
 
+  /**
+   * Adds a resource to a work order.
+   * @param {AddWorkOrderResource} workOrderResource - The work order resource fields.
+   * @returns {BigIntString} - The system id for the new resource record.
+   */
   async addWorkOrderResource(
     workOrderResource: AddWorkOrderResource
   ): Promise<BigIntString> {
     return await addWorkOrderResource(this.#mssqlConfig, workOrderResource)
   }
 
+  /**
+   * Retrieves a job.
+   * @param {string} jobId - The job id
+   * @returns {Promise<Job | undefined>} - The job, if available.
+   */
   async getJobByJobId(jobId: string): Promise<Job | undefined> {
     return await getJobByJobId(this.#mssqlConfig, jobId)
   }
 
+  /**
+   * Retrieves an activity.
+   * @param {string} activityId - The activity id
+   * @returns {Promise<Activity | undefined>} - The activity, if available.
+   */
   async getActivityByActivityId(
     activityId: string
   ): Promise<Activity | undefined> {
     return await getActivityByActivityId(this.#mssqlConfig, activityId)
   }
 
+  /**
+   * Retrieves the activities associated with a given job and fiscal year.
+   * @param {string} jobId - The job id
+   * @param {number | string} fiscalYear - The fiscal year
+   * @returns {Promise<Activity[]>} - An array of activities.
+   */
   async getActivitiesAssignedToJobByFiscalYear(
     jobId: string,
     fiscalYear: number | string
@@ -92,12 +134,23 @@ export class WorkTechAPI {
     )
   }
 
+  /**
+   * Retrieves an object code.
+   * @param {string} objectCode - The object code
+   * @returns {Promise<ObjectCode | undefined>} - The object code, if available.
+   */
   async getObjectCodeByObjectCode(
     objectCode: string
   ): Promise<ObjectCode | undefined> {
     return await getObjectCodeByObjectCode(this.#mssqlConfig, objectCode)
   }
 
+  /**
+   * Retrieves a list of object codes associated with a given job and fiscal year.
+   * @param {string} jobId - The job id.
+   * @param {number | string} fiscalYear - The fiscal year.
+   * @returns {Promise<JobAssignedObjectCode[]>} - An array of object codes assigned to a given job.
+   */
   async getObjectCodesAssignedToJobByFiscalYear(
     jobId: string,
     fiscalYear: number | string
@@ -109,6 +162,13 @@ export class WorkTechAPI {
     )
   }
 
+  /**
+   * Retrieves an object code associated with a given job and fiscal year.
+   * @param {string} jobId - The job id.
+   * @param {string} objectCode - The object code.
+   * @param {number} fiscalYear - The fiscal year.
+   * @returns {Promise<JobAssignedObjectCode>} - The object code, if available.
+   */
   async getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(
     jobId: string,
     objectCode: string,
@@ -122,6 +182,15 @@ export class WorkTechAPI {
     )
   }
 
+  /**
+   * Retrieves a job - activity - object code.
+   * @param {object} keys - The keys to search on.
+   * @param {string} keys.jobId - The job id.
+   * @param {string} keys.activityId - The activity id.
+   * @param {string} keys.objectCode - The object code.
+   * @param {string} keys.fiscalYear - The fiscal year.
+   * @returns {Promise<JobActivityObjectCode | undefined>} - The job - activity - object code combination if available.
+   */
   async getJobActivityObjectCodeByKeys(keys: {
     jobId: string
     activityId: string
@@ -131,6 +200,12 @@ export class WorkTechAPI {
     return await getJobActivityObjectCodeByKeys(this.#mssqlConfig, keys)
   }
 
+  /**
+   * Retrieves an account number for a given work order.
+   * @param {string} workOrderNumber - The work order number.
+   * @param {string} optionalObjectCode - An optional object code.
+   * @returns {Promise<AccountNumberSource | undefined>} - The account number and its source, if available.
+   */
   async getAccountNumberByWorkOrderNumberAndObjectCode(
     workOrderNumber: string,
     optionalObjectCode?: string

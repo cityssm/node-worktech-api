@@ -1,4 +1,5 @@
 import assert from 'node:assert'
+import { after, describe, it } from 'node:test'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
 
@@ -10,13 +11,13 @@ import {
   mssqlConfig
 } from './config.js'
 
-describe('helpers', () => {
-  after(() => {
-    releaseAll()
-  })
+await describe('helpers', async () => {
+  await describe('getAccountNumberByWorkOrderNumberAndObjectCode()', async () => {
+    after(() => {
+      releaseAll()
+    })
 
-  describe('getAccountNumberByWorkOrderNumberAndObjectCode()', () => {
-    it('Retrieves an account number', async () => {
+    await it('Retrieves an account number', async () => {
       const accountNumber =
         await getAccountNumberByWorkOrderNumberAndObjectCode(
           mssqlConfig,

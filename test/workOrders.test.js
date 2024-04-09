@@ -1,32 +1,33 @@
 import assert from 'node:assert';
+import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { addWorkOrderResource, getWorkOrderByWorkOrderNumber, getWorkOrderResourcesByWorkOrderNumber } from '../index.js';
 import { invalidWorkOrderNumber, mssqlConfig, validItemId, validWorkOrderNumber } from './config.js';
-describe('queries/workOrders', () => {
+await describe('queries/workOrders', async () => {
     after(() => {
         releaseAll();
     });
-    describe('getWorkOrders()', () => {
-        it('Retrieves a work order', async () => {
+    await describe('getWorkOrders()', async () => {
+        await it('Retrieves a work order', async () => {
             const workOrder = await getWorkOrderByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
             console.log(workOrder);
             assert.ok(workOrder !== undefined);
             assert.strictEqual(workOrder.workOrderNumber, validWorkOrderNumber);
         });
-        it('Returns "undefined" when no work order is available.', async () => {
+        await it('Returns "undefined" when no work order is available.', async () => {
             const workOrder = await getWorkOrderByWorkOrderNumber(mssqlConfig, invalidWorkOrderNumber);
             assert.strictEqual(workOrder, undefined);
         });
     });
-    describe('getWorkOrderResources()', () => {
-        it('Retrieves an array of resources', async () => {
+    await describe('getWorkOrderResources()', async () => {
+        await it('Retrieves an array of resources', async () => {
             const resources = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
             console.log(resources);
             assert.ok(resources.length > 0);
         });
     });
-    describe('addWorkOrderResource()', () => {
-        it('Adds a resource to a work order', async () => {
+    await describe('addWorkOrderResource()', async () => {
+        await it('Adds a resource to a work order', async () => {
             const resourcesBefore = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
             const systemId = await addWorkOrderResource(mssqlConfig, {
                 workOrderNumber: validWorkOrderNumber,

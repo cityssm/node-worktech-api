@@ -1,4 +1,5 @@
 import assert from 'node:assert'
+import { after, describe, it } from 'node:test'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
 
@@ -21,13 +22,13 @@ import {
   validObjectCode
 } from './config.js'
 
-describe('queries/jobs', () => {
+await describe('queries/jobs', async () => {
   after(() => {
     releaseAll()
   })
 
-  describe('getJobs()', () => {
-    it('Retrieves a job', async () => {
+  await describe('getJobs()', async () => {
+    await it('Retrieves a job', async () => {
       const job = await getJobByJobId(mssqlConfig, validJobId)
 
       console.log(job)
@@ -36,15 +37,15 @@ describe('queries/jobs', () => {
       assert.strictEqual(job.jobId, validJobId)
     })
 
-    it('Returns "undefined" when no job is available.', async () => {
+    await it('Returns "undefined" when no job is available.', async () => {
       const job = await getJobByJobId(mssqlConfig, invalidJobId)
 
       assert.strictEqual(job, undefined)
     })
   })
 
-  describe('getActivities()', () => {
-    it('Retrieves an activity', async () => {
+  await describe('getActivities()', async () => {
+    await it('Retrieves an activity', async () => {
       const activity = await getActivityByActivityId(
         mssqlConfig,
         validActivityId
@@ -56,7 +57,7 @@ describe('queries/jobs', () => {
       assert.strictEqual(activity.activityId, validActivityId)
     })
 
-    it('Returns "undefined" when no activity is available.', async () => {
+    await it('Returns "undefined" when no activity is available.', async () => {
       const activity = await getActivityByActivityId(
         mssqlConfig,
         invalidActivityId
@@ -65,7 +66,7 @@ describe('queries/jobs', () => {
       assert.strictEqual(activity, undefined)
     })
 
-    it('Retrieve activities for a given job', async () => {
+    await it('Retrieve activities for a given job', async () => {
       const activities = await getActivitiesAssignedToJobByFiscalYear(
         mssqlConfig,
         validJobId,
@@ -78,8 +79,8 @@ describe('queries/jobs', () => {
     })
   })
 
-  describe('getObjectCodes()', () => {
-    it('Retrieves an object code', async () => {
+  await describe('getObjectCodes()', async () => {
+    await it('Retrieves an object code', async () => {
       const objectCode = await getObjectCodeByObjectCode(
         mssqlConfig,
         validObjectCode
@@ -91,7 +92,7 @@ describe('queries/jobs', () => {
       assert.strictEqual(objectCode.objectCode, validObjectCode)
     })
 
-    it('Returns "undefined" when no object code is available.', async () => {
+    await it('Returns "undefined" when no object code is available.', async () => {
       const objectCode = await getObjectCodeByObjectCode(
         mssqlConfig,
         invalidObjectCode
@@ -100,7 +101,7 @@ describe('queries/jobs', () => {
       assert.strictEqual(objectCode, undefined)
     })
 
-    it('Retrieve object codes for a given job', async () => {
+    await it('Retrieve object codes for a given job', async () => {
       const objectCodes = await getObjectCodesAssignedToJobByFiscalYear(
         mssqlConfig,
         validJobId,
@@ -113,8 +114,8 @@ describe('queries/jobs', () => {
     })
   })
 
-  describe('getJobActivityObjectCodes()', () => {
-    it('Retrieves a job - activity - object code', async () => {
+  await describe('getJobActivityObjectCodes()', async () => {
+    await it('Retrieves a job - activity - object code', async () => {
       const code = await getJobActivityObjectCodeByKeys(mssqlConfig, {
         jobId: validJobId,
         activityId: validActivityId,
@@ -130,7 +131,7 @@ describe('queries/jobs', () => {
       assert.strictEqual(code.objectCode, validObjectCode)
     })
 
-    it('Returns "undefined" when no job - activity - object code is available.', async () => {
+    await it('Returns "undefined" when no job - activity - object code is available.', async () => {
       const code = await getJobActivityObjectCodeByKeys(mssqlConfig, {
         jobId: invalidJobId,
         activityId: validActivityId,

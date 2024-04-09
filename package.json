@@ -5,8 +5,8 @@
   "type": "module",
   "exports": "./index.js",
   "scripts": {
-    "test": "mocha",
-    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha"
+    "test": "node --test",
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
   },
   "keywords": [
     "worktech",
@@ -24,8 +24,6 @@
   "author": "The Corporation of the City of Sault Ste. Marie",
   "license": "MIT",
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
-    "@types/mssql": "^9.1.5",
     "eslint-config-cityssm": "^1.7.0"
   },
   "dependencies": {

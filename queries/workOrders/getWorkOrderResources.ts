@@ -15,6 +15,8 @@ const sql = `SELECT [SRISysID] as serviceRequestItemSystemId,
   [Qty] as quantity,
   [UnitPrice] as unitPrice,
   [Amt] as baseAmount,
+  [LockEst] as lockUnitPrice,
+  [LocMargin] as lockMargin,
   [WorkDesc] as workDescription,
   [EndDateTime] as endDateTime,
   [Step] as step

@@ -47,6 +47,8 @@ export interface WorkOrder {
 
 export interface WorkOrderResource {
   serviceRequestItemSystemId: BigIntString
+
+  /** Max length = 9 */
   step: string
 
   serviceRequestSystemId: BigIntString
@@ -59,6 +61,9 @@ export interface WorkOrderResource {
   quantity: number
   unitPrice: number
   baseAmount: number
+
+  lockUnitPrice: 0 | 1
+  lockMargin: 0 | 1
 
   startDateTime: Date
   endDateTime: Date

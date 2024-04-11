@@ -71,6 +71,8 @@ export async function addWorkOrderResource(mssqlConfig, workOrderResource) {
             .input('quantity', quantity)
             .input('unitPrice', unitPrice)
             .input('baseAmount', baseAmount)
+            .input('lockUnitPrice', workOrderResource.lockUnitPrice ?? 0)
+            .input('lockMargin', workOrderResource.lockMargin ?? 0)
             .input('workOrderNumber', workOrderResource.workOrderNumber)
             .input('workDescription', workOrderResource.workDescription ?? item.itemDescription ?? '')
             .input('endDateTime', endDateTimeString)
@@ -83,6 +85,7 @@ export async function addWorkOrderResource(mssqlConfig, workOrderResource) {
         QTY,
         UNITPRICE,
         AMT,
+        LOCKEST, LOCMARGIN,
         WONOS,
         SYSID,
         WORKDESC,
@@ -91,7 +94,7 @@ export async function addWorkOrderResource(mssqlConfig, workOrderResource) {
         ACTV_ID, RPTCODE, DONE,
         OVERHEAD_PER, OVERHEAD_AMT,
         TAXCODE, MOD_USER,
-        LOCKEST, LOCMARGIN, WOPRIMARY,
+        WOPRIMARY,
         DIM1, DIM2, DIM3,
         TSISYSID,
         LOCKSCHEDDATE, KIT_ID, LOCKKIT,
@@ -112,6 +115,7 @@ export async function addWorkOrderResource(mssqlConfig, workOrderResource) {
         @quantity,
         @unitPrice,
         @baseAmount,
+        @lockUnitPrice, @lockMargin,
         @workOrderNumber,
         0,
         @workDescription,
@@ -120,7 +124,7 @@ export async function addWorkOrderResource(mssqlConfig, workOrderResource) {
         '', '', 0,
         0.00, 0.00,
         '', '',
-        0, 0, 0,
+        0,
         0.00, 0.00, 0.00,
         0,
         0, '', 0,

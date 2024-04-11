@@ -19,8 +19,8 @@ import {
 await describe('WorkTechAPI()', async () => {
   const api = new WorkTechAPI(mssqlConfig)
 
-  after(() => {
-    releaseAll()
+  after(async () => {
+    await releaseAll()
   })
 
   await it('Retrieves a work order', async () => {

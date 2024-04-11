@@ -23,8 +23,8 @@ import {
 } from './config.js'
 
 await describe('queries/jobs', async () => {
-  after(() => {
-    releaseAll()
+  after(async () => {
+    await releaseAll()
   })
 
   await describe('getJobs()', async () => {

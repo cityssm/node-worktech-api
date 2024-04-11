@@ -4,8 +4,8 @@ import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { getItemByItemId } from '../index.js';
 import { invalidItemId, mssqlConfig, validItemId } from './config.js';
 await describe('queries/items', async () => {
-    after(() => {
-        releaseAll();
+    after(async () => {
+        await releaseAll();
     });
     await it('Retrieves an item', async () => {
         const item = await getItemByItemId(mssqlConfig, validItemId);

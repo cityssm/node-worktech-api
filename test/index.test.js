@@ -5,8 +5,8 @@ import { WorkTechAPI } from '../index.js';
 import { accountNumberObjectCode, accountNumberWorkOrderNumber, mssqlConfig, validActivityId, validItemId, validJobId, validObjectCode, validWorkOrderNumber } from './config.js';
 await describe('WorkTechAPI()', async () => {
     const api = new WorkTechAPI(mssqlConfig);
-    after(() => {
-        releaseAll();
+    after(async () => {
+        await releaseAll();
     });
     await it('Retrieves a work order', async () => {
         const workOrder = await api.getWorkOrderByWorkOrderNumber(validWorkOrderNumber);

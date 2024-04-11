@@ -4,8 +4,8 @@ import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { getActivitiesAssignedToJobByFiscalYear, getActivityByActivityId, getJobActivityObjectCodeByKeys, getJobByJobId, getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear } from '../index.js';
 import { invalidActivityId, invalidJobId, invalidObjectCode, mssqlConfig, validActivityId, validJobId, validObjectCode } from './config.js';
 await describe('queries/jobs', async () => {
-    after(() => {
-        releaseAll();
+    after(async () => {
+        await releaseAll();
     });
     await describe('getJobs()', async () => {
         await it('Retrieves a job', async () => {

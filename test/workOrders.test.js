@@ -1,4 +1,5 @@
 import assert from 'node:assert';
+import { randomUUID } from 'node:crypto';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { addWorkOrderResource, getWorkOrderByWorkOrderNumber, getWorkOrderResourcesByWorkOrderNumber } from '../index.js';
@@ -31,9 +32,13 @@ await describe('queries/workOrders', async () => {
             const resourcesBefore = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
             const systemId = await addWorkOrderResource(mssqlConfig, {
                 workOrderNumber: validWorkOrderNumber,
+                step: Math.round(Date.now() / 10_000).toString(),
                 itemId: validItemId,
+                workDescription: `${randomUUID().slice(-10)} - Item from Faster`,
                 quantity: 25,
-                unitPrice: 12.5
+                unitPrice: 12.5,
+                lockMargin: 1,
+                lockUnitPrice: 1
             });
             assert.ok(systemId !== undefined);
             const resourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);

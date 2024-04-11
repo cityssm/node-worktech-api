@@ -5,8 +5,8 @@ import { getAccountNumberByWorkOrderNumberAndObjectCode } from '../index.js';
 import { accountNumberObjectCode, accountNumberWorkOrderNumber, mssqlConfig } from './config.js';
 await describe('helpers', async () => {
     await describe('getAccountNumberByWorkOrderNumberAndObjectCode()', async () => {
-        after(() => {
-            releaseAll();
+        after(async () => {
+            await releaseAll();
         });
         await it('Retrieves an account number', async () => {
             const accountNumber = await getAccountNumberByWorkOrderNumberAndObjectCode(mssqlConfig, accountNumberWorkOrderNumber, accountNumberObjectCode);

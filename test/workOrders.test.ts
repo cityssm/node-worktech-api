@@ -17,8 +17,8 @@ import {
 } from './config.js'
 
 await describe('queries/workOrders', async () => {
-  after(() => {
-    releaseAll()
+  after(async () => {
+    await releaseAll()
   })
 
   await describe('getWorkOrders()', async () => {

@@ -4,8 +4,8 @@ import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { addWorkOrderResource, getWorkOrderByWorkOrderNumber, getWorkOrderResourcesByWorkOrderNumber } from '../index.js';
 import { invalidWorkOrderNumber, mssqlConfig, validItemId, validWorkOrderNumber } from './config.js';
 await describe('queries/workOrders', async () => {
-    after(() => {
-        releaseAll();
+    after(async () => {
+        await releaseAll();
     });
     await describe('getWorkOrders()', async () => {
         await it('Retrieves a work order', async () => {

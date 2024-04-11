@@ -13,8 +13,8 @@ import {
 
 await describe('helpers', async () => {
   await describe('getAccountNumberByWorkOrderNumberAndObjectCode()', async () => {
-    after(() => {
-      releaseAll()
+    after(async () => {
+      await releaseAll()
     })
 
     await it('Retrieves an account number', async () => {

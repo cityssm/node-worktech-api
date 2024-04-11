@@ -3,10 +3,12 @@ import { randomUUID } from 'node:crypto'
 import { after, describe, it } from 'node:test'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
+import { type DateString, dateToString } from '@cityssm/utils-datetime'
 
 import {
   addWorkOrderResource,
   getWorkOrderByWorkOrderNumber,
+  getWorkOrderResourcesByStartDate,
   getWorkOrderResourcesByWorkOrderNumber
 } from '../index.js'
 
@@ -60,13 +62,22 @@ await describe('queries/workOrders', async () => {
 
   await describe('addWorkOrderResource()', async () => {
     await it('Adds a resource to a work order', async () => {
-      const resourcesBefore = await getWorkOrderResourcesByWorkOrderNumber(
+      const workOrderResourcesBefore =
+        await getWorkOrderResourcesByWorkOrderNumber(
+          mssqlConfig,
+          validWorkOrderNumber
+        )
+
+      const currentDate = new Date()
+
+      const startDateResourcesBefore = await getWorkOrderResourcesByStartDate(
         mssqlConfig,
-        validWorkOrderNumber
+        dateToString(currentDate) as DateString
       )
 
       const systemId = await addWorkOrderResource(mssqlConfig, {
         workOrderNumber: validWorkOrderNumber,
+        startDateTime: currentDate,
         step: Math.round(Date.now() / 10_000).toString(),
         itemId: validItemId,
         workDescription: `${randomUUID().slice(-10)} - Item from Faster`,
@@ -78,15 +89,34 @@ await describe('queries/workOrders', async () => {
 
       assert.ok(systemId !== undefined)
 
-      const resourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(
+      const workOrderResourcesAfter =
+        await getWorkOrderResourcesByWorkOrderNumber(
+          mssqlConfig,
+          validWorkOrderNumber
+        )
+
+      const startDateResourcesAfter = await getWorkOrderResourcesByStartDate(
         mssqlConfig,
-        validWorkOrderNumber
+        dateToString(currentDate) as DateString
       )
 
-      assert.strictEqual(resourcesBefore.length + 1, resourcesAfter.length)
+      assert.strictEqual(
+        workOrderResourcesBefore.length + 1,
+        workOrderResourcesAfter.length
+      )
+      assert.strictEqual(
+        startDateResourcesBefore.length + 1,
+        startDateResourcesAfter.length
+      )
 
       assert.ok(
-        resourcesAfter.some((resource) => {
+        workOrderResourcesAfter.some((resource) => {
+          return resource.serviceRequestItemSystemId === systemId
+        })
+      )
+
+      assert.ok(
+        startDateResourcesAfter.some((resource) => {
           return resource.serviceRequestItemSystemId === systemId
         })
       )

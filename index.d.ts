@@ -1,4 +1,5 @@
 import type { config } from '@cityssm/mssql-multi-pool';
+import { type DateString } from '@cityssm/utils-datetime';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
 import type { ResourceItem } from './queries/items/types.js';
 import type { Activity, Job, JobActivityObjectCode, JobAssignedObjectCode, ObjectCode } from './queries/jobs/types.js';
@@ -32,6 +33,19 @@ export declare class WorkTechAPI {
      * @returns {Promise<WorkOrderResource[]>} - An array of resources associated with a work order.
      */
     getWorkOrderResourcesByWorkOrderNumber(workOrderNumber: string): Promise<WorkOrderResource[]>;
+    /**
+     * Retrieves a list of work order resources.
+     * @param {Date | string} startDateFrom - The minimum start date.
+     * @param {Date | string} startDateTo - The maximum start date.
+     * @returns {Promise<WorkOrderResource[]>} - An array of resources between a given start time range.
+     */
+    getWorkOrderResourcesByStartDateTimeRange(startDateFrom: Date | string, startDateTo: Date | string): Promise<WorkOrderResource[]>;
+    /**
+     * Retrieves a list of work order resources.
+     * @param {DateString} startDateString - The start date.
+     * @returns {Promise<WorkOrderResource[]>} - An array of resources on a given start date.
+     */
+    getWorkOrderResourcesByStartDate(startDateString: DateString): Promise<WorkOrderResource[]>;
     /**
      * Adds a resource to a work order.
      * @param {AddWorkOrderResource} workOrderResource - The work order resource fields.
@@ -109,4 +123,4 @@ export { getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear, get
 export { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js';
 export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
 export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
-export { getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
+export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';

@@ -5,7 +5,7 @@ import { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObj
 import { getJobByJobId } from './queries/jobs/getJobs.js';
 import { getObjectCodeAssignedToJobByObjectCodeAndFiscalYear, getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear } from './queries/jobs/getObjectCodes.js';
 import { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
-import { getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
+import { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 import { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
 /**
  * WorkTech API
@@ -41,6 +41,23 @@ export class WorkTechAPI {
      */
     async getWorkOrderResourcesByWorkOrderNumber(workOrderNumber) {
         return await getWorkOrderResourcesByWorkOrderNumber(this.#mssqlConfig, workOrderNumber);
+    }
+    /**
+     * Retrieves a list of work order resources.
+     * @param {Date | string} startDateFrom - The minimum start date.
+     * @param {Date | string} startDateTo - The maximum start date.
+     * @returns {Promise<WorkOrderResource[]>} - An array of resources between a given start time range.
+     */
+    async getWorkOrderResourcesByStartDateTimeRange(startDateFrom, startDateTo) {
+        return await getWorkOrderResourcesByStartDateTimeRange(this.#mssqlConfig, startDateFrom, startDateTo);
+    }
+    /**
+     * Retrieves a list of work order resources.
+     * @param {DateString} startDateString - The start date.
+     * @returns {Promise<WorkOrderResource[]>} - An array of resources on a given start date.
+     */
+    async getWorkOrderResourcesByStartDate(startDateString) {
+        return await getWorkOrderResourcesByStartDate(this.#mssqlConfig, startDateString);
     }
     /**
      * Adds a resource to a work order.
@@ -132,4 +149,4 @@ export { getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear, get
 export { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js';
 export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
 export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
-export { getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
+export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';

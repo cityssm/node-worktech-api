@@ -3,6 +3,11 @@ import {
   type config as MSSQLConfig,
   connect
 } from '@cityssm/mssql-multi-pool'
+import {
+  type DateString,
+  dateToString,
+  dateToTimeString
+} from '@cityssm/utils-datetime'
 
 import type { WorkOrderResource } from './types.js'
 
@@ -41,4 +46,57 @@ export async function getWorkOrderResourcesByWorkOrderNumber(
     .query(`${sql} where WONOs = @workOrderNumber`)
 
   return resourcesResult.recordset
+}
+
+/**
+ * Retrieves a list of work order resources.
+ * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
+ * @param {Date | string} startDateTimeFrom - The minimum start date.
+ * @param {Date | string} startDateTimeTo - The maximum start date.
+ * @returns {Promise<WorkOrderResource[]>} - An array of resources between a given start time range.
+ */
+export async function getWorkOrderResourcesByStartDateTimeRange(
+  mssqlConfig: MSSQLConfig,
+  startDateTimeFrom: Date | string,
+  startDateTimeTo: Date | string
+): Promise<WorkOrderResource[]> {
+  const startDateFromString =
+    typeof startDateTimeFrom === 'string'
+      ? startDateTimeFrom
+      : `${dateToString(startDateTimeFrom)} ${dateToTimeString(
+          startDateTimeFrom
+        )}`
+
+  const startDateToString =
+    typeof startDateTimeTo === 'string'
+      ? startDateTimeTo
+      : `${dateToString(startDateTimeTo)} ${dateToTimeString(startDateTimeTo)}`
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  const pool = await connect(mssqlConfig)
+
+  const resourcesResult: IResult<WorkOrderResource> = await pool
+    .request()
+    .input('startDateFrom', startDateFromString)
+    .input('startDateTo', startDateToString)
+    .query(`${sql} where SchedDateTime between @startDateFrom and @startDateTo`)
+
+  return resourcesResult.recordset
+}
+
+/**
+ * Retrieves a list of work order resources.
+ * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
+ * @param {DateString} startDateString - The start date.
+ * @returns {Promise<WorkOrderResource[]>} - An array of resources on a given start date.
+ */
+export async function getWorkOrderResourcesByStartDate(
+  mssqlConfig: MSSQLConfig,
+  startDateString: DateString
+): Promise<WorkOrderResource[]> {
+  return await getWorkOrderResourcesByStartDateTimeRange(
+    mssqlConfig,
+    startDateString,
+    `${startDateString} 23:59:59`
+  )
 }

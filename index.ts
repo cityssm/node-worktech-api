@@ -1,4 +1,5 @@
 import type { config } from '@cityssm/mssql-multi-pool'
+import { type DateString } from '@cityssm/utils-datetime'
 
 import {
   type AccountNumberSource,
@@ -29,7 +30,11 @@ import {
   type AddWorkOrderResource,
   addWorkOrderResource
 } from './queries/workOrders/addWorkOrderResource.js'
-import { getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js'
+import {
+  getWorkOrderResourcesByStartDate,
+  getWorkOrderResourcesByStartDateTimeRange,
+  getWorkOrderResourcesByWorkOrderNumber
+} from './queries/workOrders/getWorkOrderResources.js'
 import { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js'
 import type {
   WorkOrder,
@@ -83,6 +88,37 @@ export class WorkTechAPI {
     return await getWorkOrderResourcesByWorkOrderNumber(
       this.#mssqlConfig,
       workOrderNumber
+    )
+  }
+
+  /**
+   * Retrieves a list of work order resources.
+   * @param {Date | string} startDateFrom - The minimum start date.
+   * @param {Date | string} startDateTo - The maximum start date.
+   * @returns {Promise<WorkOrderResource[]>} - An array of resources between a given start time range.
+   */
+  async getWorkOrderResourcesByStartDateTimeRange(
+    startDateFrom: Date | string,
+    startDateTo: Date | string
+  ): Promise<WorkOrderResource[]> {
+    return await getWorkOrderResourcesByStartDateTimeRange(
+      this.#mssqlConfig,
+      startDateFrom,
+      startDateTo
+    )
+  }
+
+  /**
+   * Retrieves a list of work order resources.
+   * @param {DateString} startDateString - The start date.
+   * @returns {Promise<WorkOrderResource[]>} - An array of resources on a given start date.
+   */
+  async getWorkOrderResourcesByStartDate(
+    startDateString: DateString
+  ): Promise<WorkOrderResource[]> {
+    return await getWorkOrderResourcesByStartDate(
+      this.#mssqlConfig,
+      startDateString
     )
   }
 
@@ -236,4 +272,8 @@ export { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObj
 
 export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js'
 export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js'
-export { getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js'
+export {
+  getWorkOrderResourcesByStartDate,
+  getWorkOrderResourcesByStartDateTimeRange,
+  getWorkOrderResourcesByWorkOrderNumber
+} from './queries/workOrders/getWorkOrderResources.js'

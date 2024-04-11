@@ -13,7 +13,7 @@ import { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrder
 export class WorkTechAPI {
     #mssqlConfig;
     /**
-     * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
+     * @param {config} mssqlConfig - SQL Server configuration.
      */
     constructor(mssqlConfig) {
         this.#mssqlConfig = mssqlConfig;

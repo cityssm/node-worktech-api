@@ -48,7 +48,7 @@ export class WorkTechAPI {
   readonly #mssqlConfig: config
 
   /**
-   * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
+   * @param {config} mssqlConfig - SQL Server configuration.
    */
   constructor(mssqlConfig: config) {
     this.#mssqlConfig = mssqlConfig

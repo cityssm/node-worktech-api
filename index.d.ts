@@ -12,7 +12,7 @@ import type { WorkOrder, WorkOrderResource } from './queries/workOrders/types.js
 export declare class WorkTechAPI {
     #private;
     /**
-     * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
+     * @param {config} mssqlConfig - SQL Server configuration.
      */
     constructor(mssqlConfig: config);
     /**

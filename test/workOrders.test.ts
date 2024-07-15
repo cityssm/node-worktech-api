@@ -7,6 +7,7 @@ import { type DateString, dateToString } from '@cityssm/utils-datetime'
 
 import {
   addWorkOrderResource,
+  deleteWorkOrderResource,
   getWorkOrderByWorkOrderNumber,
   getWorkOrderResourcesByStartDate,
   getWorkOrderResourcesByWorkOrderNumber,
@@ -61,7 +62,7 @@ await describe('queries/workOrders', async () => {
     })
   })
 
-  await describe('addWorkOrderResource(), updateWorkOrderResource()', async () => {
+  await describe('addWorkOrderResource(), updateWorkOrderResource(), deleteWorkOrderResource()', async () => {
     await it('Adds a resource to a work order', async () => {
       const workOrderResourcesBefore =
         await getWorkOrderResourcesByWorkOrderNumber(
@@ -147,6 +148,22 @@ await describe('queries/workOrders', async () => {
         workOrderResourcesAfter.some((resource) => {
           return resource.workDescription === newDescription
         })
+      )
+
+      /*
+       * Delete details
+       */
+
+      assert(await deleteWorkOrderResource(mssqlConfig, systemId))
+
+      workOrderResourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(
+        mssqlConfig,
+        validWorkOrderNumber
+      )
+
+      assert.strictEqual(
+        workOrderResourcesBefore.length,
+        workOrderResourcesAfter.length
       )
     })
   })

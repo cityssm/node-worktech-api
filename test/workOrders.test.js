@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { dateToString } from '@cityssm/utils-datetime';
-import { addWorkOrderResource, getWorkOrderByWorkOrderNumber, getWorkOrderResourcesByStartDate, getWorkOrderResourcesByWorkOrderNumber, updateWorkOrderResource } from '../index.js';
+import { addWorkOrderResource, deleteWorkOrderResource, getWorkOrderByWorkOrderNumber, getWorkOrderResourcesByStartDate, getWorkOrderResourcesByWorkOrderNumber, updateWorkOrderResource } from '../index.js';
 import { invalidWorkOrderNumber, mssqlConfig, validItemId, validWorkOrderNumber } from './config.js';
 await describe('queries/workOrders', async () => {
     after(async () => {
@@ -28,7 +28,7 @@ await describe('queries/workOrders', async () => {
             assert.ok(resources.length > 0);
         });
     });
-    await describe('addWorkOrderResource(), updateWorkOrderResource()', async () => {
+    await describe('addWorkOrderResource(), updateWorkOrderResource(), deleteWorkOrderResource()', async () => {
         await it('Adds a resource to a work order', async () => {
             const workOrderResourcesBefore = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
             const currentDate = new Date();
@@ -70,6 +70,12 @@ await describe('queries/workOrders', async () => {
             assert.ok(workOrderResourcesAfter.some((resource) => {
                 return resource.workDescription === newDescription;
             }));
+            /*
+             * Delete details
+             */
+            assert(await deleteWorkOrderResource(mssqlConfig, systemId));
+            workOrderResourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
+            assert.strictEqual(workOrderResourcesBefore.length, workOrderResourcesAfter.length);
         });
     });
 });

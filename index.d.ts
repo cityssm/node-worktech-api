@@ -66,6 +66,12 @@ export declare class WorkTechAPI {
      */
     updateWorkOrderResource(workOrderResource: UpdateWorkOrderResource): Promise<boolean>;
     /**
+     * Deletes a resource on a work order.
+     * @param serviceRequestItemSystemId - The work order resource id.
+     * @returns - True when the delete is processed successfully.
+     */
+    deleteWorkOrderResource(serviceRequestItemSystemId: BigIntString): Promise<boolean>;
+    /**
      * Retrieves a job.
      * @param jobId - The job id
      * @returns - The job, if available.
@@ -138,3 +144,4 @@ export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.
 export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
 export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
+export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';

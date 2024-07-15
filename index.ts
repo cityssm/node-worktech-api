@@ -30,6 +30,7 @@ import {
   type AddWorkOrderResource,
   addWorkOrderResource
 } from './queries/workOrders/addWorkOrderResource.js'
+import { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js'
 import {
   getWorkOrderResourcesByStartDate,
   getWorkOrderResourcesByStartDateTimeRange,
@@ -152,6 +153,20 @@ export class WorkTechAPI {
     workOrderResource: UpdateWorkOrderResource
   ): Promise<boolean> {
     return await updateWorkOrderResource(this.#mssqlConfig, workOrderResource)
+  }
+
+  /**
+   * Deletes a resource on a work order.
+   * @param serviceRequestItemSystemId - The work order resource id.
+   * @returns - True when the delete is processed successfully.
+   */
+  async deleteWorkOrderResource(
+    serviceRequestItemSystemId: BigIntString
+  ): Promise<boolean> {
+    return await deleteWorkOrderResource(
+      this.#mssqlConfig,
+      serviceRequestItemSystemId
+    )
   }
 
   /**
@@ -299,3 +314,4 @@ export {
   getWorkOrderResourcesByWorkOrderNumber
 } from './queries/workOrders/getWorkOrderResources.js'
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js'
+export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js'

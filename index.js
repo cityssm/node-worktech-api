@@ -5,6 +5,7 @@ import { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObj
 import { getJobByJobId } from './queries/jobs/getJobs.js';
 import { getObjectCodeAssignedToJobByObjectCodeAndFiscalYear, getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear } from './queries/jobs/getObjectCodes.js';
 import { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
+import { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';
 import { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 import { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
 import { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
@@ -81,6 +82,14 @@ export class WorkTechAPI {
      */
     async updateWorkOrderResource(workOrderResource) {
         return await updateWorkOrderResource(this.#mssqlConfig, workOrderResource);
+    }
+    /**
+     * Deletes a resource on a work order.
+     * @param serviceRequestItemSystemId - The work order resource id.
+     * @returns - True when the delete is processed successfully.
+     */
+    async deleteWorkOrderResource(serviceRequestItemSystemId) {
+        return await deleteWorkOrderResource(this.#mssqlConfig, serviceRequestItemSystemId);
     }
     /**
      * Retrieves a job.
@@ -166,3 +175,4 @@ export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.
 export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
 export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
+export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';

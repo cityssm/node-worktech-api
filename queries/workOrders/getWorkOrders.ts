@@ -60,9 +60,9 @@ const cache = new NodeCache({
 
 /**
  * Retrieves a work order.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param {string} workOrderNumber - The work order number.
- * @returns {Promise<WorkOrder | undefined>} - The work order, if available.
+ * @param mssqlConfig - SQL Server configuration.
+ * @param workOrderNumber - The work order number.
+ * @returns - The work order, if available.
  */
 export async function getWorkOrderByWorkOrderNumber(
   mssqlConfig: MSSQLConfig,
@@ -77,10 +77,10 @@ export async function getWorkOrderByWorkOrderNumber(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
-  const workOrderResult: IResult<WorkOrder> = await pool
+  const workOrderResult = (await pool
     .request()
     .input('workOrderNumber', workOrderNumber)
-    .query(`${sql} where WONOs = @workOrderNumber`)
+    .query(`${sql} where WONOs = @workOrderNumber`)) as IResult<WorkOrder>
 
   if (workOrderResult.recordset.length === 0) {
     return undefined

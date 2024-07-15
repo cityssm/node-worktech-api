@@ -17,25 +17,25 @@ const sql = `SELECT [SRISysID] as serviceRequestItemSystemId,
   FROM [AMSRI] WITH (NOLOCK)`;
 /**
  * Retrieves a list of work order resources.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param {string} workOrderNumber - The work order number.
- * @returns {Promise<WorkOrderResource[]>} - An array of resources associated with a work order.
+ * @param mssqlConfig - SQL Server configuration.
+ * @param workOrderNumber - The work order number.
+ * @returns - An array of resources associated with a work order.
  */
 export async function getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, workOrderNumber) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
-    const resourcesResult = await pool
+    const resourcesResult = (await pool
         .request()
         .input('workOrderNumber', workOrderNumber)
-        .query(`${sql} where WONOs = @workOrderNumber`);
+        .query(`${sql} where WONOs = @workOrderNumber`));
     return resourcesResult.recordset;
 }
 /**
  * Retrieves a list of work order resources.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param {Date | string} startDateTimeFrom - The minimum start date.
- * @param {Date | string} startDateTimeTo - The maximum start date.
- * @returns {Promise<WorkOrderResource[]>} - An array of resources between a given start time range.
+ * @param mssqlConfig - SQL Server configuration.
+ * @param startDateTimeFrom - The minimum start date.
+ * @param startDateTimeTo - The maximum start date.
+ * @returns - An array of resources between a given start time range.
  */
 export async function getWorkOrderResourcesByStartDateTimeRange(mssqlConfig, startDateTimeFrom, startDateTimeTo) {
     const startDateFromString = typeof startDateTimeFrom === 'string'
@@ -46,18 +46,18 @@ export async function getWorkOrderResourcesByStartDateTimeRange(mssqlConfig, sta
         : `${dateToString(startDateTimeTo)} ${dateToTimeString(startDateTimeTo)}`;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
-    const resourcesResult = await pool
+    const resourcesResult = (await pool
         .request()
         .input('startDateFrom', startDateFromString)
         .input('startDateTo', startDateToString)
-        .query(`${sql} where SchedDateTime between @startDateFrom and @startDateTo`);
+        .query(`${sql} where SchedDateTime between @startDateFrom and @startDateTo`));
     return resourcesResult.recordset;
 }
 /**
  * Retrieves a list of work order resources.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param {DateString} startDateString - The start date.
- * @returns {Promise<WorkOrderResource[]>} - An array of resources on a given start date.
+ * @param mssqlConfig - SQL Server configuration.
+ * @param startDateString - The start date.
+ * @returns - An array of resources on a given start date.
  */
 export async function getWorkOrderResourcesByStartDate(mssqlConfig, startDateString) {
     return await getWorkOrderResourcesByStartDateTimeRange(mssqlConfig, startDateString, `${startDateString} 23:59:59`);

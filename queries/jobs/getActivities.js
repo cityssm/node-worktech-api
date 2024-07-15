@@ -14,21 +14,20 @@ const cache = new NodeCache({
 });
 /**
  * Retrieves an activity.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param {string} activityId - The activity id
- * @returns {Promise<Activity | undefined>} - The activity, if available.
+ * @param mssqlConfig - SQL Server configuration.
+ * @param activityId - The activity id
+ * @returns - The activity, if available.
  */
 export async function getActivityByActivityId(mssqlConfig, activityId) {
     let activityObject = cache.get(activityId);
     if (activityObject !== undefined) {
         return activityObject;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
-    const result = await pool
+    const result = (await pool
         .request()
         .input('activityId', activityId)
-        .query(`${sql} where Actv_ID = @activityId`);
+        .query(`${sql} where Actv_ID = @activityId`));
     if (result.recordset.length === 0) {
         return undefined;
     }
@@ -38,22 +37,21 @@ export async function getActivityByActivityId(mssqlConfig, activityId) {
 }
 /**
  * Retrieves the activity associated with a given job and fiscal year.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration
- * @param {string} jobId - The job id
- * @param {string} activityId - The activity id.
- * @param {number} fiscalYear - The fiscal year
- * @returns {Promise<Activity>} - An array of activities.
+ * @param mssqlConfig - SQL Server configuration
+ * @param jobId - The job id
+ * @param activityId - The activity id.
+ * @param fiscalYear - The fiscal year
+ * @returns - An array of activities.
  */
 export async function getActivityAssignedToJobByActivityIdAndFiscalYear(mssqlConfig, jobId, activityId, fiscalYear) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
-    const result = await pool
+    const result = (await pool
         .request()
         .input('jobId', jobId)
         .input('activityId', activityId)
         .input('fiscalYear', fiscalYear)
         .query(`${sql} where Actv_ID = @activityId
-        and Actv_ID in (select Actv_ID from WMJACA with (nolock) where Job_ID = @jobId and Year = @fiscalYear)`);
+        and Actv_ID in (select Actv_ID from WMJACA with (nolock) where Job_ID = @jobId and Year = @fiscalYear)`));
     if (result.recordset.length === 0) {
         return undefined;
     }
@@ -61,18 +59,17 @@ export async function getActivityAssignedToJobByActivityIdAndFiscalYear(mssqlCon
 }
 /**
  * Retrieves the activities associated with a given job and fiscal year.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration
- * @param {string} jobId - The job id
- * @param {number | string} fiscalYear - The fiscal year
- * @returns {Promise<Activity[]>} - An array of activities.
+ * @param mssqlConfig - SQL Server configuration
+ * @param jobId - The job id
+ * @param fiscalYear - The fiscal year
+ * @returns - An array of activities.
  */
 export async function getActivitiesAssignedToJobByFiscalYear(mssqlConfig, jobId, fiscalYear) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
-    const result = await pool
+    const result = (await pool
         .request()
         .input('jobId', jobId)
         .input('fiscalYear', fiscalYear)
-        .query(`${sql} where Actv_ID in (select Actv_ID from WMJACA with (nolock) where Job_ID = @jobId and Year = @fiscalYear)`);
+        .query(`${sql} where Actv_ID in (select Actv_ID from WMJACA with (nolock) where Job_ID = @jobId and Year = @fiscalYear)`));
     return result.recordset;
 }

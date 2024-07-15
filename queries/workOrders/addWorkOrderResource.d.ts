@@ -7,8 +7,8 @@ export interface AddWorkOrderResource extends Partial<WorkOrderResource> {
 }
 /**
  * Adds a resource to a work order.
- * @param {MSSQLConfig} mssqlConfig - SQL Service configuration.
- * @param {AddWorkOrderResource} workOrderResource - The work order resource fields.
- * @returns {BigIntString} - The system id for the new resource record.
+ * @param mssqlConfig - SQL Service configuration.
+ * @param workOrderResource - The work order resource fields.
+ * @returns - The system id for the new resource record.
  */
 export declare function addWorkOrderResource(mssqlConfig: MSSQLConfig, workOrderResource: AddWorkOrderResource): Promise<BigIntString>;

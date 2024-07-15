@@ -1,10 +1,4 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable unicorn/no-null */
-
-import {
-  type config as MSSQLConfig,
-  connect
-} from '@cityssm/mssql-multi-pool'
+import { type config as MSSQLConfig, connect } from '@cityssm/mssql-multi-pool'
 import { dateToString, dateToTimeString } from '@cityssm/utils-datetime'
 
 import { getItemByItemId } from '../items/getItems.js'
@@ -21,9 +15,9 @@ export interface AddWorkOrderResource extends Partial<WorkOrderResource> {
 
 /**
  * Adds a resource to a work order.
- * @param {MSSQLConfig} mssqlConfig - SQL Service configuration.
- * @param {AddWorkOrderResource} workOrderResource - The work order resource fields.
- * @returns {BigIntString} - The system id for the new resource record.
+ * @param mssqlConfig - SQL Service configuration.
+ * @param workOrderResource - The work order resource fields.
+ * @returns - The system id for the new resource record.
  */
 export async function addWorkOrderResource(
   mssqlConfig: MSSQLConfig,
@@ -94,7 +88,6 @@ export async function addWorkOrderResource(
    * Do the transaction
    */
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const transaction = pool.transaction()
@@ -197,6 +190,6 @@ export async function addWorkOrderResource(
     return serviceRequestItemSystemId
   } catch (error) {
     await transaction.rollback()
-    throw error
+    throw error as Error
   }
 }

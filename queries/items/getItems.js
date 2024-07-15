@@ -42,7 +42,7 @@ export async function getItemByItemId(mssqlConfig, itemId) {
     if (item !== undefined) {
         return item;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const pool = await connect(mssqlConfig);
     const itemResult = await pool
         .request()

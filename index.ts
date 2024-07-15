@@ -40,6 +40,10 @@ import type {
   WorkOrder,
   WorkOrderResource
 } from './queries/workOrders/types.js'
+import {
+  type UpdateWorkOrderResource,
+  updateWorkOrderResource
+} from './queries/workOrders/updateWorkOrderResource.js'
 
 /**
  * WorkTech API
@@ -48,7 +52,7 @@ export class WorkTechAPI {
   readonly #mssqlConfig: config
 
   /**
-   * @param {config} mssqlConfig - SQL Server configuration.
+   * @param mssqlConfig - SQL Server configuration.
    */
   constructor(mssqlConfig: config) {
     this.#mssqlConfig = mssqlConfig
@@ -56,8 +60,8 @@ export class WorkTechAPI {
 
   /**
    * Retrieves an item.
-   * @param {string} itemId - The item id.
-   * @returns {Promise<ResourceItem | undefined>} - The item, if available.
+   * @param itemId - The item id.
+   * @returns - The item, if available.
    */
   async getItemByItemId(itemId: string): Promise<ResourceItem | undefined> {
     return await getItemByItemId(this.#mssqlConfig, itemId)
@@ -65,8 +69,8 @@ export class WorkTechAPI {
 
   /**
    * Retrieves a work order.
-   * @param {string} workOrderNumber - The work order number.
-   * @returns {Promise<WorkOrder | undefined>} - The work order, if available.
+   * @param workOrderNumber - The work order number.
+   * @returns - The work order, if available.
    */
   async getWorkOrderByWorkOrderNumber(
     workOrderNumber: string
@@ -79,8 +83,8 @@ export class WorkTechAPI {
 
   /**
    * Retrieves a list of work order resources.
-   * @param {string} workOrderNumber - The work order number.
-   * @returns {Promise<WorkOrderResource[]>} - An array of resources associated with a work order.
+   * @param workOrderNumber - The work order number.
+   * @returns - An array of resources associated with a work order.
    */
   async getWorkOrderResourcesByWorkOrderNumber(
     workOrderNumber: string
@@ -93,9 +97,9 @@ export class WorkTechAPI {
 
   /**
    * Retrieves a list of work order resources.
-   * @param {Date | string} startDateFrom - The minimum start date.
-   * @param {Date | string} startDateTo - The maximum start date.
-   * @returns {Promise<WorkOrderResource[]>} - An array of resources between a given start time range.
+   * @param startDateFrom - The minimum start date.
+   * @param startDateTo - The maximum start date.
+   * @returns - An array of resources between a given start time range.
    */
   async getWorkOrderResourcesByStartDateTimeRange(
     startDateFrom: Date | string,
@@ -110,8 +114,8 @@ export class WorkTechAPI {
 
   /**
    * Retrieves a list of work order resources.
-   * @param {DateString} startDateString - The start date.
-   * @returns {Promise<WorkOrderResource[]>} - An array of resources on a given start date.
+   * @param startDateString - The start date.
+   * @returns - An array of resources on a given start date.
    */
   async getWorkOrderResourcesByStartDate(
     startDateString: DateString
@@ -124,8 +128,8 @@ export class WorkTechAPI {
 
   /**
    * Adds a resource to a work order.
-   * @param {AddWorkOrderResource} workOrderResource - The work order resource fields.
-   * @returns {BigIntString} - The system id for the new resource record.
+   * @param workOrderResource - The work order resource fields.
+   * @returns - The system id for the new resource record.
    */
   async addWorkOrderResource(
     workOrderResource: AddWorkOrderResource
@@ -134,9 +138,26 @@ export class WorkTechAPI {
   }
 
   /**
+   * Updates a resource on a work order.
+   * Note that only a subset of fields can be updated,
+   * and each group must have all fields within it's grouping defined to be updated.
+   * - workDescription
+   * - serviceRequestSystemId, workOrderNumber
+   * - startDateTime
+   * - quantity, unitPrice, baseAmount
+   * @param workOrderResource - The work order resource fields.
+   * @returns - True when the update is processed successfully.
+   */
+  async updateWorkOrderResource(
+    workOrderResource: UpdateWorkOrderResource
+  ): Promise<boolean> {
+    return await updateWorkOrderResource(this.#mssqlConfig, workOrderResource)
+  }
+
+  /**
    * Retrieves a job.
-   * @param {string} jobId - The job id
-   * @returns {Promise<Job | undefined>} - The job, if available.
+   * @param jobId - The job id
+   * @returns - The job, if available.
    */
   async getJobByJobId(jobId: string): Promise<Job | undefined> {
     return await getJobByJobId(this.#mssqlConfig, jobId)
@@ -144,8 +165,8 @@ export class WorkTechAPI {
 
   /**
    * Retrieves an activity.
-   * @param {string} activityId - The activity id
-   * @returns {Promise<Activity | undefined>} - The activity, if available.
+   * @param activityId - The activity id
+   * @returns - The activity, if available.
    */
   async getActivityByActivityId(
     activityId: string
@@ -155,9 +176,9 @@ export class WorkTechAPI {
 
   /**
    * Retrieves the activities associated with a given job and fiscal year.
-   * @param {string} jobId - The job id
-   * @param {number | string} fiscalYear - The fiscal year
-   * @returns {Promise<Activity[]>} - An array of activities.
+   * @param jobId - The job id
+   * @param fiscalYear - The fiscal year
+   * @returns - An array of activities.
    */
   async getActivitiesAssignedToJobByFiscalYear(
     jobId: string,
@@ -172,8 +193,8 @@ export class WorkTechAPI {
 
   /**
    * Retrieves an object code.
-   * @param {string} objectCode - The object code
-   * @returns {Promise<ObjectCode | undefined>} - The object code, if available.
+   * @param objectCode - The object code
+   * @returns - The object code, if available.
    */
   async getObjectCodeByObjectCode(
     objectCode: string
@@ -183,9 +204,9 @@ export class WorkTechAPI {
 
   /**
    * Retrieves a list of object codes associated with a given job and fiscal year.
-   * @param {string} jobId - The job id.
-   * @param {number | string} fiscalYear - The fiscal year.
-   * @returns {Promise<JobAssignedObjectCode[]>} - An array of object codes assigned to a given job.
+   * @param jobId - The job id.
+   * @param fiscalYear - The fiscal year.
+   * @returns - An array of object codes assigned to a given job.
    */
   async getObjectCodesAssignedToJobByFiscalYear(
     jobId: string,
@@ -200,10 +221,10 @@ export class WorkTechAPI {
 
   /**
    * Retrieves an object code associated with a given job and fiscal year.
-   * @param {string} jobId - The job id.
-   * @param {string} objectCode - The object code.
-   * @param {number} fiscalYear - The fiscal year.
-   * @returns {Promise<JobAssignedObjectCode>} - The object code, if available.
+   * @param jobId - The job id.
+   * @param objectCode - The object code.
+   * @param fiscalYear - The fiscal year.
+   * @returns - The object code, if available.
    */
   async getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(
     jobId: string,
@@ -220,12 +241,12 @@ export class WorkTechAPI {
 
   /**
    * Retrieves a job - activity - object code.
-   * @param {object} keys - The keys to search on.
-   * @param {string} keys.jobId - The job id.
-   * @param {string} keys.activityId - The activity id.
-   * @param {string} keys.objectCode - The object code.
-   * @param {string} keys.fiscalYear - The fiscal year.
-   * @returns {Promise<JobActivityObjectCode | undefined>} - The job - activity - object code combination if available.
+   * @param keys - The keys to search on.
+   * @param keys.jobId - The job id.
+   * @param keys.activityId - The activity id.
+   * @param keys.objectCode - The object code.
+   * @param keys.fiscalYear - The fiscal year.
+   * @returns - The job - activity - object code combination if available.
    */
   async getJobActivityObjectCodeByKeys(keys: {
     jobId: string
@@ -238,9 +259,9 @@ export class WorkTechAPI {
 
   /**
    * Retrieves an account number for a given work order.
-   * @param {string} workOrderNumber - The work order number.
-   * @param {string} optionalObjectCode - An optional object code.
-   * @returns {Promise<AccountNumberSource | undefined>} - The account number and its source, if available.
+   * @param workOrderNumber - The work order number.
+   * @param optionalObjectCode - An optional object code.
+   * @returns - The account number and its source, if available.
    */
   async getAccountNumberByWorkOrderNumberAndObjectCode(
     workOrderNumber: string,
@@ -277,3 +298,4 @@ export {
   getWorkOrderResourcesByStartDateTimeRange,
   getWorkOrderResourcesByWorkOrderNumber
 } from './queries/workOrders/getWorkOrderResources.js'
+export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js'

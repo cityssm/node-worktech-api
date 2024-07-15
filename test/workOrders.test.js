@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { dateToString } from '@cityssm/utils-datetime';
-import { addWorkOrderResource, getWorkOrderByWorkOrderNumber, getWorkOrderResourcesByStartDate, getWorkOrderResourcesByWorkOrderNumber } from '../index.js';
+import { addWorkOrderResource, getWorkOrderByWorkOrderNumber, getWorkOrderResourcesByStartDate, getWorkOrderResourcesByWorkOrderNumber, updateWorkOrderResource } from '../index.js';
 import { invalidWorkOrderNumber, mssqlConfig, validItemId, validWorkOrderNumber } from './config.js';
 await describe('queries/workOrders', async () => {
     after(async () => {
@@ -28,7 +28,7 @@ await describe('queries/workOrders', async () => {
             assert.ok(resources.length > 0);
         });
     });
-    await describe('addWorkOrderResource()', async () => {
+    await describe('addWorkOrderResource(), updateWorkOrderResource()', async () => {
         await it('Adds a resource to a work order', async () => {
             const workOrderResourcesBefore = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
             const currentDate = new Date();
@@ -45,7 +45,7 @@ await describe('queries/workOrders', async () => {
                 lockUnitPrice: 1
             });
             assert.ok(systemId !== undefined);
-            const workOrderResourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
+            let workOrderResourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
             const startDateResourcesAfter = await getWorkOrderResourcesByStartDate(mssqlConfig, dateToString(currentDate));
             assert.strictEqual(workOrderResourcesBefore.length + 1, workOrderResourcesAfter.length);
             assert.strictEqual(startDateResourcesBefore.length + 1, startDateResourcesAfter.length);
@@ -54,6 +54,21 @@ await describe('queries/workOrders', async () => {
             }));
             assert.ok(startDateResourcesAfter.some((resource) => {
                 return resource.serviceRequestItemSystemId === systemId;
+            }));
+            /*
+             * Update details
+             */
+            const newDescription = `Updated description - ${randomUUID().slice(-10)}`;
+            assert(await updateWorkOrderResource(mssqlConfig, {
+                serviceRequestItemSystemId: systemId,
+                workDescription: newDescription,
+                quantity: 20,
+                unitPrice: 10,
+                baseAmount: 200
+            }));
+            workOrderResourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
+            assert.ok(workOrderResourcesAfter.some((resource) => {
+                return resource.workDescription === newDescription;
             }));
         });
     });

@@ -9,7 +9,8 @@ import {
   addWorkOrderResource,
   getWorkOrderByWorkOrderNumber,
   getWorkOrderResourcesByStartDate,
-  getWorkOrderResourcesByWorkOrderNumber
+  getWorkOrderResourcesByWorkOrderNumber,
+  updateWorkOrderResource
 } from '../index.js'
 
 import {
@@ -60,7 +61,7 @@ await describe('queries/workOrders', async () => {
     })
   })
 
-  await describe('addWorkOrderResource()', async () => {
+  await describe('addWorkOrderResource(), updateWorkOrderResource()', async () => {
     await it('Adds a resource to a work order', async () => {
       const workOrderResourcesBefore =
         await getWorkOrderResourcesByWorkOrderNumber(
@@ -89,7 +90,7 @@ await describe('queries/workOrders', async () => {
 
       assert.ok(systemId !== undefined)
 
-      const workOrderResourcesAfter =
+      let workOrderResourcesAfter =
         await getWorkOrderResourcesByWorkOrderNumber(
           mssqlConfig,
           validWorkOrderNumber
@@ -118,6 +119,33 @@ await describe('queries/workOrders', async () => {
       assert.ok(
         startDateResourcesAfter.some((resource) => {
           return resource.serviceRequestItemSystemId === systemId
+        })
+      )
+
+      /*
+       * Update details
+       */
+
+      const newDescription = `Updated description - ${randomUUID().slice(-10)}`
+
+      assert(
+        await updateWorkOrderResource(mssqlConfig, {
+          serviceRequestItemSystemId: systemId,
+          workDescription: newDescription,
+          quantity: 20,
+          unitPrice: 10,
+          baseAmount: 200
+        })
+      )
+
+      workOrderResourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(
+        mssqlConfig,
+        validWorkOrderNumber
+      )
+
+      assert.ok(
+        workOrderResourcesAfter.some((resource) => {
+          return resource.workDescription === newDescription
         })
       )
     })

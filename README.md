@@ -28,3 +28,5 @@ see [`index.ts`](https://github.com/cityssm/node-worktech-api/blob/main/index.ts
 ## Sample Update Functions
 
 - `addWorkOrderResource(workOrderResource: AddWorkOrderResource): Promise<BigIntString>;`
+- `updateWorkOrderResource(workOrderResource: WorkOrderResource): Promise<boolean>;`
+- `deleteWorkOrderResource(workOrderResourceId: BigIntString): Promise<boolean>;`

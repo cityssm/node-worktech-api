@@ -5,7 +5,7 @@ import { getLastSystemId, incrementLastSystemId } from '../systemId.js';
 import { getWorkOrderByWorkOrderNumber } from './getWorkOrders.js';
 /**
  * Adds a resource to a work order.
- * @param mssqlConfig - SQL Service configuration.
+ * @param mssqlConfig - SQL Server configuration.
  * @param workOrderResource - The work order resource fields.
  * @returns - The system id for the new resource record.
  */

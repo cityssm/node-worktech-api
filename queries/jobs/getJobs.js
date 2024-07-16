@@ -26,9 +26,9 @@ const cache = new NodeCache({
 });
 /**
  * Retrieves a job.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param {string} jobId - The job id
- * @returns {Promise<Job | undefined>} - The job, if available.
+ * @param mssqlConfig - SQL Server configuration.
+ * @param jobId - The job id
+ * @returns - The job, if available.
  */
 export async function getJobByJobId(mssqlConfig, jobId) {
     let jobObject = cache.get(jobId);

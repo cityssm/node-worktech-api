@@ -1,4 +1,5 @@
 import { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
+import { addResourceItem } from './queries/items/addResourceItem.js';
 import { getItemByItemId } from './queries/items/getItems.js';
 import { getActivitiesAssignedToJobByFiscalYear, getActivityByActivityId } from './queries/jobs/getActivities.js';
 import { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js';
@@ -27,6 +28,9 @@ export class WorkTechAPI {
      */
     async getItemByItemId(itemId) {
         return await getItemByItemId(this.#mssqlConfig, itemId);
+    }
+    async addResourceItem(resourceItem) {
+        return await addResourceItem(this.#mssqlConfig, resourceItem);
     }
     /**
      * Retrieves a work order.
@@ -167,12 +171,13 @@ export class WorkTechAPI {
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getItemByItemId } from './queries/items/getItems.js';
+export { addResourceItem } from './queries/items/addResourceItem.js';
 export { getActivityByActivityId, getActivitiesAssignedToJobByFiscalYear } from './queries/jobs/getActivities.js';
 export { getJobByJobId } from './queries/jobs/getJobs.js';
 export { getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear, getObjectCodeAssignedToJobByObjectCodeAndFiscalYear } from './queries/jobs/getObjectCodes.js';
 export { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js';
-export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
 export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
+export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
 export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
 export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';

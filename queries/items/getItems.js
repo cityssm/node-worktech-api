@@ -33,21 +33,20 @@ const cache = new NodeCache({
 });
 /**
  * Retrieves an item.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param {string} itemId - The item id.
- * @returns {Promise<ResourceItem | undefined>} - The item, if available.
+ * @param mssqlConfig - SQL Server configuration.
+ * @param itemId - The item id.
+ * @returns - The item, if available.
  */
 export async function getItemByItemId(mssqlConfig, itemId) {
     let item = cache.get(itemId);
     if (item !== undefined) {
         return item;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const pool = await connect(mssqlConfig);
-    const itemResult = await pool
+    const itemResult = (await pool
         .request()
         .input('itemId', itemId)
-        .query(`${sql} where Item_ID = @itemId`);
+        .query(`${sql} where Item_ID = @itemId`));
     if (itemResult.recordset.length === 0) {
         return undefined;
     }

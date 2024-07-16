@@ -15,13 +15,13 @@ const sql = `SELECT [Job_ID] as jobId,
 
 /**
  * Retrieves a job - activity - object code.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param {object} keys - The keys to search on.
- * @param {string} keys.jobId - The job id.
- * @param {string} keys.activityId - The activity id.
- * @param {string} keys.objectCode - The object code.
- * @param {string} keys.fiscalYear - The fiscal year.
- * @returns {Promise<JobActivityObjectCode | undefined>} - The job - activity - object code combination if available.
+ * @param mssqlConfig - SQL Server configuration.
+ * @param keys - The keys to search on.
+ * @param keys.jobId - The job id.
+ * @param keys.activityId - The activity id.
+ * @param keys.objectCode - The object code.
+ * @param keys.fiscalYear - The fiscal year.
+ * @returns - The job - activity - object code combination if available.
  */
 export async function getJobActivityObjectCodeByKeys(
   mssqlConfig: MSSQLConfig,
@@ -35,7 +35,7 @@ export async function getJobActivityObjectCodeByKeys(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
-  const result: IResult<JobActivityObjectCode> = await pool
+  const result = await pool
     .request()
     .input('jobId', keys.jobId)
     .input('activityId', keys.activityId)
@@ -44,7 +44,7 @@ export async function getJobActivityObjectCodeByKeys(
       where Job_ID = @jobId
       and Actv_ID = @activityId
       and ObjCode = @objectCode
-      and Year = @fiscalYear`)
+      and Year = @fiscalYear`) as IResult<JobActivityObjectCode>
 
   if (result.recordset.length === 0) {
     return undefined

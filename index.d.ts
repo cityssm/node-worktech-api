@@ -1,6 +1,7 @@
 import type { config } from '@cityssm/mssql-multi-pool';
 import { type DateString } from '@cityssm/utils-datetime';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
+import { type AddResourceItem } from './queries/items/addResourceItem.js';
 import type { ResourceItem } from './queries/items/types.js';
 import type { Activity, Job, JobActivityObjectCode, JobAssignedObjectCode, ObjectCode } from './queries/jobs/types.js';
 import type { BigIntString } from './queries/types.js';
@@ -22,6 +23,7 @@ export declare class WorkTechAPI {
      * @returns - The item, if available.
      */
     getItemByItemId(itemId: string): Promise<ResourceItem | undefined>;
+    addResourceItem(resourceItem: AddResourceItem): Promise<BigIntString>;
     /**
      * Retrieves a work order.
      * @param workOrderNumber - The work order number.
@@ -136,12 +138,13 @@ export declare class WorkTechAPI {
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getItemByItemId } from './queries/items/getItems.js';
+export { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js';
 export { getActivityByActivityId, getActivitiesAssignedToJobByFiscalYear } from './queries/jobs/getActivities.js';
 export { getJobByJobId } from './queries/jobs/getJobs.js';
 export { getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear, getObjectCodeAssignedToJobByObjectCodeAndFiscalYear } from './queries/jobs/getObjectCodes.js';
 export { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js';
-export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
 export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
+export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
 export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
 export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';

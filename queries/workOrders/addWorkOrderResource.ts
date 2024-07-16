@@ -15,7 +15,7 @@ export interface AddWorkOrderResource extends Partial<WorkOrderResource> {
 
 /**
  * Adds a resource to a work order.
- * @param mssqlConfig - SQL Service configuration.
+ * @param mssqlConfig - SQL Server configuration.
  * @param workOrderResource - The work order resource fields.
  * @returns - The system id for the new resource record.
  */

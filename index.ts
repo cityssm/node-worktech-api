@@ -5,6 +5,7 @@ import {
   type AccountNumberSource,
   getAccountNumberByWorkOrderNumberAndObjectCode
 } from './helpers/getAccountNumber.js'
+import { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js'
 import { getItemByItemId } from './queries/items/getItems.js'
 import type { ResourceItem } from './queries/items/types.js'
 import {
@@ -66,6 +67,10 @@ export class WorkTechAPI {
    */
   async getItemByItemId(itemId: string): Promise<ResourceItem | undefined> {
     return await getItemByItemId(this.#mssqlConfig, itemId)
+  }
+
+  async addResourceItem(resourceItem: AddResourceItem): Promise<BigIntString> {
+    return await addResourceItem(this.#mssqlConfig, resourceItem)
   }
 
   /**
@@ -293,6 +298,7 @@ export class WorkTechAPI {
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js'
 
 export { getItemByItemId } from './queries/items/getItems.js'
+export { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js'
 
 export {
   getActivityByActivityId,
@@ -306,8 +312,9 @@ export {
 } from './queries/jobs/getObjectCodes.js'
 export { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js'
 
-export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js'
 export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js'
+
+export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js'
 export {
   getWorkOrderResourcesByStartDate,
   getWorkOrderResourcesByStartDateTimeRange,

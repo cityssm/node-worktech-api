@@ -1,11 +1,12 @@
 {
   "name": "@cityssm/worktech-api",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Integrations with the WorkTech work order management system.",
   "type": "module",
   "exports": "./index.js",
   "scripts": {
     "test": "node --test",
+    "test:items": "node --test --test-name-pattern=\"queries/items\"",
     "test:workOrders": "node --test --test-name-pattern=\"queries/workOrders\"",
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
   },

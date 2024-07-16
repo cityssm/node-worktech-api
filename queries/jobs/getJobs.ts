@@ -36,9 +36,9 @@ const cache = new NodeCache({
 
 /**
  * Retrieves a job.
- * @param {MSSQLConfig} mssqlConfig - SQL Server configuration.
- * @param {string} jobId - The job id
- * @returns {Promise<Job | undefined>} - The job, if available.
+ * @param mssqlConfig - SQL Server configuration.
+ * @param jobId - The job id
+ * @returns - The job, if available.
  */
 export async function getJobByJobId(
   mssqlConfig: MSSQLConfig,
@@ -53,10 +53,10 @@ export async function getJobByJobId(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
-  const jobResult: IResult<Job> = await pool
+  const jobResult = await pool
     .request()
     .input('jobId', jobId)
-    .query(`${sql} where Job_ID = @jobId`)
+    .query(`${sql} where Job_ID = @jobId`) as IResult<Job>
 
   if (jobResult.recordset.length === 0) {
     return undefined

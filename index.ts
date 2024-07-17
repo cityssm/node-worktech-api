@@ -5,7 +5,10 @@ import {
   type AccountNumberSource,
   getAccountNumberByWorkOrderNumberAndObjectCode
 } from './helpers/getAccountNumber.js'
-import { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js'
+import {
+  type AddResourceItem,
+  addResourceItem
+} from './queries/items/addResourceItem.js'
 import { getItemByItemId } from './queries/items/getItems.js'
 import type { ResourceItem } from './queries/items/types.js'
 import {
@@ -298,7 +301,10 @@ export class WorkTechAPI {
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js'
 
 export { getItemByItemId } from './queries/items/getItems.js'
-export { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js'
+export {
+  type AddResourceItem,
+  addResourceItem
+} from './queries/items/addResourceItem.js'
 
 export {
   getActivityByActivityId,
@@ -322,3 +328,19 @@ export {
 } from './queries/workOrders/getWorkOrderResources.js'
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js'
 export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js'
+
+/*
+ * Export Types
+ */
+
+export type { ResourceItem } from './queries/items/types.js'
+export type {
+  Job,
+  Activity,
+  ObjectCode,
+  JobActivityObjectCode
+} from './queries/jobs/types.js'
+export type {
+  WorkOrder,
+  WorkOrderResource
+} from './queries/workOrders/types.js'

@@ -148,3 +148,6 @@ export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.
 export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
 export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';
+export type { ResourceItem } from './queries/items/types.js';
+export type { Job, Activity, ObjectCode, JobActivityObjectCode } from './queries/jobs/types.js';
+export type { WorkOrder, WorkOrderResource } from './queries/workOrders/types.js';

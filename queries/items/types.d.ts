@@ -8,8 +8,8 @@ export interface ResourceItem {
     itemSystemId: BigIntString;
     itemId: string;
     itemDescription: string;
-    itemClass: string;
     itemType: string;
+    itemClass: string;
     externalItemId: string;
     itemBrand: string;
     itemModel: string;

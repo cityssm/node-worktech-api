@@ -3,8 +3,8 @@ import type { BigIntString } from '../types.js';
 import type { ResourceItem } from './types.js';
 export interface AddResourceItem extends Partial<ResourceItem> {
     itemId: string;
-    itemClass: string;
     itemType: string;
+    itemClass: string;
     unit: string;
 }
 /**

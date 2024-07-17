@@ -11,6 +11,7 @@ export interface UpdateWorkOrderResource extends Partial<WorkOrderResource> {
  * - workDescription
  * - serviceRequestSystemId, workOrderNumber
  * - startDateTime
+ * - endDateTime
  * - quantity, unitPrice, baseAmount
  * @param mssqlConfig - SQL Service configuration.
  * @param workOrderResource - The work order resource fields.

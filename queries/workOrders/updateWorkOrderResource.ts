@@ -16,6 +16,7 @@ export interface UpdateWorkOrderResource extends Partial<WorkOrderResource> {
  * - workDescription
  * - serviceRequestSystemId, workOrderNumber
  * - startDateTime
+ * - endDateTime
  * - quantity, unitPrice, baseAmount
  * @param mssqlConfig - SQL Service configuration.
  * @param workOrderResource - The work order resource fields.
@@ -90,6 +91,20 @@ export async function updateWorkOrderResource(
       request = request.input('startDateTime', startDateTimeString)
 
       sql += ', SCHEDDATETIME = @startDateTime'
+    }
+
+    /*
+     * Update End Date/Time
+     */
+
+    if (workOrderResource.endDateTime !== undefined) {
+      const endDateTimeString = `${dateToString(workOrderResource.endDateTime)} ${dateToTimeString(
+        workOrderResource.endDateTime
+      )}`
+
+      request = request.input('endDateTime', endDateTimeString)
+
+      sql += ', ENDDATETIME = @endDateTime'
     }
 
     /*

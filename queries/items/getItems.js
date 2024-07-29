@@ -27,7 +27,8 @@ const sql = `SELECT [ITMSysID] as itemSystemId,
   [QtyHand] as quantityOnHand,
   coalesce([ExtItem_ID], '') as externalItemId,
   coalesce([Comments], '') as comments
-  FROM [WMITM] WITH (NOLOCK)`;
+  FROM [WMITM] WITH (NOLOCK)
+  where [Type] not in ('Employee', 'Equipment')`;
 const cache = new NodeCache({
     stdTTL: cacheTimeToLiveSeconds
 });
@@ -46,7 +47,7 @@ export async function getItemByItemId(mssqlConfig, itemId) {
     const itemResult = (await pool
         .request()
         .input('itemId', itemId)
-        .query(`${sql} where Item_ID = @itemId`));
+        .query(`${sql} and Item_ID = @itemId`));
     if (itemResult.recordset.length === 0) {
         return undefined;
     }

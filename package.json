@@ -6,6 +6,7 @@
   "exports": "./index.js",
   "scripts": {
     "test": "node --test",
+    "test:equipment": "node --test --test-name-pattern=\"queries/equipment\"",
     "test:items": "node --test --test-name-pattern=\"queries/items\"",
     "test:workOrders": "node --test --test-name-pattern=\"queries/workOrders\"",
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"

@@ -1,6 +1,7 @@
 import type { config } from '@cityssm/mssql-multi-pool';
 import { type DateString } from '@cityssm/utils-datetime';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
+import type { EquipmentItem } from './queries/equipment/types.js';
 import { type AddResourceItem } from './queries/items/addResourceItem.js';
 import type { ResourceItem } from './queries/items/types.js';
 import type { Activity, Job, JobActivityObjectCode, JobAssignedObjectCode, ObjectCode } from './queries/jobs/types.js';
@@ -17,6 +18,12 @@ export declare class WorkTechAPI {
      * @param mssqlConfig - SQL Server configuration.
      */
     constructor(mssqlConfig: config);
+    /**
+     * Retrieves a piece of equipment.
+     * @param equipmentId - The equipment id.
+     * @returns - The equipment record, if available.
+     */
+    getEquipmentByEquipmentId(equipmentId: string): Promise<EquipmentItem | undefined>;
     /**
      * Retrieves an item.
      * @param itemId - The item id.
@@ -137,6 +144,7 @@ export declare class WorkTechAPI {
     getAccountNumberByWorkOrderNumberAndObjectCode(workOrderNumber: string, optionalObjectCode?: string): Promise<AccountNumberSource | undefined>;
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
+export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 export { getItemByItemId } from './queries/items/getItems.js';
 export { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js';
 export { getActivityByActivityId, getActivitiesAssignedToJobByFiscalYear } from './queries/jobs/getActivities.js';
@@ -148,6 +156,7 @@ export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.
 export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
 export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';
+export type { EquipmentItem } from './queries/equipment/types.js';
 export type { ResourceItem } from './queries/items/types.js';
 export type { Job, Activity, ObjectCode, JobActivityObjectCode } from './queries/jobs/types.js';
 export type { WorkOrder, WorkOrderResource } from './queries/workOrders/types.js';

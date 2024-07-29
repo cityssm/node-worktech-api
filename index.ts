@@ -5,6 +5,8 @@ import {
   type AccountNumberSource,
   getAccountNumberByWorkOrderNumberAndObjectCode
 } from './helpers/getAccountNumber.js'
+import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
+import type { EquipmentItem } from './queries/equipment/types.js'
 import {
   type AddResourceItem,
   addResourceItem
@@ -61,6 +63,17 @@ export class WorkTechAPI {
    */
   constructor(mssqlConfig: config) {
     this.#mssqlConfig = mssqlConfig
+  }
+
+  /**
+   * Retrieves a piece of equipment.
+   * @param equipmentId - The equipment id.
+   * @returns - The equipment record, if available.
+   */
+  async getEquipmentByEquipmentId(
+    equipmentId: string
+  ): Promise<EquipmentItem | undefined> {
+    return await getEquipmentByEquipmentId(this.#mssqlConfig, equipmentId)
   }
 
   /**
@@ -300,6 +313,8 @@ export class WorkTechAPI {
 
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js'
 
+export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
+
 export { getItemByItemId } from './queries/items/getItems.js'
 export {
   type AddResourceItem,
@@ -333,6 +348,7 @@ export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderRes
  * Export Types
  */
 
+export type { EquipmentItem } from './queries/equipment/types.js'
 export type { ResourceItem } from './queries/items/types.js'
 export type {
   Job,

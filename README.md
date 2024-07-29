@@ -31,3 +31,8 @@ see [`index.ts`](https://github.com/cityssm/node-worktech-api/blob/main/index.ts
 - `addWorkOrderResource(workOrderResource: AddWorkOrderResource): Promise<BigIntString>;`
 - `updateWorkOrderResource(workOrderResource: WorkOrderResource): Promise<boolean>;`
 - `deleteWorkOrderResource(workOrderResourceId: BigIntString): Promise<boolean>;`
+
+## Other Related Projects
+
+[FASTER Web Report Parser](https://github.com/cityssm/node-faster-report-parser)<br />
+Parses select Excel and CSV reports from FASTER Web into usable data objects.

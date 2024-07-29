@@ -1,5 +1,5 @@
 import type { config } from '@cityssm/mssql-multi-pool';
-import { type DateString } from '@cityssm/utils-datetime';
+import type { DateString } from '@cityssm/utils-datetime';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
 import type { EquipmentItem } from './queries/equipment/types.js';
 import { type AddResourceItem } from './queries/items/addResourceItem.js';

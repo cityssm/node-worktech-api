@@ -14,6 +14,7 @@ be sure to run the queries against a test system!
 
 ## Sample Functions
 
+- `getEquipmentByEquipmentId(equipmentId: string): Promise<EquipmentItem | undefined>;`
 - `getItemByItemId(itemId: string): Promise<ResourceItem | undefined>;`
 - `getWorkOrderByWorkOrderNumber(workOrderNumber: string): Promise<WorkOrder | undefined>;`
 - `getWorkOrderResourcesByWorkOrderNumber(workOrderNumber: string): Promise<WorkOrderResource[]>;`

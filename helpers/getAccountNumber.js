@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent */
 import { accountSegmentSeparator } from '../apiConfig.js';
 import { getJobActivityObjectCodeByKeys } from '../queries/jobs/getJobActivityObjectCodes.js';
 import { getJobByJobId } from '../queries/jobs/getJobs.js';
@@ -39,6 +37,7 @@ export async function getAccountNumberByWorkOrderNumberAndObjectCode(mssqlConfig
         });
         if (code !== undefined && code.accountNumber !== '') {
             return {
+                // eslint-disable-next-line no-secrets/no-secrets
                 accountNumberSource: 'assignedJobActivityObjectCode',
                 accountNumber: code.accountNumber
             };

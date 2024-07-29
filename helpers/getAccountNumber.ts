@@ -1,6 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent */
-
 import type { config as MSSQLConfig } from '@cityssm/mssql-multi-pool'
 
 import { accountSegmentSeparator } from '../apiConfig.js'
@@ -14,10 +11,8 @@ import { getWorkOrderByWorkOrderNumber } from '../queries/workOrders/getWorkOrde
 
 export interface AccountNumberSource {
   accountNumber: string
-  accountNumberSource:
-    | 'assignedJobActivityObjectCode'
-    | 'assignedJobObjectCode'
-    | 'jobObjectCode'
+  accountNumberSource: // eslint-disable-next-line no-secrets/no-secrets
+  'assignedJobActivityObjectCode' | 'assignedJobObjectCode' | 'jobObjectCode'
 }
 
 /**
@@ -69,6 +64,7 @@ export async function getAccountNumberByWorkOrderNumberAndObjectCode(
 
     if (code !== undefined && code.accountNumber !== '') {
       return {
+        // eslint-disable-next-line no-secrets/no-secrets
         accountNumberSource: 'assignedJobActivityObjectCode',
         accountNumber: code.accountNumber
       }

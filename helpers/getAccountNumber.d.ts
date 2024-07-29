@@ -1,7 +1,8 @@
 import type { config as MSSQLConfig } from '@cityssm/mssql-multi-pool';
 export interface AccountNumberSource {
     accountNumber: string;
-    accountNumberSource: 'assignedJobActivityObjectCode' | 'assignedJobObjectCode' | 'jobObjectCode';
+    accountNumberSource: // eslint-disable-next-line no-secrets/no-secrets
+    'assignedJobActivityObjectCode' | 'assignedJobObjectCode' | 'jobObjectCode';
 }
 /**
  * Retrieves an account number for a given work order.

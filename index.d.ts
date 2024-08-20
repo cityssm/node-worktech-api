@@ -1,6 +1,7 @@
 import type { config } from '@cityssm/mssql-multi-pool';
 import type { DateString } from '@cityssm/utils-datetime';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
+import { type AddEquipment } from './queries/equipment/addEquipment.js';
 import type { EquipmentItem } from './queries/equipment/types.js';
 import { type AddResourceItem } from './queries/items/addResourceItem.js';
 import type { ResourceItem } from './queries/items/types.js';
@@ -24,6 +25,7 @@ export declare class WorkTechAPI {
      * @returns - The equipment record, if available.
      */
     getEquipmentByEquipmentId(equipmentId: string): Promise<EquipmentItem | undefined>;
+    addEquipment(equipment: AddEquipment): Promise<BigIntString>;
     /**
      * Retrieves an item.
      * @param itemId - The item id.
@@ -145,6 +147,7 @@ export declare class WorkTechAPI {
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
+export { addEquipment } from './queries/equipment/addEquipment.js';
 export { getItemByItemId } from './queries/items/getItems.js';
 export { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js';
 export { getActivityByActivityId, getActivitiesAssignedToJobByFiscalYear } from './queries/jobs/getActivities.js';

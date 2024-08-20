@@ -53,6 +53,7 @@ export async function addResourceItem(
       .input('externalItemId', resourceItem.externalItemId ?? '')
       .input('itemClass', resourceItem.itemClass)
       .input('itemType', resourceItem.itemType)
+      .input('itemStatus', resourceItem.itemStatus ?? 'EstOnly')
       .input('department', resourceItem.department ?? '')
       .input('division', resourceItem.division ?? '')
       .input('company', resourceItem.company ?? '')
@@ -105,7 +106,7 @@ export async function addResourceItem(
         EXTRAC2, PORT, DIALS, CELLPHONE, FIR_ID, EXTRA3) 
       VALUES (
         @itemSystemId, @itemId, @itemDescription, 1, @externalItemId,
-        @itemClass, 0, @itemType, 'EstOnly',
+        @itemClass, 0, @itemType, @itemStatus,
         @department, @division, @company, NULL, @comments,
         NULL, 0, NULL, '', 0,
         0, '', NULL, '', 0,

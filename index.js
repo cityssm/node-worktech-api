@@ -1,4 +1,5 @@
 import { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
+import { addEquipment } from './queries/equipment/addEquipment.js';
 import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 import { addResourceItem } from './queries/items/addResourceItem.js';
 import { getItemByItemId } from './queries/items/getItems.js';
@@ -29,6 +30,9 @@ export class WorkTechAPI {
      */
     async getEquipmentByEquipmentId(equipmentId) {
         return await getEquipmentByEquipmentId(this.#mssqlConfig, equipmentId);
+    }
+    async addEquipment(equipment) {
+        return await addEquipment(this.#mssqlConfig, equipment);
     }
     /**
      * Retrieves an item.
@@ -180,6 +184,7 @@ export class WorkTechAPI {
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
+export { addEquipment } from './queries/equipment/addEquipment.js';
 export { getItemByItemId } from './queries/items/getItems.js';
 export { addResourceItem } from './queries/items/addResourceItem.js';
 export { getActivityByActivityId, getActivitiesAssignedToJobByFiscalYear } from './queries/jobs/getActivities.js';

@@ -5,6 +5,10 @@ import {
   type AccountNumberSource,
   getAccountNumberByWorkOrderNumberAndObjectCode
 } from './helpers/getAccountNumber.js'
+import {
+  type AddEquipment,
+  addEquipment
+} from './queries/equipment/addEquipment.js'
 import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
 import type { EquipmentItem } from './queries/equipment/types.js'
 import {
@@ -74,6 +78,10 @@ export class WorkTechAPI {
     equipmentId: string
   ): Promise<EquipmentItem | undefined> {
     return await getEquipmentByEquipmentId(this.#mssqlConfig, equipmentId)
+  }
+
+  async addEquipment(equipment: AddEquipment): Promise<BigIntString> {
+    return await addEquipment(this.#mssqlConfig, equipment)
   }
 
   /**
@@ -314,6 +322,7 @@ export class WorkTechAPI {
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js'
 
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
+export { addEquipment } from './queries/equipment/addEquipment.js'
 
 export { getItemByItemId } from './queries/items/getItems.js'
 export {

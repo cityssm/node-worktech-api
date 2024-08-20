@@ -3,9 +3,15 @@ import { after, describe, it } from 'node:test'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
 
-import { getEquipmentByEquipmentId } from '../index.js'
+import { addEquipment, getEquipmentByEquipmentId } from '../index.js'
+import type { AddEquipment } from '../queries/equipment/addEquipment.js'
 
-import { invalidEquipmentId, mssqlConfig, validEquipmentId } from './config.js'
+import {
+  equipmentToAdd,
+  invalidEquipmentId,
+  mssqlConfig,
+  validEquipmentId
+} from './config.js'
 
 await describe('queries/equipment', async () => {
   after(async () => {
@@ -31,5 +37,23 @@ await describe('queries/equipment', async () => {
     )
 
     assert.strictEqual(equipment, undefined)
+  })
+
+  await it('Adds a new piece of equipment', async () => {
+    const systemId = await addEquipment(
+      mssqlConfig,
+      Object.assign(
+        {
+          equipmentId: 'TEST-' + Math.floor(Math.random() * 9_999_999_999),
+          equipmentDescription: 'DESCRIPTION',
+          fuelType: 'Unleaded'
+        },
+        equipmentToAdd
+      ) satisfies AddEquipment
+    )
+
+    console.log(`New equipment system id: ${systemId}`)
+
+    assert.ok(systemId)
   })
 })

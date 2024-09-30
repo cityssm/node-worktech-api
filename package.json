@@ -28,7 +28,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/mssql": "^9.1.5",
-    "eslint-config-cityssm": "^6.0.0",
+    "eslint-config-cityssm": "^10.1.1",
     "prettier-config-cityssm": "^1.0.0"
   },
   "dependencies": {

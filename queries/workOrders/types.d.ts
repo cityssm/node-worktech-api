@@ -17,6 +17,7 @@ export interface WorkOrder {
     subject: string;
     details: string;
     priority: string;
+    itemId: string;
     jobId: string;
     activityId: string;
     objectCode: string;

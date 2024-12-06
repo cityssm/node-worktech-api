@@ -1,7 +1,4 @@
-/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
-import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 import NodeCache from 'node-cache'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
@@ -25,7 +22,7 @@ const cache = new NodeCache({
  * @returns - The object code, if available.
  */
 export async function getObjectCodeByObjectCode(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   objectCode: string
 ): Promise<ObjectCode | undefined> {
   let objectCodeObject: ObjectCode | undefined = cache.get(objectCode)
@@ -42,7 +39,7 @@ export async function getObjectCodeByObjectCode(
     .input('objectCode', objectCode)
     .query(
       `${sql} where CodeID = @objectCode`
-    )) as mssqlTypes.IResult<ObjectCode>
+    )) as mssql.IResult<ObjectCode>
 
   if (result.recordset.length === 0) {
     return undefined
@@ -71,7 +68,7 @@ const jobAssignedSql = `SELECT o.[OCSysID] as objectCodeSystemId,
  * @returns - An array of object codes assigned to a given job.
  */
 export async function getObjectCodesAssignedToJobByFiscalYear(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   jobId: string,
   fiscalYear: number | string
 ): Promise<JobAssignedObjectCode[]> {
@@ -84,7 +81,7 @@ export async function getObjectCodesAssignedToJobByFiscalYear(
     .input('fiscalYear', fiscalYear)
     .query(
       `${jobAssignedSql} where j.Job_ID = @jobId and j.Year = @fiscalYear`
-    )) as mssqlTypes.IResult<JobAssignedObjectCode>
+    )) as mssql.IResult<JobAssignedObjectCode>
 
   return result.recordset
 }
@@ -98,7 +95,7 @@ export async function getObjectCodesAssignedToJobByFiscalYear(
  * @returns - The object code, if available.
  */
 export async function getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   jobId: string,
   objectCode: string,
   fiscalYear: number | string
@@ -114,7 +111,7 @@ export async function getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(
     .query(
       `${jobAssignedSql} where o.CodeID = @objectCode
         and j.Job_ID = @jobId and j.Year = @fiscalYear`
-    )) as mssqlTypes.IResult<JobAssignedObjectCode>
+    )) as mssql.IResult<JobAssignedObjectCode>
 
   if (result.recordset.length === 0) {
     return undefined

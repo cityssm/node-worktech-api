@@ -1,4 +1,4 @@
-import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
+import { type mssql } from '@cityssm/mssql-multi-pool';
 import type { BigIntString } from '../types.js';
 import type { WorkOrderResource } from './types.js';
 export interface UpdateWorkOrderResource extends Partial<WorkOrderResource> {
@@ -17,4 +17,4 @@ export interface UpdateWorkOrderResource extends Partial<WorkOrderResource> {
  * @param workOrderResource - The work order resource fields.
  * @returns - True when the update is processed successfully.
  */
-export declare function updateWorkOrderResource(mssqlConfig: mssqlTypes.config, workOrderResource: UpdateWorkOrderResource): Promise<boolean>;
+export declare function updateWorkOrderResource(mssqlConfig: mssql.config, workOrderResource: UpdateWorkOrderResource): Promise<boolean>;

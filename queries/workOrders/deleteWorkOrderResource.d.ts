@@ -1,4 +1,4 @@
-import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
+import { type mssql } from '@cityssm/mssql-multi-pool';
 import type { BigIntString } from '../types.js';
 /**
  * Deletes a resource on a work order.
@@ -6,4 +6,4 @@ import type { BigIntString } from '../types.js';
  * @param serviceRequestItemSystemId - The work order resource id.
  * @returns - True when the delete is processed successfully.
  */
-export declare function deleteWorkOrderResource(mssqlConfig: mssqlTypes.config, serviceRequestItemSystemId: BigIntString): Promise<boolean>;
+export declare function deleteWorkOrderResource(mssqlConfig: mssql.config, serviceRequestItemSystemId: BigIntString): Promise<boolean>;

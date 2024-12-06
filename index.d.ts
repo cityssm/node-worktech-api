@@ -1,9 +1,10 @@
-import type { mssqlTypes } from '@cityssm/mssql-multi-pool';
+import type { mssql } from '@cityssm/mssql-multi-pool';
 import type { DateString } from '@cityssm/utils-datetime';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
 import { type AddEquipment } from './queries/equipment/addEquipment.js';
 import type { EquipmentItem } from './queries/equipment/types.js';
 import { type AddResourceItem } from './queries/items/addResourceItem.js';
+import { type CreateStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';
 import type { ResourceItem } from './queries/items/types.js';
 import type { Activity, Job, JobActivityObjectCode, JobAssignedObjectCode, ObjectCode } from './queries/jobs/types.js';
 import type { BigIntString } from './queries/types.js';
@@ -18,7 +19,7 @@ export declare class WorkTechAPI {
     /**
      * @param mssqlConfig - SQL Server configuration.
      */
-    constructor(mssqlConfig: mssqlTypes.config);
+    constructor(mssqlConfig: mssql.config);
     /**
      * Retrieves a piece of equipment.
      * @param equipmentId - The equipment id.
@@ -33,6 +34,12 @@ export declare class WorkTechAPI {
      */
     getItemByItemId(itemId: string): Promise<ResourceItem | undefined>;
     addResourceItem(resourceItem: AddResourceItem): Promise<BigIntString>;
+    /**
+     * Creates a new stock transaction batch.
+     * @param batch - The batch details
+     * @returns - The batch id.
+     */
+    createStockTransactionBatch(batch: CreateStockTransactionBatch): Promise<number>;
     /**
      * Retrieves a work order.
      * @param workOrderNumber - The work order number.
@@ -150,6 +157,7 @@ export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';
 export { getItemByItemId } from './queries/items/getItems.js';
 export { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js';
+export { type CreateStockTransactionBatch, type CreateStockTransactionBatchEntry, createStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';
 export { getActivityByActivityId, getActivitiesAssignedToJobByFiscalYear } from './queries/jobs/getActivities.js';
 export { getJobByJobId } from './queries/jobs/getJobs.js';
 export { getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear, getObjectCodeAssignedToJobByObjectCodeAndFiscalYear } from './queries/jobs/getObjectCodes.js';

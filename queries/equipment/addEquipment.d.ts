@@ -1,4 +1,4 @@
-import type { mssqlTypes } from '@cityssm/mssql-multi-pool';
+import type { mssql } from '@cityssm/mssql-multi-pool';
 import type { BigIntString } from '../types.js';
 import type { EquipmentItem } from './types.js';
 export interface AddEquipment extends Partial<EquipmentItem> {
@@ -6,4 +6,4 @@ export interface AddEquipment extends Partial<EquipmentItem> {
     equipmentClass: string;
     equipmentDescription: string;
 }
-export declare function addEquipment(mssqlConfig: mssqlTypes.config, equipment: AddEquipment): Promise<BigIntString>;
+export declare function addEquipment(mssqlConfig: mssql.config, equipment: AddEquipment): Promise<BigIntString>;

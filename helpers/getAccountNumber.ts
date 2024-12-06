@@ -1,4 +1,4 @@
-import type { mssqlTypes } from '@cityssm/mssql-multi-pool'
+import type { mssql } from '@cityssm/mssql-multi-pool'
 
 import { accountSegmentSeparator } from '../apiConfig.js'
 import { getJobActivityObjectCodeByKeys } from '../queries/jobs/getJobActivityObjectCodes.js'
@@ -23,7 +23,7 @@ export interface AccountNumberSource {
  * @returns - The account number and its source, if available.
  */
 export async function getAccountNumberByWorkOrderNumberAndObjectCode(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   workOrderNumber: string,
   optionalObjectCode?: string
 ): Promise<AccountNumberSource | undefined> {

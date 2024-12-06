@@ -1,4 +1,4 @@
-import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
+import { type mssql } from '@cityssm/mssql-multi-pool';
 import type { EquipmentItem } from './types.js';
 /**
  * Retrieves a piece of equipment.
@@ -6,4 +6,4 @@ import type { EquipmentItem } from './types.js';
  * @param equipmentId - The equipment id.
  * @returns - The equipment record, if available.
  */
-export declare function getEquipmentByEquipmentId(mssqlConfig: mssqlTypes.config, equipmentId: string): Promise<EquipmentItem | undefined>;
+export declare function getEquipmentByEquipmentId(mssqlConfig: mssql.config, equipmentId: string): Promise<EquipmentItem | undefined>;

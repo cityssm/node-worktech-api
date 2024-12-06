@@ -2,6 +2,7 @@ import { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAcc
 import { addEquipment } from './queries/equipment/addEquipment.js';
 import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 import { addResourceItem } from './queries/items/addResourceItem.js';
+import { createStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';
 import { getItemByItemId } from './queries/items/getItems.js';
 import { getActivitiesAssignedToJobByFiscalYear, getActivityByActivityId } from './queries/jobs/getActivities.js';
 import { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js';
@@ -44,6 +45,14 @@ export class WorkTechAPI {
     }
     async addResourceItem(resourceItem) {
         return await addResourceItem(this.#mssqlConfig, resourceItem);
+    }
+    /**
+     * Creates a new stock transaction batch.
+     * @param batch - The batch details
+     * @returns - The batch id.
+     */
+    async createStockTransactionBatch(batch) {
+        return await createStockTransactionBatch(this.#mssqlConfig, batch);
     }
     /**
      * Retrieves a work order.
@@ -187,6 +196,7 @@ export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';
 export { getItemByItemId } from './queries/items/getItems.js';
 export { addResourceItem } from './queries/items/addResourceItem.js';
+export { createStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';
 export { getActivityByActivityId, getActivitiesAssignedToJobByFiscalYear } from './queries/jobs/getActivities.js';
 export { getJobByJobId } from './queries/jobs/getJobs.js';
 export { getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear, getObjectCodeAssignedToJobByObjectCodeAndFiscalYear } from './queries/jobs/getObjectCodes.js';

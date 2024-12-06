@@ -1,4 +1,4 @@
-import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
+import { type mssql } from '@cityssm/mssql-multi-pool';
 import type { JobActivityObjectCode } from './types.js';
 /**
  * Retrieves a job - activity - object code.
@@ -10,7 +10,7 @@ import type { JobActivityObjectCode } from './types.js';
  * @param keys.fiscalYear - The fiscal year.
  * @returns - The job - activity - object code combination if available.
  */
-export declare function getJobActivityObjectCodeByKeys(mssqlConfig: mssqlTypes.config, keys: {
+export declare function getJobActivityObjectCodeByKeys(mssqlConfig: mssql.config, keys: {
     jobId: string;
     activityId: string;
     objectCode: string;

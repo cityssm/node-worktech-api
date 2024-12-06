@@ -1,4 +1,4 @@
-import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 import NodeCache from 'node-cache'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
@@ -45,7 +45,7 @@ const cache = new NodeCache({
  * @returns - The item, if available.
  */
 export async function getItemByItemId(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   itemId: string
 ): Promise<ResourceItem | undefined> {
   let item: ResourceItem | undefined = cache.get(itemId)
@@ -59,7 +59,7 @@ export async function getItemByItemId(
   const itemResult = (await pool
     .request()
     .input('itemId', itemId)
-    .query(`${sql} and Item_ID = @itemId`)) as mssqlTypes.IResult<ResourceItem>
+    .query(`${sql} and Item_ID = @itemId`)) as mssql.IResult<ResourceItem>
 
   if (itemResult.recordset.length === 0) {
     return undefined

@@ -1,8 +1,8 @@
 import assert from 'node:assert';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
-import { addResourceItem, getItemByItemId } from '../index.js';
-import { invalidItemId, mssqlConfig, validItemId } from './config.js';
+import { addResourceItem, createStockTransactionBatch, getItemByItemId } from '../index.js';
+import { invalidItemId, mssqlConfig, stockTransactionBatch, validItemId } from './config.js';
 await describe('queries/items', async () => {
     after(async () => {
         await releaseAll();
@@ -31,5 +31,9 @@ await describe('queries/items', async () => {
         assert(item);
         assert.strictEqual(item.itemSystemId, itemSystemId);
         assert.strictEqual(item.itemId, newItemId);
+    });
+    await it('Creates a stock transactions batch', async () => {
+        const batchId = await createStockTransactionBatch(mssqlConfig, stockTransactionBatch);
+        assert(batchId !== undefined);
     });
 });

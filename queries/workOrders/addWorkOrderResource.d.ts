@@ -1,4 +1,4 @@
-import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
+import { type mssql } from '@cityssm/mssql-multi-pool';
 import type { BigIntString } from '../types.js';
 import type { WorkOrderResource } from './types.js';
 export interface AddWorkOrderResource extends Partial<WorkOrderResource> {
@@ -11,4 +11,4 @@ export interface AddWorkOrderResource extends Partial<WorkOrderResource> {
  * @param workOrderResource - The work order resource fields.
  * @returns - The system id for the new resource record.
  */
-export declare function addWorkOrderResource(mssqlConfig: mssqlTypes.config, workOrderResource: AddWorkOrderResource): Promise<BigIntString>;
+export declare function addWorkOrderResource(mssqlConfig: mssql.config, workOrderResource: AddWorkOrderResource): Promise<BigIntString>;

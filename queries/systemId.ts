@@ -1,7 +1,7 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import type { mssqlTypes } from '@cityssm/mssql-multi-pool'
+import type { mssql } from '@cityssm/mssql-multi-pool'
 
 const tableId = 'SRISYSID'
 
@@ -11,14 +11,14 @@ const tableId = 'SRISYSID'
  * @returns - The last used system id.
  */
 export async function getLastSystemId(
-  transaction: mssqlTypes.Transaction
+  transaction: mssql.Transaction
 ): Promise<`${number}` | undefined> {
   const idResult = (await transaction
     .request()
     .input('tableId', tableId)
     .query(
       'select Last_Id as systemId from AUTO_KEYS where Table_Id = @tableId'
-    )) as mssqlTypes.IResult<{ systemId: `${number}` }>
+    )) as mssql.IResult<{ systemId: `${number}` }>
 
   if (idResult.recordset.length > 0) {
     return idResult.recordset[0].systemId
@@ -32,7 +32,7 @@ export async function getLastSystemId(
  * @param transaction - An open database transaction.
  */
 export async function incrementLastSystemId(
-  transaction: mssqlTypes.Transaction
+  transaction: mssql.Transaction
 ): Promise<void> {
   await transaction
     .request()

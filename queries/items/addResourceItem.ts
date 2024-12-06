@@ -1,4 +1,4 @@
-import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 
 import { getLastSystemId, incrementLastSystemId } from '../systemId.js'
 import type { BigIntString } from '../types.js'
@@ -20,7 +20,7 @@ export interface AddResourceItem extends Partial<ResourceItem> {
  * @returns - The system id for the new resource item.
  */
 export async function addResourceItem(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
   resourceItem: AddResourceItem
 ): Promise<BigIntString> {
   if (resourceItem.itemId.length > 15) {

@@ -23,9 +23,11 @@ export interface WorkOrder {
   details: string
   priority: string
 
+  itemId: string
   jobId: string
   activityId: string
   objectCode: string
+  
   serviceClass: string
   serviceType: string
   fiscalYear: string

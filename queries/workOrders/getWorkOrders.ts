@@ -1,7 +1,4 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
-import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 import NodeCache from 'node-cache'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
@@ -30,9 +27,11 @@ const sql = `SELECT [SRQISysID] as serviceRequestSystemId,
   coalesce([Details], '') as details,
   coalesce([Priority], '') as priority,
 
+  coalesce([Item_ID], '') as itemId,
   coalesce([ExJob_ID], '') as jobId,
   coalesce([Actv_ID], '') as activityId,
   coalesce([ObjCode], '') as objectCode,
+
   coalesce([ServiceClass], '') as serviceClass,
   coalesce([ServiceType], '') as serviceType,
   coalesce([Year], '') as fiscalYear,
@@ -64,7 +63,17 @@ const cache = new NodeCache({
  * @returns - The work order, if available.
  */
 export async function getWorkOrderByWorkOrderNumber(
-  mssqlConfig: mssqlTypes.config,
+  mssqlConfig: mssql.config,
+  workOrderNumber: string
+): Promise<WorkOrder | undefined> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  const pool = await connect(mssqlConfig)
+
+  return await _getWorkOrderByWorkOrderNumber(pool.request(), workOrderNumber)
+}
+
+export async function _getWorkOrderByWorkOrderNumber(
+  request: mssql.Request,
   workOrderNumber: string
 ): Promise<WorkOrder | undefined> {
   let workOrder: WorkOrder | undefined = cache.get(workOrderNumber)
@@ -73,15 +82,9 @@ export async function getWorkOrderByWorkOrderNumber(
     return workOrder
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const pool = await connect(mssqlConfig)
-
-  const workOrderResult = (await pool
-    .request()
+  const workOrderResult = (await request
     .input('workOrderNumber', workOrderNumber)
-    .query(
-      `${sql} where WONOs = @workOrderNumber`
-    )) as mssqlTypes.IResult<WorkOrder>
+    .query(`${sql} where WONOs = @workOrderNumber`)) as mssql.IResult<WorkOrder>
 
   if (workOrderResult.recordset.length === 0) {
     return undefined

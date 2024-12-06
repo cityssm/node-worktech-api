@@ -1,4 +1,4 @@
-import type { mssqlTypes } from '@cityssm/mssql-multi-pool'
+import type { mssql } from '@cityssm/mssql-multi-pool'
 import type { DateString } from '@cityssm/utils-datetime'
 
 import {
@@ -15,6 +15,10 @@ import {
   type AddResourceItem,
   addResourceItem
 } from './queries/items/addResourceItem.js'
+import {
+  type CreateStockTransactionBatch,
+  createStockTransactionBatch
+} from './queries/items/createStockTransactionBatch.js'
 import { getItemByItemId } from './queries/items/getItems.js'
 import type { ResourceItem } from './queries/items/types.js'
 import {
@@ -60,12 +64,12 @@ import {
  * WorkTech API
  */
 export class WorkTechAPI {
-  readonly #mssqlConfig: mssqlTypes.config
+  readonly #mssqlConfig: mssql.config
 
   /**
    * @param mssqlConfig - SQL Server configuration.
    */
-  constructor(mssqlConfig: mssqlTypes.config) {
+  constructor(mssqlConfig: mssql.config) {
     this.#mssqlConfig = mssqlConfig
   }
 
@@ -95,6 +99,17 @@ export class WorkTechAPI {
 
   async addResourceItem(resourceItem: AddResourceItem): Promise<BigIntString> {
     return await addResourceItem(this.#mssqlConfig, resourceItem)
+  }
+
+  /**
+   * Creates a new stock transaction batch.
+   * @param batch - The batch details
+   * @returns - The batch id.
+   */
+  async createStockTransactionBatch(
+    batch: CreateStockTransactionBatch
+  ): Promise<number> {
+    return await createStockTransactionBatch(this.#mssqlConfig, batch)
   }
 
   /**
@@ -329,6 +344,12 @@ export {
   type AddResourceItem,
   addResourceItem
 } from './queries/items/addResourceItem.js'
+
+export {
+  type CreateStockTransactionBatch,
+  type CreateStockTransactionBatchEntry,
+  createStockTransactionBatch
+} from './queries/items/createStockTransactionBatch.js'
 
 export {
   getActivityByActivityId,

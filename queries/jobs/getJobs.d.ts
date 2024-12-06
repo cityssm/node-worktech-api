@@ -1,4 +1,4 @@
-import { type config as MSSQLConfig } from '@cityssm/mssql-multi-pool';
+import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
 import type { Job } from './types.js';
 /**
  * Retrieves a job.
@@ -6,4 +6,4 @@ import type { Job } from './types.js';
  * @param jobId - The job id
  * @returns - The job, if available.
  */
-export declare function getJobByJobId(mssqlConfig: MSSQLConfig, jobId: string): Promise<Job | undefined>;
+export declare function getJobByJobId(mssqlConfig: mssqlTypes.config, jobId: string): Promise<Job | undefined>;

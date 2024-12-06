@@ -1,4 +1,4 @@
-import { type config as MSSQLConfig, connect } from '@cityssm/mssql-multi-pool'
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 
 import type { BigIntString } from '../types.js'
 
@@ -9,7 +9,7 @@ import type { BigIntString } from '../types.js'
  * @returns - True when the delete is processed successfully.
  */
 export async function deleteWorkOrderResource(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   serviceRequestItemSystemId: BigIntString
 ): Promise<boolean> {
   const pool = await connect(mssqlConfig)

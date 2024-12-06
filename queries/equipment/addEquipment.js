@@ -6,6 +6,6 @@ export async function addEquipment(mssqlConfig, equipment) {
         itemId: equipment.equipmentId,
         itemClass: equipment.equipmentClass,
         itemDescription: equipment.equipmentDescription,
-        unit: 'km',
+        unit: 'km'
     });
 }

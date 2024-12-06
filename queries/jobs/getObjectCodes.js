@@ -1,3 +1,5 @@
+/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { connect } from '@cityssm/mssql-multi-pool';
 import NodeCache from 'node-cache';
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js';

@@ -1,4 +1,4 @@
-import { type config as MSSQLConfig, connect } from '@cityssm/mssql-multi-pool'
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 import { dateToString, dateToTimeString } from '@cityssm/utils-datetime'
 
 import type { BigIntString } from '../types.js'
@@ -23,7 +23,7 @@ export interface UpdateWorkOrderResource extends Partial<WorkOrderResource> {
  * @returns - True when the update is processed successfully.
  */
 export async function updateWorkOrderResource(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   workOrderResource: UpdateWorkOrderResource
 ): Promise<boolean> {
   /*

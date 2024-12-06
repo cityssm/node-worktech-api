@@ -1,7 +1,6 @@
 import {
-  type IResult,
-  type config as MSSQLConfig,
-  connect
+  connect,
+  type mssqlTypes
 } from '@cityssm/mssql-multi-pool'
 import NodeCache from 'node-cache'
 
@@ -41,7 +40,7 @@ const cache = new NodeCache({
  * @returns - The job, if available.
  */
 export async function getJobByJobId(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   jobId: string
 ): Promise<Job | undefined> {
   let jobObject: Job | undefined = cache.get(jobId)
@@ -56,7 +55,7 @@ export async function getJobByJobId(
   const jobResult = await pool
     .request()
     .input('jobId', jobId)
-    .query(`${sql} where Job_ID = @jobId`) as IResult<Job>
+    .query(`${sql} where Job_ID = @jobId`) as mssqlTypes.IResult<Job>
 
   if (jobResult.recordset.length === 0) {
     return undefined

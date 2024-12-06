@@ -1,4 +1,4 @@
-import type { config } from '@cityssm/mssql-multi-pool';
+import type { mssqlTypes } from '@cityssm/mssql-multi-pool';
 import type { DateString } from '@cityssm/utils-datetime';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
 import { type AddEquipment } from './queries/equipment/addEquipment.js';
@@ -18,7 +18,7 @@ export declare class WorkTechAPI {
     /**
      * @param mssqlConfig - SQL Server configuration.
      */
-    constructor(mssqlConfig: config);
+    constructor(mssqlConfig: mssqlTypes.config);
     /**
      * Retrieves a piece of equipment.
      * @param equipmentId - The equipment id.

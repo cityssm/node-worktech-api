@@ -1,3 +1,5 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 const tableId = 'SRISYSID';
 /**
  * Returns the last used system id.

@@ -1,4 +1,4 @@
-import type { config } from '@cityssm/mssql-multi-pool'
+import type { mssqlTypes } from '@cityssm/mssql-multi-pool'
 import type { DateString } from '@cityssm/utils-datetime'
 
 import {
@@ -60,12 +60,12 @@ import {
  * WorkTech API
  */
 export class WorkTechAPI {
-  readonly #mssqlConfig: config
+  readonly #mssqlConfig: mssqlTypes.config
 
   /**
    * @param mssqlConfig - SQL Server configuration.
    */
-  constructor(mssqlConfig: config) {
+  constructor(mssqlConfig: mssqlTypes.config) {
     this.#mssqlConfig = mssqlConfig
   }
 

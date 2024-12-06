@@ -1,8 +1,4 @@
-import {
-  type IResult,
-  type config as MSSQLConfig,
-  connect
-} from '@cityssm/mssql-multi-pool'
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 
 import type { JobActivityObjectCode } from './types.js'
 
@@ -24,7 +20,7 @@ const sql = `SELECT [Job_ID] as jobId,
  * @returns - The job - activity - object code combination if available.
  */
 export async function getJobActivityObjectCodeByKeys(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   keys: {
     jobId: string
     activityId: string
@@ -35,7 +31,7 @@ export async function getJobActivityObjectCodeByKeys(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
-  const result = await pool
+  const result = (await pool
     .request()
     .input('jobId', keys.jobId)
     .input('activityId', keys.activityId)
@@ -44,7 +40,7 @@ export async function getJobActivityObjectCodeByKeys(
       where Job_ID = @jobId
       and Actv_ID = @activityId
       and ObjCode = @objectCode
-      and Year = @fiscalYear`) as IResult<JobActivityObjectCode>
+      and Year = @fiscalYear`)) as mssqlTypes.IResult<JobActivityObjectCode>
 
   if (result.recordset.length === 0) {
     return undefined

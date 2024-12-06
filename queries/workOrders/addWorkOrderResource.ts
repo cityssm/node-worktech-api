@@ -1,4 +1,4 @@
-import { type config as MSSQLConfig, connect } from '@cityssm/mssql-multi-pool'
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 import { dateToString, dateToTimeString } from '@cityssm/utils-datetime'
 
 import { getItemByItemId } from '../items/getItems.js'
@@ -20,7 +20,7 @@ export interface AddWorkOrderResource extends Partial<WorkOrderResource> {
  * @returns - The system id for the new resource record.
  */
 export async function addWorkOrderResource(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   workOrderResource: AddWorkOrderResource
 ): Promise<BigIntString> {
   /*

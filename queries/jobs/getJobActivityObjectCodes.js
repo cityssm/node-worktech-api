@@ -18,7 +18,7 @@ const sql = `SELECT [Job_ID] as jobId,
 export async function getJobActivityObjectCodeByKeys(mssqlConfig, keys) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
-    const result = await pool
+    const result = (await pool
         .request()
         .input('jobId', keys.jobId)
         .input('activityId', keys.activityId)
@@ -27,7 +27,7 @@ export async function getJobActivityObjectCodeByKeys(mssqlConfig, keys) {
       where Job_ID = @jobId
       and Actv_ID = @activityId
       and ObjCode = @objectCode
-      and Year = @fiscalYear`);
+      and Year = @fiscalYear`));
     if (result.recordset.length === 0) {
         return undefined;
     }

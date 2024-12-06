@@ -1,4 +1,4 @@
-import type { config as MSSQLConfig } from '@cityssm/mssql-multi-pool'
+import type { mssqlTypes } from '@cityssm/mssql-multi-pool'
 
 import { addResourceItem } from '../items/addResourceItem.js'
 import type { BigIntString } from '../types.js'
@@ -12,7 +12,7 @@ export interface AddEquipment extends Partial<EquipmentItem> {
 }
 
 export async function addEquipment(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   equipment: AddEquipment
 ): Promise<BigIntString> {
   return await addResourceItem(mssqlConfig, {
@@ -21,6 +21,6 @@ export async function addEquipment(
     itemId: equipment.equipmentId,
     itemClass: equipment.equipmentClass,
     itemDescription: equipment.equipmentDescription,
-    unit: 'km',
+    unit: 'km'
   })
 }

@@ -1,7 +1,6 @@
 import {
-  type IResult,
-  type config as MSSQLConfig,
-  connect
+  connect,
+  type mssqlTypes
 } from '@cityssm/mssql-multi-pool'
 import NodeCache from 'node-cache'
 
@@ -54,7 +53,7 @@ const cache = new NodeCache({
  * @returns - The equipment record, if available.
  */
 export async function getEquipmentByEquipmentId(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   equipmentId: string
 ): Promise<EquipmentItem | undefined> {
   let equipment: EquipmentItem | undefined = cache.get(equipmentId)
@@ -68,7 +67,7 @@ export async function getEquipmentByEquipmentId(
   const equipmentResult = (await pool
     .request()
     .input('equipmentId', equipmentId)
-    .query(`${sql} and Item_ID = @equipmentId`)) as IResult<EquipmentItem>
+    .query(`${sql} and Item_ID = @equipmentId`)) as mssqlTypes.IResult<EquipmentItem>
 
   if (equipmentResult.recordset.length === 0) {
     return undefined

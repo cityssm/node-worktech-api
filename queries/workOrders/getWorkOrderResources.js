@@ -1,3 +1,5 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { connect } from '@cityssm/mssql-multi-pool';
 import { dateToString, dateToTimeString } from '@cityssm/utils-datetime';
 const sql = `SELECT [SRISysID] as serviceRequestItemSystemId, 

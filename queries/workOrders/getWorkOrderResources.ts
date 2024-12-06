@@ -1,7 +1,9 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import {
-  type IResult,
-  type config as MSSQLConfig,
-  connect
+  connect,
+  type mssqlTypes
 } from '@cityssm/mssql-multi-pool'
 import {
   type DateString,
@@ -34,7 +36,7 @@ const sql = `SELECT [SRISysID] as serviceRequestItemSystemId,
  * @returns - An array of resources associated with a work order.
  */
 export async function getWorkOrderResourcesByWorkOrderNumber(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   workOrderNumber: string
 ): Promise<WorkOrderResource[]> {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -45,7 +47,7 @@ export async function getWorkOrderResourcesByWorkOrderNumber(
     .input('workOrderNumber', workOrderNumber)
     .query(
       `${sql} where WONOs = @workOrderNumber`
-    )) as IResult<WorkOrderResource>
+    )) as mssqlTypes.IResult<WorkOrderResource>
 
   return resourcesResult.recordset
 }
@@ -58,7 +60,7 @@ export async function getWorkOrderResourcesByWorkOrderNumber(
  * @returns - An array of resources between a given start time range.
  */
 export async function getWorkOrderResourcesByStartDateTimeRange(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   startDateTimeFrom: Date | string,
   startDateTimeTo: Date | string
 ): Promise<WorkOrderResource[]> {
@@ -83,7 +85,7 @@ export async function getWorkOrderResourcesByStartDateTimeRange(
     .input('startDateTo', startDateToString)
     .query(
       `${sql} where SchedDateTime between @startDateFrom and @startDateTo`
-    )) as IResult<WorkOrderResource>
+    )) as mssqlTypes.IResult<WorkOrderResource>
 
   return resourcesResult.recordset
 }
@@ -95,7 +97,7 @@ export async function getWorkOrderResourcesByStartDateTimeRange(
  * @returns - An array of resources on a given start date.
  */
 export async function getWorkOrderResourcesByStartDate(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   startDateString: DateString
 ): Promise<WorkOrderResource[]> {
   return await getWorkOrderResourcesByStartDateTimeRange(

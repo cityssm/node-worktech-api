@@ -1,8 +1,7 @@
-import {
-  type IResult,
-  type config as MSSQLConfig,
-  connect
-} from '@cityssm/mssql-multi-pool'
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+import { connect, type mssqlTypes } from '@cityssm/mssql-multi-pool'
 import NodeCache from 'node-cache'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
@@ -65,7 +64,7 @@ const cache = new NodeCache({
  * @returns - The work order, if available.
  */
 export async function getWorkOrderByWorkOrderNumber(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   workOrderNumber: string
 ): Promise<WorkOrder | undefined> {
   let workOrder: WorkOrder | undefined = cache.get(workOrderNumber)
@@ -80,7 +79,9 @@ export async function getWorkOrderByWorkOrderNumber(
   const workOrderResult = (await pool
     .request()
     .input('workOrderNumber', workOrderNumber)
-    .query(`${sql} where WONOs = @workOrderNumber`)) as IResult<WorkOrder>
+    .query(
+      `${sql} where WONOs = @workOrderNumber`
+    )) as mssqlTypes.IResult<WorkOrder>
 
   if (workOrderResult.recordset.length === 0) {
     return undefined

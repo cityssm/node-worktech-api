@@ -1,4 +1,4 @@
-import { type config as MSSQLConfig } from '@cityssm/mssql-multi-pool';
+import { type mssqlTypes } from '@cityssm/mssql-multi-pool';
 import type { BigIntString } from '../types.js';
 import type { ResourceItem } from './types.js';
 export interface AddResourceItem extends Partial<ResourceItem> {
@@ -13,4 +13,4 @@ export interface AddResourceItem extends Partial<ResourceItem> {
  * @param resourceItem - The resource item fields.
  * @returns - The system id for the new resource item.
  */
-export declare function addResourceItem(mssqlConfig: MSSQLConfig, resourceItem: AddResourceItem): Promise<BigIntString>;
+export declare function addResourceItem(mssqlConfig: mssqlTypes.config, resourceItem: AddResourceItem): Promise<BigIntString>;

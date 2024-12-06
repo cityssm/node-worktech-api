@@ -1,7 +1,9 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import {
-  type IResult,
-  type config as MSSQLConfig,
-  connect
+  connect,
+  type mssqlTypes
 } from '@cityssm/mssql-multi-pool'
 import NodeCache from 'node-cache'
 
@@ -29,7 +31,7 @@ const cache = new NodeCache({
  * @returns - The activity, if available.
  */
 export async function getActivityByActivityId(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   activityId: string
 ): Promise<Activity | undefined> {
   let activityObject: Activity | undefined = cache.get(activityId)
@@ -43,7 +45,7 @@ export async function getActivityByActivityId(
   const result = (await pool
     .request()
     .input('activityId', activityId)
-    .query(`${sql} where Actv_ID = @activityId`)) as IResult<Activity>
+    .query(`${sql} where Actv_ID = @activityId`)) as mssqlTypes.IResult<Activity>
 
   if (result.recordset.length === 0) {
     return undefined
@@ -65,7 +67,7 @@ export async function getActivityByActivityId(
  * @returns - An array of activities.
  */
 export async function getActivityAssignedToJobByActivityIdAndFiscalYear(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   jobId: string,
   activityId: string,
   fiscalYear: number | string
@@ -80,7 +82,7 @@ export async function getActivityAssignedToJobByActivityIdAndFiscalYear(
     .query(
       `${sql} where Actv_ID = @activityId
         and Actv_ID in (select Actv_ID from WMJACA with (nolock) where Job_ID = @jobId and Year = @fiscalYear)`
-    )) as IResult<Activity>
+    )) as mssqlTypes.IResult<Activity>
 
   if (result.recordset.length === 0) {
     return undefined
@@ -97,7 +99,7 @@ export async function getActivityAssignedToJobByActivityIdAndFiscalYear(
  * @returns - An array of activities.
  */
 export async function getActivitiesAssignedToJobByFiscalYear(
-  mssqlConfig: MSSQLConfig,
+  mssqlConfig: mssqlTypes.config,
   jobId: string,
   fiscalYear: number | string
 ): Promise<Activity[]> {
@@ -109,7 +111,7 @@ export async function getActivitiesAssignedToJobByFiscalYear(
     .input('fiscalYear', fiscalYear)
     .query(
       `${sql} where Actv_ID in (select Actv_ID from WMJACA with (nolock) where Job_ID = @jobId and Year = @fiscalYear)`
-    )) as IResult<Activity>
+    )) as mssqlTypes.IResult<Activity>
 
   return result.recordset
 }

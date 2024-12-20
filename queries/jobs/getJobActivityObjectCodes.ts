@@ -28,7 +28,6 @@ export async function getJobActivityObjectCodeByKeys(
     fiscalYear: number | string
   }
 ): Promise<JobActivityObjectCode | undefined> {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const result = (await pool

@@ -1,7 +1,4 @@
-import {
-  connect,
-  type mssql
-} from '@cityssm/mssql-multi-pool'
+import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 import {
   type DateString,
   dateToString,
@@ -36,7 +33,6 @@ export async function getWorkOrderResourcesByWorkOrderNumber(
   mssqlConfig: mssql.config,
   workOrderNumber: string
 ): Promise<WorkOrderResource[]> {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const resourcesResult = (await pool
@@ -73,7 +69,6 @@ export async function getWorkOrderResourcesByStartDateTimeRange(
       ? startDateTimeTo
       : `${dateToString(startDateTimeTo)} ${dateToTimeString(startDateTimeTo)}`
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const resourcesResult = (await pool

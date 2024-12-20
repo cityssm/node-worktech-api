@@ -35,7 +35,6 @@ export async function getJobByJobId(mssqlConfig, jobId) {
     if (jobObject !== undefined) {
         return jobObject;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const jobResult = await pool
         .request()

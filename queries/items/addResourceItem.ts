@@ -1,3 +1,6 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @cspell/spellchecker */
+
 import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 
 import { getLastSystemId, incrementLastSystemId } from '../systemId.js'
@@ -44,7 +47,6 @@ export async function addResourceItem(
       Number.parseInt(lastSystemId, 10) + 1
     ).toString() as BigIntString
 
-    // eslint-disable-next-line no-secrets/no-secrets
     await transaction
       .request()
       .input('itemSystemId', itemSystemId)

@@ -20,7 +20,6 @@ export async function getObjectCodeByObjectCode(mssqlConfig, objectCode) {
     if (objectCodeObject !== undefined) {
         return objectCodeObject;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const result = (await pool
         .request()
@@ -48,7 +47,6 @@ const jobAssignedSql = `SELECT o.[OCSysID] as objectCodeSystemId,
  * @returns - An array of object codes assigned to a given job.
  */
 export async function getObjectCodesAssignedToJobByFiscalYear(mssqlConfig, jobId, fiscalYear) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const result = (await pool
         .request()
@@ -66,7 +64,6 @@ export async function getObjectCodesAssignedToJobByFiscalYear(mssqlConfig, jobId
  * @returns - The object code, if available.
  */
 export async function getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(mssqlConfig, jobId, objectCode, fiscalYear) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const result = (await pool
         .request()

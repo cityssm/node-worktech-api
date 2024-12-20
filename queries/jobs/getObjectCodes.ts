@@ -31,15 +31,12 @@ export async function getObjectCodeByObjectCode(
     return objectCodeObject
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const result = (await pool
     .request()
     .input('objectCode', objectCode)
-    .query(
-      `${sql} where CodeID = @objectCode`
-    )) as mssql.IResult<ObjectCode>
+    .query(`${sql} where CodeID = @objectCode`)) as mssql.IResult<ObjectCode>
 
   if (result.recordset.length === 0) {
     return undefined
@@ -72,7 +69,6 @@ export async function getObjectCodesAssignedToJobByFiscalYear(
   jobId: string,
   fiscalYear: number | string
 ): Promise<JobAssignedObjectCode[]> {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const result = (await pool
@@ -100,7 +96,6 @@ export async function getObjectCodeAssignedToJobByObjectCodeAndFiscalYear(
   objectCode: string,
   fiscalYear: number | string
 ): Promise<JobAssignedObjectCode | undefined> {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   const result = (await pool

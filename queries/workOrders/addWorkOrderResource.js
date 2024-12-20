@@ -1,3 +1,5 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @cspell/spellchecker */
 import { connect } from '@cityssm/mssql-multi-pool';
 import { dateToString, dateToTimeString } from '@cityssm/utils-datetime';
 import { getItemByItemId } from '../items/getItems.js';

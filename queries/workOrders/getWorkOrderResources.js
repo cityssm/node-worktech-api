@@ -22,7 +22,6 @@ const sql = `SELECT [SRISysID] as serviceRequestItemSystemId,
  * @returns - An array of resources associated with a work order.
  */
 export async function getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, workOrderNumber) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const resourcesResult = (await pool
         .request()
@@ -44,7 +43,6 @@ export async function getWorkOrderResourcesByStartDateTimeRange(mssqlConfig, sta
     const startDateToString = typeof startDateTimeTo === 'string'
         ? startDateTimeTo
         : `${dateToString(startDateTimeTo)} ${dateToTimeString(startDateTimeTo)}`;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const resourcesResult = (await pool
         .request()

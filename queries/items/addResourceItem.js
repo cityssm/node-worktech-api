@@ -1,3 +1,5 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable @cspell/spellchecker */
 import { connect } from '@cityssm/mssql-multi-pool';
 import { getLastSystemId, incrementLastSystemId } from '../systemId.js';
 /**
@@ -19,7 +21,6 @@ export async function addResourceItem(mssqlConfig, resourceItem) {
             throw new Error('Last used system id is unavailable.');
         }
         const itemSystemId = (Number.parseInt(lastSystemId, 10) + 1).toString();
-        // eslint-disable-next-line no-secrets/no-secrets
         await transaction
             .request()
             .input('itemSystemId', itemSystemId)

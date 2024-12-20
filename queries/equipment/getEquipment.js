@@ -49,7 +49,6 @@ export async function getEquipmentByEquipmentId(mssqlConfig, equipmentId) {
         return equipment;
     }
     const pool = await connect(mssqlConfig);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     const equipmentResult = (await pool
         .request()
         .input('equipmentId', equipmentId)

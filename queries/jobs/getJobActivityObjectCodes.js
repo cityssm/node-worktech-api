@@ -16,7 +16,6 @@ const sql = `SELECT [Job_ID] as jobId,
  * @returns - The job - activity - object code combination if available.
  */
 export async function getJobActivityObjectCodeByKeys(mssqlConfig, keys) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     const result = (await pool
         .request()

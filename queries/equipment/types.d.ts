@@ -23,5 +23,5 @@ export interface EquipmentItem {
     revenueObjectCode: string;
     odometer: number;
     jobCostHours: number;
-    hourmeter: number;
+    hourMeter: number;
 }

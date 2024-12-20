@@ -20,7 +20,7 @@ const sql = `SELECT [ITMSysID] as equipmentSystemId,
 
   coalesce([Location], '') as location,
   coalesce([Dept], '') as departmentOwned,
-  coalesce([Division], '') as deparmentManaged,
+  coalesce([Division], '') as departmentManaged,
 
   coalesce([ExJob_ID], '') as expenseJobId,
   coalesce([ExActv_ID], '') as expenseActivityId,
@@ -31,7 +31,7 @@ const sql = `SELECT [ITMSysID] as equipmentSystemId,
   
   [Odom] as odometer,
   [Hours] as jobCostHours,
-  [RunHrs] as hourmeter
+  [RunHrs] as hourMeter
   FROM [WMITM] WITH (NOLOCK)
   where [Type] in ('Equipment')`;
 const cache = new NodeCache({
@@ -49,6 +49,7 @@ export async function getEquipmentByEquipmentId(mssqlConfig, equipmentId) {
         return equipment;
     }
     const pool = await connect(mssqlConfig);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     const equipmentResult = (await pool
         .request()
         .input('equipmentId', equipmentId)

@@ -33,5 +33,5 @@ export interface EquipmentItem {
 
   odometer: number
   jobCostHours: number
-  hourmeter: number
+  hourMeter: number
 }

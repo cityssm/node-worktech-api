@@ -6,7 +6,7 @@
   "exports": "./index.js",
   "scripts": {
     "test": "node --test",
-    "test:equipment": "node --test --test-name-pattern=\"queries/equipment\"",
+    "test:equipment": "cross-env NODE_ENV=dev DEBUG=worktech-api:* node --test \"test/equipment.test.js\"",
     "test:items": "node --test --test-name-pattern=\"queries/items\"",
     "test:workOrders": "node --test --test-name-pattern=\"queries/workOrders\"",
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
@@ -27,12 +27,14 @@
   "author": "The Corporation of the City of Sault Ste. Marie",
   "license": "MIT",
   "devDependencies": {
-    "eslint-config-cityssm": "^18.1.2",
+    "@types/debug": "^4.1.12",
+    "eslint-config-cityssm": "^18.2.0",
     "prettier-config-cityssm": "^1.0.0"
   },
   "dependencies": {
     "@cityssm/mssql-multi-pool": "^4.1.0",
     "@cityssm/utils-datetime": "^1.3.0",
+    "debug": "^4.4.0",
     "node-cache": "^5.1.2"
   }
 }

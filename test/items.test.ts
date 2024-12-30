@@ -63,6 +63,6 @@ await describe('queries/items', async () => {
       stockTransactionBatch
     )
 
-    assert(batchId !== undefined)
+    assert(batchId)
   })
 })

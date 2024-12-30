@@ -66,7 +66,6 @@ export async function getWorkOrderByWorkOrderNumber(
   mssqlConfig: mssql.config,
   workOrderNumber: string
 ): Promise<WorkOrder | undefined> {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const pool = await connect(mssqlConfig)
 
   return await _getWorkOrderByWorkOrderNumber(pool.request(), workOrderNumber)

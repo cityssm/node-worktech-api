@@ -1,12 +1,14 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable @cspell/spellchecker */
 import { connect } from '@cityssm/mssql-multi-pool';
+import Debug from 'debug';
 import { getLastSystemId, incrementLastSystemId } from '../systemId.js';
+const debug = Debug('worktech-api:addResourceItem');
 /**
  * Creates a new resource item.
  * @param mssqlConfig - SQL Server configuration.
  * @param resourceItem - The resource item fields.
- * @returns - The system id for the new resource item.
+ * @returns The system id for the new resource item.
  */
 export async function addResourceItem(mssqlConfig, resourceItem) {
     if (resourceItem.itemId.length > 15) {
@@ -15,12 +17,15 @@ export async function addResourceItem(mssqlConfig, resourceItem) {
     const pool = await connect(mssqlConfig);
     const transaction = pool.transaction();
     try {
+        debug('Starting transaction');
         await transaction.begin();
+        debug('Getting last system id');
         const lastSystemId = await getLastSystemId(transaction);
         if (lastSystemId === undefined) {
             throw new Error('Last used system id is unavailable.');
         }
         const itemSystemId = (Number.parseInt(lastSystemId, 10) + 1).toString();
+        debug(`Adding item ${itemSystemId} (${resourceItem.itemId})`);
         await transaction
             .request()
             .input('itemSystemId', itemSystemId)
@@ -39,6 +44,9 @@ export async function addResourceItem(mssqlConfig, resourceItem) {
             .input('unitCost', resourceItem.unitCost ?? 0)
             .input('quantityOnHand', resourceItem.quantityOnHand ?? 0)
             .input('location', resourceItem.location ?? '')
+            .input('odometer', resourceItem.odometer ?? 0)
+            .input('plate', resourceItem.plate ?? '')
+            .input('serialNumber', resourceItem.serialNumber ?? '')
             .input('itemModel', resourceItem.itemModel ?? '')
             .query(`INSERT INTO WMITM (
         ITMSYSID, ITEM_ID, "DESC", RESLIST, EXTITEM_ID,
@@ -98,7 +106,7 @@ export async function addResourceItem(mssqlConfig, resourceItem) {
         0.00, 0, 0, 'Vehicle ID', 0, NULL,
         NULL, NULL, 0.0, 0.00, 0.00,
         @location, @itemModel,
-        0.0, 0.00, 0.0, 0.0, NULL, NULL,
+        @odometer, 0.00, 0.0, 0.0, @plate, @serialNumber,
         NULL, NULL, 0.00, 0, 0.00, 0.00,
         0.00, 0.00, 0, ${new Date().getFullYear()}, 0.00,
         0, 0,
@@ -120,6 +128,7 @@ export async function addResourceItem(mssqlConfig, resourceItem) {
         NULL, 0, NULL, '', NULL, NULL,
         0.00, 0.00, 0.00, 0.00,
         0, 0, 0, NULL, NULL, NULL)`);
+        debug(`Added item ${itemSystemId} (${resourceItem.itemId})`);
         await incrementLastSystemId(transaction);
         await transaction.commit();
         return itemSystemId;

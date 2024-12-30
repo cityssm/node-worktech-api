@@ -60,3 +60,9 @@ export async function getEquipmentByEquipmentId(mssqlConfig, equipmentId) {
     cache.set(equipmentId, equipment);
     return equipment;
 }
+/**
+ * Clears the equipment cache.
+ */
+export function clearEquipmentCache() {
+    cache.flushAll();
+}

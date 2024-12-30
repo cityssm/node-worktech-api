@@ -1,6 +1,7 @@
 import { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 import { addEquipment } from './queries/equipment/addEquipment.js';
 import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
+import { updateEquipmentFields } from './queries/equipment/updateEquipment.js';
 import { addResourceItem } from './queries/items/addResourceItem.js';
 import { createStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';
 import { getItemByItemId } from './queries/items/getItems.js';
@@ -13,6 +14,7 @@ import { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderRes
 import { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 import { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
 import { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
+const timeoutMillis = 60_000;
 /**
  * WorkTech API
  */
@@ -23,6 +25,8 @@ export class WorkTechAPI {
      */
     constructor(mssqlConfig) {
         this.#mssqlConfig = mssqlConfig;
+        this.#mssqlConfig.connectionTimeout = Math.max(this.#mssqlConfig.connectionTimeout ?? 0, timeoutMillis);
+        this.#mssqlConfig.requestTimeout = Math.max(this.#mssqlConfig.requestTimeout ?? 0, timeoutMillis);
     }
     /**
      * Retrieves a piece of equipment.
@@ -34,6 +38,9 @@ export class WorkTechAPI {
     }
     async addEquipment(equipment) {
         return await addEquipment(this.#mssqlConfig, equipment);
+    }
+    async updateEquipmentFields(equipmentId, fields) {
+        return await updateEquipmentFields(this.#mssqlConfig, equipmentId, fields);
     }
     /**
      * Retrieves an item.
@@ -194,6 +201,7 @@ export class WorkTechAPI {
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';
+export { updateEquipmentFields } from './queries/equipment/updateEquipment.js';
 export { getItemByItemId } from './queries/items/getItems.js';
 export { addResourceItem } from './queries/items/addResourceItem.js';
 export { createStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';

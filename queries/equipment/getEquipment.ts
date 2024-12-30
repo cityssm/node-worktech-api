@@ -79,3 +79,10 @@ export async function getEquipmentByEquipmentId(
 
   return equipment
 }
+
+/**
+ * Clears the equipment cache.
+ */
+export function clearEquipmentCache(): void {
+  cache.flushAll()
+}

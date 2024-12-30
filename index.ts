@@ -11,6 +11,7 @@ import {
 } from './queries/equipment/addEquipment.js'
 import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
 import type { EquipmentItem } from './queries/equipment/types.js'
+import { updateEquipmentFields } from './queries/equipment/updateEquipment.js'
 import {
   type AddResourceItem,
   addResourceItem
@@ -60,6 +61,8 @@ import {
   updateWorkOrderResource
 } from './queries/workOrders/updateWorkOrderResource.js'
 
+const timeoutMillis = 60_000
+
 /**
  * WorkTech API
  */
@@ -71,6 +74,16 @@ export class WorkTechAPI {
    */
   constructor(mssqlConfig: mssql.config) {
     this.#mssqlConfig = mssqlConfig
+
+    this.#mssqlConfig.connectionTimeout = Math.max(
+      this.#mssqlConfig.connectionTimeout ?? 0,
+      timeoutMillis
+    )
+
+    this.#mssqlConfig.requestTimeout = Math.max(
+      this.#mssqlConfig.requestTimeout ?? 0,
+      timeoutMillis
+    )
   }
 
   /**
@@ -86,6 +99,13 @@ export class WorkTechAPI {
 
   async addEquipment(equipment: AddEquipment): Promise<BigIntString> {
     return await addEquipment(this.#mssqlConfig, equipment)
+  }
+
+  async updateEquipmentFields(
+    equipmentId: string,
+    fields: Partial<EquipmentItem>
+  ): Promise<boolean> {
+    return await updateEquipmentFields(this.#mssqlConfig, equipmentId, fields)
   }
 
   /**
@@ -338,6 +358,7 @@ export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAcc
 
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
 export { addEquipment } from './queries/equipment/addEquipment.js'
+export { updateEquipmentFields } from './queries/equipment/updateEquipment.js'
 
 export { getItemByItemId } from './queries/items/getItems.js'
 export {

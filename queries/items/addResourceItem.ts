@@ -2,11 +2,14 @@
 /* eslint-disable @cspell/spellchecker */
 
 import { connect, type mssql } from '@cityssm/mssql-multi-pool'
+import Debug from 'debug'
 
 import { getLastSystemId, incrementLastSystemId } from '../systemId.js'
 import type { BigIntString } from '../types.js'
 
 import type { ResourceItem } from './types.js'
+
+const debug = Debug('worktech-api:addResourceItem')
 
 export interface AddResourceItem extends Partial<ResourceItem> {
   itemId: string
@@ -14,13 +17,16 @@ export interface AddResourceItem extends Partial<ResourceItem> {
   itemClass: string
 
   unit: string
+
+  plate?: string
+  odometer?: number
 }
 
 /**
  * Creates a new resource item.
  * @param mssqlConfig - SQL Server configuration.
  * @param resourceItem - The resource item fields.
- * @returns - The system id for the new resource item.
+ * @returns The system id for the new resource item.
  */
 export async function addResourceItem(
   mssqlConfig: mssql.config,
@@ -35,7 +41,11 @@ export async function addResourceItem(
   const transaction = pool.transaction()
 
   try {
+    debug('Starting transaction')
+
     await transaction.begin()
+
+    debug('Getting last system id')
 
     const lastSystemId = await getLastSystemId(transaction)
 
@@ -46,6 +56,8 @@ export async function addResourceItem(
     const itemSystemId = (
       Number.parseInt(lastSystemId, 10) + 1
     ).toString() as BigIntString
+
+    debug(`Adding item ${itemSystemId} (${resourceItem.itemId})`)
 
     await transaction
       .request()
@@ -65,6 +77,9 @@ export async function addResourceItem(
       .input('unitCost', resourceItem.unitCost ?? 0)
       .input('quantityOnHand', resourceItem.quantityOnHand ?? 0)
       .input('location', resourceItem.location ?? '')
+      .input('odometer', resourceItem.odometer ?? 0)
+      .input('plate', resourceItem.plate ?? '')
+      .input('serialNumber', resourceItem.serialNumber ?? '')
       .input('itemModel', resourceItem.itemModel ?? '')
       .query(`INSERT INTO WMITM (
         ITMSYSID, ITEM_ID, "DESC", RESLIST, EXTITEM_ID,
@@ -124,7 +139,7 @@ export async function addResourceItem(
         0.00, 0, 0, 'Vehicle ID', 0, NULL,
         NULL, NULL, 0.0, 0.00, 0.00,
         @location, @itemModel,
-        0.0, 0.00, 0.0, 0.0, NULL, NULL,
+        @odometer, 0.00, 0.0, 0.0, @plate, @serialNumber,
         NULL, NULL, 0.00, 0, 0.00, 0.00,
         0.00, 0.00, 0, ${new Date().getFullYear()}, 0.00,
         0, 0,
@@ -146,6 +161,8 @@ export async function addResourceItem(
         NULL, 0, NULL, '', NULL, NULL,
         0.00, 0.00, 0.00, 0.00,
         0, 0, 0, NULL, NULL, NULL)`)
+
+    debug(`Added item ${itemSystemId} (${resourceItem.itemId})`)
 
     await incrementLastSystemId(transaction)
 

@@ -57,7 +57,6 @@ const cache = new NodeCache({
  * @returns - The work order, if available.
  */
 export async function getWorkOrderByWorkOrderNumber(mssqlConfig, workOrderNumber) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const pool = await connect(mssqlConfig);
     return await _getWorkOrderByWorkOrderNumber(pool.request(), workOrderNumber);
 }

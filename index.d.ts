@@ -27,6 +27,7 @@ export declare class WorkTechAPI {
      */
     getEquipmentByEquipmentId(equipmentId: string): Promise<EquipmentItem | undefined>;
     addEquipment(equipment: AddEquipment): Promise<BigIntString>;
+    updateEquipmentFields(equipmentId: string, fields: Partial<EquipmentItem>): Promise<boolean>;
     /**
      * Retrieves an item.
      * @param itemId - The item id.
@@ -155,6 +156,7 @@ export declare class WorkTechAPI {
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';
+export { updateEquipmentFields } from './queries/equipment/updateEquipment.js';
 export { getItemByItemId } from './queries/items/getItems.js';
 export { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js';
 export { type CreateStockTransactionBatch, type CreateStockTransactionBatchEntry, createStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';

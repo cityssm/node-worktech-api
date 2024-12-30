@@ -7,3 +7,7 @@ import type { EquipmentItem } from './types.js';
  * @returns - The equipment record, if available.
  */
 export declare function getEquipmentByEquipmentId(mssqlConfig: mssql.config, equipmentId: string): Promise<EquipmentItem | undefined>;
+/**
+ * Clears the equipment cache.
+ */
+export declare function clearEquipmentCache(): void;

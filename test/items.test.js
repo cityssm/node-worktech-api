@@ -34,6 +34,6 @@ await describe('queries/items', async () => {
     });
     await it('Creates a stock transactions batch', async () => {
         const batchId = await createStockTransactionBatch(mssqlConfig, stockTransactionBatch);
-        assert(batchId !== undefined);
+        assert(batchId);
     });
 });

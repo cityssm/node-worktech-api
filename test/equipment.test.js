@@ -20,7 +20,7 @@ await describe('queries/equipment', async () => {
         assert.strictEqual(equipment, undefined);
     });
     await it('Adds a new piece of equipment, then updates it.', async () => {
-        const equipmentId = 'TEST-' + Math.round(Date.now() / 1000).toString();
+        const equipmentId = `TEST-${Math.round(Date.now() / 1000).toString()}`;
         const equipmentDescription = randomUUID();
         console.log(`Adding new equipment: ${equipmentId}`);
         const systemId = await worktechApi.addEquipment(Object.assign({

@@ -32,6 +32,7 @@ export async function addResourceItem(
   mssqlConfig: mssql.config,
   resourceItem: AddResourceItem
 ): Promise<BigIntString> {
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
   if (resourceItem.itemId.length > 15) {
     throw new Error('itemId exceeds 15 characters')
   }

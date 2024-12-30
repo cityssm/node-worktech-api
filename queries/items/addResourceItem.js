@@ -11,6 +11,7 @@ const debug = Debug('worktech-api:addResourceItem');
  * @returns The system id for the new resource item.
  */
 export async function addResourceItem(mssqlConfig, resourceItem) {
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     if (resourceItem.itemId.length > 15) {
         throw new Error('itemId exceeds 15 characters');
     }

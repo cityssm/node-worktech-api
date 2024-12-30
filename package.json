@@ -7,8 +7,8 @@
   "scripts": {
     "test": "node --test",
     "test:equipment": "cross-env NODE_ENV=dev DEBUG=worktech-api:* node --test \"test/equipment.test.js\"",
-    "test:items": "node --test --test-name-pattern=\"queries/items\"",
-    "test:workOrders": "node --test --test-name-pattern=\"queries/workOrders\"",
+    "test:items": "cross-env NODE_ENV=dev DEBUG=worktech-api:* node --test \"test/items.test.js\"",
+    "test:workOrders": "cross-env NODE_ENV=dev DEBUG=worktech-api:* node --test \"test/workOrders.test.js\"",
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
   },
   "keywords": [

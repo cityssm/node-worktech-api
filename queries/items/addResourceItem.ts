@@ -4,6 +4,7 @@
 import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 import Debug from 'debug'
 
+import { lockTable } from '../../helpers/lockTable.js'
 import { getLastSystemId, incrementLastSystemId } from '../systemId.js'
 import type { BigIntString } from '../types.js'
 
@@ -46,6 +47,10 @@ export async function addResourceItem(
 
     await transaction.begin()
 
+    debug('Lock tables')
+
+    await lockTable(transaction, 'WMITM')
+
     debug('Getting last system id')
 
     const lastSystemId = await getLastSystemId(transaction)
@@ -77,12 +82,16 @@ export async function addResourceItem(
       .input('unit', resourceItem.unit)
       .input('unitCost', resourceItem.unitCost ?? 0)
       .input('quantityOnHand', resourceItem.quantityOnHand ?? 0)
+      .input('itemBrand', resourceItem.itemBrand)
       .input('location', resourceItem.location ?? '')
       .input('odometer', resourceItem.odometer ?? 0)
       .input('plate', resourceItem.plate ?? '')
       .input('serialNumber', resourceItem.serialNumber ?? '')
-      .input('itemModel', resourceItem.itemModel ?? '')
-      .query(`INSERT INTO WMITM (
+      .input('itemModel', resourceItem.itemModel)
+      .input(
+        'itemModelYear',
+        resourceItem.itemModelYear ?? new Date().getFullYear()
+      ).query(`INSERT INTO WMITM (
         ITMSYSID, ITEM_ID, "DESC", RESLIST, EXTITEM_ID,
         ITEMCLASS, CLASSITEM, TYPE, STATUS,
         DEPT, DIVISION, COMPANY, FLTYPE, COMMENTS,
@@ -137,12 +146,12 @@ export async function addResourceItem(
         NULL, 0,
         NULL, NULL,
         'Metres', 'Rectangle', 0.00, 0.00, 0.00, 0.00,
-        0.00, 0, 0, 'Vehicle ID', 0, NULL,
+        0.00, 0, 0, 'Vehicle ID', 0, @itemBrand,
         NULL, NULL, 0.0, 0.00, 0.00,
         @location, @itemModel,
         @odometer, 0.00, 0.0, 0.0, @plate, @serialNumber,
         NULL, NULL, 0.00, 0, 0.00, 0.00,
-        0.00, 0.00, 0, ${new Date().getFullYear()}, 0.00,
+        0.00, 0.00, 0, @itemModelYear, 0.00,
         0, 0,
         NULL,
         NULL, NULL, NULL, NULL,

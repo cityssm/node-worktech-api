@@ -2,6 +2,7 @@
 /* eslint-disable @cspell/spellchecker */
 import { connect } from '@cityssm/mssql-multi-pool';
 import { dateToString, dateToTimeString } from '@cityssm/utils-datetime';
+import { lockTable } from '../../helpers/lockTable.js';
 import { getItemByItemId } from '../items/getItems.js';
 import { getLastSystemId, incrementLastSystemId } from '../systemId.js';
 import { getWorkOrderByWorkOrderNumber } from './getWorkOrders.js';
@@ -55,6 +56,7 @@ export async function addWorkOrderResource(mssqlConfig, workOrderResource) {
     const transaction = pool.transaction();
     try {
         await transaction.begin();
+        await lockTable(transaction, 'AMSRI');
         const lastSystemId = await getLastSystemId(transaction);
         if (lastSystemId === undefined) {
             throw new Error('Last used system id is unavailable.');
@@ -73,7 +75,9 @@ export async function addWorkOrderResource(mssqlConfig, workOrderResource) {
             .input('lockUnitPrice', workOrderResource.lockUnitPrice ?? 0)
             .input('lockMargin', workOrderResource.lockMargin ?? 0)
             .input('workOrderNumber', workOrderResource.workOrderNumber)
-            .input('workDescription', workOrderResource.workDescription ?? item.itemDescription ?? '')
+            .input('workDescription', 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        workOrderResource.workDescription ?? item.itemDescription ?? '')
             .input('endDateTime', endDateTimeString)
             .input('step', workOrderResource.step ?? '').query(`INSERT INTO AMSRI (
         SRISYSID, SRQISYSID,

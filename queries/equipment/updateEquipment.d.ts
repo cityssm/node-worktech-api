@@ -1,9 +1,15 @@
 import { type mssql } from '@cityssm/mssql-multi-pool';
 export interface UpdateEquipmentFields {
     equipmentDescription: string;
-    equipmentClass: string;
     equipmentStatus: string;
+    equipmentClass: string;
+    serialNumber: string;
     plate: string;
+    equipmentBrand: string;
+    equipmentModel: string;
+    equipmentModelYear: number;
+    location: string;
+    comments: string;
     odometer: number;
 }
 /**

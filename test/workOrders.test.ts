@@ -112,15 +112,17 @@ await describe('queries/workOrders', async () => {
       )
 
       assert.ok(
-        workOrderResourcesAfter.some((resource) => {
-          return resource.serviceRequestItemSystemId === systemId
-        })
+        workOrderResourcesAfter.some(
+          (resource) =>
+            resource.serviceRequestItemSystemId.toString() === systemId
+        )
       )
 
       assert.ok(
-        startDateResourcesAfter.some((resource) => {
-          return resource.serviceRequestItemSystemId === systemId
-        })
+        startDateResourcesAfter.some(
+          (resource) =>
+            resource.serviceRequestItemSystemId.toString() === systemId
+        )
       )
 
       /*
@@ -145,9 +147,9 @@ await describe('queries/workOrders', async () => {
       )
 
       assert.ok(
-        workOrderResourcesAfter.some((resource) => {
-          return resource.workDescription === newDescription
-        })
+        workOrderResourcesAfter.some(
+          (resource) => resource.workDescription === newDescription
+        )
       )
 
       /*

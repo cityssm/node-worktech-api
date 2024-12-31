@@ -5,5 +5,13 @@ export interface AddEquipment extends Partial<EquipmentItem> {
     equipmentId: string;
     equipmentClass: string;
     equipmentDescription: string;
+    serialNumber?: string;
+    plate?: string;
+    equipmentBrand?: string;
+    equipmentModel?: string;
+    equipmentModelYear?: number;
+    location?: string;
+    comments?: string;
+    odometer?: number;
 }
 export declare function addEquipment(mssqlConfig: mssql.config, equipment: AddEquipment): Promise<BigIntString>;

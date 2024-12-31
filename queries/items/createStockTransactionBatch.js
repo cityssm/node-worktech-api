@@ -3,6 +3,7 @@
 import { connect } from '@cityssm/mssql-multi-pool';
 import { dateToString } from '@cityssm/utils-datetime';
 import { _getWorkOrderByWorkOrderNumber } from '../workOrders/getWorkOrders.js';
+import { lockTable } from '../../helpers/lockTable.js';
 const batchDefaults = {
     batchType: 'Stock Transactions',
     userId: '@cityssm/worktech-api'
@@ -20,13 +21,15 @@ export async function createStockTransactionBatch(mssqlConfig, batch) {
     const pool = await connect(mssqlConfig);
     const transaction = pool.transaction();
     try {
+        await transaction.begin();
+        await lockTable(transaction, 'WMBAC');
+        await lockTable(transaction, 'WMTSI');
         /*
          * Create batch
          */
         const userId = batch.userId ?? batchDefaults.userId;
         const batchDate = batch.batchDate ?? dateToString(new Date());
         const batchDescription = (batch.batchDescription ?? `${batchDate} - ${batchDefaults.batchType}`).slice(0, 50);
-        await transaction.begin();
         const batchCreateResult = (await transaction
             .request()
             .input('Type', batchDefaults.batchType)
@@ -59,7 +62,7 @@ export async function createStockTransactionBatch(mssqlConfig, batch) {
                     .request()
                     .input('itemNumber', entry.itemNumber)
                     .query(`select top 1 LocationCode
-            from WMILN
+            from WMILN WITH (NOLOCK)
             where Item_ID = @itemNumber
             order by DefaulLoc desc`));
                 if (locationCodeResult.recordset.length > 0) {

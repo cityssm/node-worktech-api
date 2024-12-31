@@ -5,7 +5,7 @@
   "type": "module",
   "exports": "./index.js",
   "scripts": {
-    "test": "node --test",
+    "test": "node --test --test-concurrency=1",
     "test:equipment": "cross-env NODE_ENV=dev DEBUG=worktech-api:* node --test \"test/equipment.test.js\"",
     "test:items": "cross-env NODE_ENV=dev DEBUG=worktech-api:* node --test \"test/items.test.js\"",
     "test:workOrders": "cross-env NODE_ENV=dev DEBUG=worktech-api:* node --test \"test/workOrders.test.js\"",

@@ -49,12 +49,8 @@ await describe('queries/workOrders', async () => {
             const startDateResourcesAfter = await getWorkOrderResourcesByStartDate(mssqlConfig, dateToString(currentDate));
             assert.strictEqual(workOrderResourcesBefore.length + 1, workOrderResourcesAfter.length);
             assert.strictEqual(startDateResourcesBefore.length + 1, startDateResourcesAfter.length);
-            assert.ok(workOrderResourcesAfter.some((resource) => {
-                return resource.serviceRequestItemSystemId === systemId;
-            }));
-            assert.ok(startDateResourcesAfter.some((resource) => {
-                return resource.serviceRequestItemSystemId === systemId;
-            }));
+            assert.ok(workOrderResourcesAfter.some((resource) => resource.serviceRequestItemSystemId.toString() === systemId));
+            assert.ok(startDateResourcesAfter.some((resource) => resource.serviceRequestItemSystemId.toString() === systemId));
             /*
              * Update details
              */
@@ -67,9 +63,7 @@ await describe('queries/workOrders', async () => {
                 baseAmount: 200
             }));
             workOrderResourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
-            assert.ok(workOrderResourcesAfter.some((resource) => {
-                return resource.workDescription === newDescription;
-            }));
+            assert.ok(workOrderResourcesAfter.some((resource) => resource.workDescription === newDescription));
             /*
              * Delete details
              */

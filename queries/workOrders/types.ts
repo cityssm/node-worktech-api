@@ -48,15 +48,15 @@ export interface WorkOrder {
 }
 
 export interface WorkOrderResource {
-  serviceRequestItemSystemId: BigIntString
+  serviceRequestItemSystemId: BigIntString | number
 
   /** Max length = 9 */
   step: string
 
-  serviceRequestSystemId: BigIntString
+  serviceRequestSystemId: BigIntString | number
   workOrderNumber: string
 
-  itemSystemId: BigIntString
+  itemSystemId: BigIntString | number
   itemId: string
   workDescription: string
 

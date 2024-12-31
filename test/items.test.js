@@ -29,7 +29,7 @@ await describe('queries/items', async () => {
         });
         item = await getItemByItemId(mssqlConfig, newItemId);
         assert(item);
-        assert.strictEqual(item.itemSystemId, itemSystemId);
+        assert.strictEqual(item.itemSystemId.toString(), itemSystemId);
         assert.strictEqual(item.itemId, newItemId);
     });
     await it('Creates a stock transactions batch', async () => {

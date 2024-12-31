@@ -61,7 +61,7 @@ import {
   updateWorkOrderResource
 } from './queries/workOrders/updateWorkOrderResource.js'
 
-const timeoutMillis = 60_000
+const timeoutMillis = 5 * 60_000
 
 /**
  * WorkTech API

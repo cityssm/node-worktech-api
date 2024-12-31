@@ -4,6 +4,7 @@
 import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 import { dateToString, dateToTimeString } from '@cityssm/utils-datetime'
 
+import { lockTable } from '../../helpers/lockTable.js'
 import { getItemByItemId } from '../items/getItems.js'
 import { getLastSystemId, incrementLastSystemId } from '../systemId.js'
 import type { BigIntString } from '../types.js'
@@ -98,6 +99,8 @@ export async function addWorkOrderResource(
   try {
     await transaction.begin()
 
+    await lockTable(transaction, 'AMSRI')
+
     const lastSystemId = await getLastSystemId(transaction)
 
     if (lastSystemId === undefined) {
@@ -123,6 +126,7 @@ export async function addWorkOrderResource(
       .input('workOrderNumber', workOrderResource.workOrderNumber)
       .input(
         'workDescription',
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         workOrderResource.workDescription ?? item.itemDescription ?? ''
       )
       .input('endDateTime', endDateTimeString)

@@ -7,7 +7,7 @@ export const enum ResourceItemStock {
 }
 
 export interface ResourceItem {
-  itemSystemId: BigIntString
+  itemSystemId: BigIntString | number
   itemId: string
 
   itemDescription: string
@@ -17,6 +17,7 @@ export interface ResourceItem {
   externalItemId: string
   itemBrand: string
   itemModel: string
+  itemModelYear: number
   serialNumber: string
   fuelType: string
 

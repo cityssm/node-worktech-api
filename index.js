@@ -14,7 +14,7 @@ import { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderRes
 import { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 import { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
 import { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
-const timeoutMillis = 60_000;
+const timeoutMillis = 5 * 60_000;
 /**
  * WorkTech API
  */

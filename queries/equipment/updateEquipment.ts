@@ -4,17 +4,29 @@ import { clearEquipmentCache } from './getEquipment.js'
 
 export interface UpdateEquipmentFields {
   equipmentDescription: string
-  equipmentClass: string
   equipmentStatus: string
+  equipmentClass: string
+  serialNumber: string
   plate: string
+  equipmentBrand: string
+  equipmentModel: string
+  equipmentModelYear: number
+  location: string
+  comments: string
   odometer: number
 }
 
 const columnNameMappings: Record<keyof UpdateEquipmentFields, string> = {
   equipmentDescription: 'DESC',
-  equipmentClass: 'ItemClass',
   equipmentStatus: 'Status',
+  equipmentClass: 'ItemClass',
+  serialNumber: 'Serial',
   plate: 'Plate',
+  equipmentBrand: 'Brand',
+  equipmentModel: 'Model',
+  equipmentModelYear: 'Year',
+  location: 'Location',
+  comments: 'Comments',
   odometer: 'Odom'
 }
 

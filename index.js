@@ -1,3 +1,4 @@
+import { minutesToMillis } from '@cityssm/to-millis';
 import { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 import { addEquipment } from './queries/equipment/addEquipment.js';
 import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
@@ -14,7 +15,7 @@ import { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderRes
 import { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 import { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
 import { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
-const timeoutMillis = 5 * 60_000;
+const timeoutMillis = minutesToMillis(5);
 /**
  * WorkTech API
  */

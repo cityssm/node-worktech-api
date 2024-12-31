@@ -1,4 +1,5 @@
 import type { mssql } from '@cityssm/mssql-multi-pool'
+import { minutesToMillis } from '@cityssm/to-millis'
 import type { DateString } from '@cityssm/utils-datetime'
 
 import {
@@ -61,7 +62,7 @@ import {
   updateWorkOrderResource
 } from './queries/workOrders/updateWorkOrderResource.js'
 
-const timeoutMillis = 5 * 60_000
+const timeoutMillis = minutesToMillis(5)
 
 /**
  * WorkTech API

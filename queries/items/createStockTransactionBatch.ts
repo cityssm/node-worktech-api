@@ -4,8 +4,8 @@
 import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 import { type DateString, dateToString } from '@cityssm/utils-datetime'
 
-import { _getWorkOrderByWorkOrderNumber } from '../workOrders/getWorkOrders.js'
 import { lockTable } from '../../helpers/lockTable.js'
+import { _getWorkOrderByWorkOrderNumber } from '../workOrders/getWorkOrders.js'
 
 const batchDefaults = {
   batchType: 'Stock Transactions',
@@ -109,6 +109,7 @@ export async function createStockTransactionBatch(
       let locationCode =
         entry.locationCode ?? itemNumberToLocationCode[entry.itemNumber]
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (locationCode === undefined) {
         const locationCodeResult = (await transaction
           .request()

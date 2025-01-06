@@ -2,6 +2,7 @@ import assert from 'node:assert';
 import { randomUUID } from 'node:crypto';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
+import { millisToSeconds } from '@cityssm/to-millis';
 import { WorkTechAPI } from '../index.js';
 import { equipmentToAdd, invalidEquipmentId, mssqlConfig, validEquipmentDepartment, validEquipmentId } from './config.js';
 await describe('queries/equipment', async () => {
@@ -20,7 +21,7 @@ await describe('queries/equipment', async () => {
         assert.strictEqual(equipment, undefined);
     });
     await it('Adds a new piece of equipment, then updates it.', async () => {
-        const equipmentId = `TEST-${Math.round(Date.now() / 1000).toString()}`;
+        const equipmentId = `TEST-${Math.round(millisToSeconds(Date.now())).toString()}`;
         const equipmentDescription = randomUUID();
         console.log(`Adding new equipment: ${equipmentId}`);
         const equipmentRecord = Object.assign({

@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { after, describe, it } from 'node:test'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
+import { millisToSeconds } from '@cityssm/to-millis'
 
 import { WorkTechAPI } from '../index.js'
 import type { AddEquipment } from '../queries/equipment/addEquipment.js'
@@ -40,7 +41,7 @@ await describe('queries/equipment', async () => {
   })
 
   await it('Adds a new piece of equipment, then updates it.', async () => {
-    const equipmentId = `TEST-${Math.round(Date.now() / 1000).toString()}`
+    const equipmentId = `TEST-${Math.round(millisToSeconds(Date.now())).toString()}`
     const equipmentDescription = randomUUID()
 
     console.log(`Adding new equipment: ${equipmentId}`)

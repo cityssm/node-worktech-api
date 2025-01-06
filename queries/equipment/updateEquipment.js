@@ -9,6 +9,7 @@ const columnNameMappings = {
     equipmentBrand: 'Brand',
     equipmentModel: 'Model',
     equipmentModelYear: 'Year',
+    departmentOwned: 'Dept',
     location: 'Location',
     comments: 'Comments',
     odometer: 'Odom'

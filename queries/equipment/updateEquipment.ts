@@ -11,6 +11,7 @@ export interface UpdateEquipmentFields {
   equipmentBrand: string
   equipmentModel: string
   equipmentModelYear: number
+  departmentOwned: string
   location: string
   comments: string
   odometer: number
@@ -25,6 +26,7 @@ const columnNameMappings: Record<keyof UpdateEquipmentFields, string> = {
   equipmentBrand: 'Brand',
   equipmentModel: 'Model',
   equipmentModelYear: 'Year',
+  departmentOwned: 'Dept',
   location: 'Location',
   comments: 'Comments',
   odometer: 'Odom'

@@ -9,6 +9,7 @@ export async function addEquipment(mssqlConfig, equipment) {
         itemBrand: equipment.equipmentBrand,
         itemModel: equipment.equipmentModel,
         itemModelYear: equipment.equipmentModelYear,
+        department: equipment.departmentOwned,
         serialNumber: equipment.serialNumber,
         plate: equipment.plate,
         location: equipment.location,

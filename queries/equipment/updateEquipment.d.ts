@@ -8,6 +8,7 @@ export interface UpdateEquipmentFields {
     equipmentBrand: string;
     equipmentModel: string;
     equipmentModelYear: number;
+    departmentOwned: string;
     location: string;
     comments: string;
     odometer: number;

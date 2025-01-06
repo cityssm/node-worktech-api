@@ -14,6 +14,7 @@ export interface AddEquipment extends Partial<EquipmentItem> {
   equipmentBrand?: string
   equipmentModel?: string
   equipmentModelYear?: number
+  departmentOwned?: string
   location?: string
   comments?: string
   odometer?: number
@@ -32,6 +33,7 @@ export async function addEquipment(
     itemBrand: equipment.equipmentBrand,
     itemModel: equipment.equipmentModel,
     itemModelYear: equipment.equipmentModelYear,
+    department: equipment.departmentOwned,
     serialNumber: equipment.serialNumber,
     plate: equipment.plate,
     location: equipment.location,

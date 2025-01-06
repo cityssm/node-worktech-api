@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { WorkTechAPI } from '../index.js';
-import { equipmentToAdd, invalidEquipmentId, mssqlConfig, validEquipmentId } from './config.js';
+import { equipmentToAdd, invalidEquipmentId, mssqlConfig, validEquipmentDepartment, validEquipmentId } from './config.js';
 await describe('queries/equipment', async () => {
     const worktechApi = new WorkTechAPI(mssqlConfig);
     after(async () => {
@@ -23,10 +23,12 @@ await describe('queries/equipment', async () => {
         const equipmentId = `TEST-${Math.round(Date.now() / 1000).toString()}`;
         const equipmentDescription = randomUUID();
         console.log(`Adding new equipment: ${equipmentId}`);
-        const systemId = await worktechApi.addEquipment(Object.assign({
+        const equipmentRecord = Object.assign({
             equipmentId,
-            equipmentDescription
-        }, equipmentToAdd));
+            equipmentDescription,
+            departmentOwned: validEquipmentDepartment
+        }, equipmentToAdd);
+        const systemId = await worktechApi.addEquipment(equipmentRecord);
         console.log(`New equipment system id: ${systemId}`);
         assert.ok(systemId);
         const equipment = await worktechApi.getEquipmentByEquipmentId(equipmentId);

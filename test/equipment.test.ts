@@ -11,6 +11,7 @@ import {
   equipmentToAdd,
   invalidEquipmentId,
   mssqlConfig,
+  validEquipmentDepartment,
   validEquipmentId
 } from './config.js'
 
@@ -44,15 +45,16 @@ await describe('queries/equipment', async () => {
 
     console.log(`Adding new equipment: ${equipmentId}`)
 
-    const systemId = await worktechApi.addEquipment(
-      Object.assign(
-        {
-          equipmentId,
-          equipmentDescription
-        },
-        equipmentToAdd
-      ) satisfies AddEquipment
-    )
+    const equipmentRecord = Object.assign(
+      {
+        equipmentId,
+        equipmentDescription,
+        departmentOwned: validEquipmentDepartment
+      },
+      equipmentToAdd
+    ) as AddEquipment
+
+    const systemId = await worktechApi.addEquipment(equipmentRecord)
 
     console.log(`New equipment system id: ${systemId}`)
 

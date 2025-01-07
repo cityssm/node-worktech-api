@@ -1,5 +1,7 @@
 import { connect, type mssql } from '@cityssm/mssql-multi-pool'
 
+import type { BigIntString } from '../types.js'
+
 import { clearEquipmentCache } from './getEquipment.js'
 
 export interface UpdateEquipmentFields {
@@ -35,13 +37,13 @@ const columnNameMappings: Record<keyof UpdateEquipmentFields, string> = {
 /**
  * Updates fields for a piece of equipment.
  * @param mssqlConfig - SQL Server configuration.
- * @param equipmentId - The equipment id.
+ * @param equipmentSystemId - The equipment system id.
  * @param fieldsToUpdate - The fields to update.
  * @returns True if the update was successful.
  */
 export async function updateEquipmentFields(
   mssqlConfig: mssql.config,
-  equipmentId: string,
+  equipmentSystemId: BigIntString,
   fieldsToUpdate: Partial<UpdateEquipmentFields>
 ): Promise<boolean> {
   const pool = await connect(mssqlConfig)
@@ -58,9 +60,9 @@ export async function updateEquipmentFields(
     request = request.input(fieldName, fieldValue)
   }
 
-  await request.input('equipmentId', equipmentId).query(`update WMITM
+  await request.input('equipmentSystemId', equipmentSystemId).query(`update WMITM
     set ${updateList.join(', ')}
-    where Item_ID = @equipmentId`)
+    where ITMSysID = @equipmentSystemId`)
 
   clearEquipmentCache()
 

@@ -32,16 +32,21 @@ export class WorkTechAPI {
     /**
      * Retrieves a piece of equipment.
      * @param equipmentId - The equipment id.
-     * @returns - The equipment record, if available.
+     * @returns The equipment record, if available.
      */
     async getEquipmentByEquipmentId(equipmentId) {
         return await getEquipmentByEquipmentId(this.#mssqlConfig, equipmentId);
     }
+    /**
+     * Creates a new equipment record.
+     * @param equipment - The equipment to add.
+     * @returns The system id for the new equipment record.
+     */
     async addEquipment(equipment) {
         return await addEquipment(this.#mssqlConfig, equipment);
     }
-    async updateEquipmentFields(equipmentId, fields) {
-        return await updateEquipmentFields(this.#mssqlConfig, equipmentId, fields);
+    async updateEquipmentFields(equipmentSystemId, fields) {
+        return await updateEquipmentFields(this.#mssqlConfig, equipmentSystemId, fields);
     }
     /**
      * Retrieves an item.

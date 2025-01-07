@@ -90,7 +90,7 @@ export class WorkTechAPI {
   /**
    * Retrieves a piece of equipment.
    * @param equipmentId - The equipment id.
-   * @returns - The equipment record, if available.
+   * @returns The equipment record, if available.
    */
   async getEquipmentByEquipmentId(
     equipmentId: string
@@ -98,15 +98,24 @@ export class WorkTechAPI {
     return await getEquipmentByEquipmentId(this.#mssqlConfig, equipmentId)
   }
 
+  /**
+   * Creates a new equipment record.
+   * @param equipment - The equipment to add.
+   * @returns The system id for the new equipment record.
+   */
   async addEquipment(equipment: AddEquipment): Promise<BigIntString> {
     return await addEquipment(this.#mssqlConfig, equipment)
   }
 
   async updateEquipmentFields(
-    equipmentId: string,
+    equipmentSystemId: BigIntString,
     fields: Partial<EquipmentItem>
   ): Promise<boolean> {
-    return await updateEquipmentFields(this.#mssqlConfig, equipmentId, fields)
+    return await updateEquipmentFields(
+      this.#mssqlConfig,
+      equipmentSystemId,
+      fields
+    )
   }
 
   /**
@@ -359,7 +368,10 @@ export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAcc
 
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
 export { addEquipment } from './queries/equipment/addEquipment.js'
-export { updateEquipmentFields } from './queries/equipment/updateEquipment.js'
+export {
+  type UpdateEquipmentFields,
+  updateEquipmentFields
+} from './queries/equipment/updateEquipment.js'
 
 export { getItemByItemId } from './queries/items/getItems.js'
 export {

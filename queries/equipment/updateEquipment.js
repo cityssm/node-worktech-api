@@ -17,11 +17,11 @@ const columnNameMappings = {
 /**
  * Updates fields for a piece of equipment.
  * @param mssqlConfig - SQL Server configuration.
- * @param equipmentId - The equipment id.
+ * @param equipmentSystemId - The equipment system id.
  * @param fieldsToUpdate - The fields to update.
  * @returns True if the update was successful.
  */
-export async function updateEquipmentFields(mssqlConfig, equipmentId, fieldsToUpdate) {
+export async function updateEquipmentFields(mssqlConfig, equipmentSystemId, fieldsToUpdate) {
     const pool = await connect(mssqlConfig);
     let request = pool.request();
     const updateList = [];
@@ -30,9 +30,9 @@ export async function updateEquipmentFields(mssqlConfig, equipmentId, fieldsToUp
         updateList.push(`[${columnName}] = @${fieldName}`);
         request = request.input(fieldName, fieldValue);
     }
-    await request.input('equipmentId', equipmentId).query(`update WMITM
+    await request.input('equipmentSystemId', equipmentSystemId).query(`update WMITM
     set ${updateList.join(', ')}
-    where Item_ID = @equipmentId`);
+    where ITMSysID = @equipmentSystemId`);
     clearEquipmentCache();
     return true;
 }

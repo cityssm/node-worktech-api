@@ -23,11 +23,16 @@ export declare class WorkTechAPI {
     /**
      * Retrieves a piece of equipment.
      * @param equipmentId - The equipment id.
-     * @returns - The equipment record, if available.
+     * @returns The equipment record, if available.
      */
     getEquipmentByEquipmentId(equipmentId: string): Promise<EquipmentItem | undefined>;
+    /**
+     * Creates a new equipment record.
+     * @param equipment - The equipment to add.
+     * @returns The system id for the new equipment record.
+     */
     addEquipment(equipment: AddEquipment): Promise<BigIntString>;
-    updateEquipmentFields(equipmentId: string, fields: Partial<EquipmentItem>): Promise<boolean>;
+    updateEquipmentFields(equipmentSystemId: BigIntString, fields: Partial<EquipmentItem>): Promise<boolean>;
     /**
      * Retrieves an item.
      * @param itemId - The item id.
@@ -156,7 +161,7 @@ export declare class WorkTechAPI {
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';
-export { updateEquipmentFields } from './queries/equipment/updateEquipment.js';
+export { type UpdateEquipmentFields, updateEquipmentFields } from './queries/equipment/updateEquipment.js';
 export { getItemByItemId } from './queries/items/getItems.js';
 export { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js';
 export { type CreateStockTransactionBatch, type CreateStockTransactionBatchEntry, createStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';

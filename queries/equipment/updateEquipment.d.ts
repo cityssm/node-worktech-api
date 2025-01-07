@@ -1,4 +1,5 @@
 import { type mssql } from '@cityssm/mssql-multi-pool';
+import type { BigIntString } from '../types.js';
 export interface UpdateEquipmentFields {
     equipmentDescription: string;
     equipmentStatus: string;
@@ -16,8 +17,8 @@ export interface UpdateEquipmentFields {
 /**
  * Updates fields for a piece of equipment.
  * @param mssqlConfig - SQL Server configuration.
- * @param equipmentId - The equipment id.
+ * @param equipmentSystemId - The equipment system id.
  * @param fieldsToUpdate - The fields to update.
  * @returns True if the update was successful.
  */
-export declare function updateEquipmentFields(mssqlConfig: mssql.config, equipmentId: string, fieldsToUpdate: Partial<UpdateEquipmentFields>): Promise<boolean>;
+export declare function updateEquipmentFields(mssqlConfig: mssql.config, equipmentSystemId: BigIntString, fieldsToUpdate: Partial<UpdateEquipmentFields>): Promise<boolean>;

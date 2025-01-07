@@ -55,11 +55,9 @@ await describe('queries/equipment', async () => {
       equipmentToAdd
     ) as AddEquipment
 
-    const systemId = await worktechApi.addEquipment(equipmentRecord)
+    const equipmentSystemId = await worktechApi.addEquipment(equipmentRecord)
 
-    console.log(`New equipment system id: ${systemId}`)
-
-    assert.ok(systemId)
+    console.log(`New equipment system id: ${equipmentSystemId}`)
 
     const equipment = await worktechApi.getEquipmentByEquipmentId(equipmentId)
 
@@ -69,7 +67,7 @@ await describe('queries/equipment', async () => {
 
     const newEquipmentDescription = randomUUID()
 
-    await worktechApi.updateEquipmentFields(equipmentId, {
+    await worktechApi.updateEquipmentFields(equipmentSystemId, {
       equipmentDescription: newEquipmentDescription
     })
 

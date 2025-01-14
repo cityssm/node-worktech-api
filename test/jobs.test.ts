@@ -2,7 +2,9 @@ import assert from 'node:assert'
 import { after, describe, it } from 'node:test'
 
 import { releaseAll } from '@cityssm/mssql-multi-pool'
+import Debug from 'debug'
 
+import { DEBUG_ENABLE_NAMESPACES } from '../debug.config.js'
 import {
   getActivitiesAssignedToJobByFiscalYear,
   getActivityByActivityId,
@@ -21,6 +23,8 @@ import {
   validJobId,
   validObjectCode
 } from './config.js'
+
+Debug.enable(DEBUG_ENABLE_NAMESPACES)
 
 await describe('queries/jobs', async () => {
   after(async () => {

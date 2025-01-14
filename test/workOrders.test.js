@@ -1,10 +1,15 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable max-nested-callbacks */
 import assert from 'node:assert';
 import { randomUUID } from 'node:crypto';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { dateToString } from '@cityssm/utils-datetime';
+import Debug from 'debug';
+import { DEBUG_ENABLE_NAMESPACES } from '../debug.config.js';
 import { addWorkOrderResource, deleteWorkOrderResource, getWorkOrderByWorkOrderNumber, getWorkOrderResourcesByStartDate, getWorkOrderResourcesByWorkOrderNumber, updateWorkOrderResource } from '../index.js';
 import { invalidWorkOrderNumber, mssqlConfig, validItemId, validWorkOrderNumber } from './config.js';
+Debug.enable(DEBUG_ENABLE_NAMESPACES);
 await describe('queries/workOrders', async () => {
     after(async () => {
         await releaseAll();
@@ -44,6 +49,7 @@ await describe('queries/workOrders', async () => {
                 lockMargin: 1,
                 lockUnitPrice: 1
             });
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, sonarjs/different-types-comparison
             assert.ok(systemId !== undefined);
             let workOrderResourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(mssqlConfig, validWorkOrderNumber);
             const startDateResourcesAfter = await getWorkOrderResourcesByStartDate(mssqlConfig, dateToString(currentDate));

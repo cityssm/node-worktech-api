@@ -3,8 +3,11 @@ import { randomUUID } from 'node:crypto';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
 import { millisToSeconds } from '@cityssm/to-millis';
+import Debug from 'debug';
+import { DEBUG_ENABLE_NAMESPACES } from '../debug.config.js';
 import { WorkTechAPI } from '../index.js';
 import { equipmentToAdd, invalidEquipmentId, mssqlConfig, validEquipmentDepartment, validEquipmentId } from './config.js';
+Debug.enable(DEBUG_ENABLE_NAMESPACES);
 await describe('queries/equipment', async () => {
     const worktechApi = new WorkTechAPI(mssqlConfig);
     after(async () => {

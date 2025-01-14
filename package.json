@@ -3,12 +3,16 @@
   "version": "0.8.0",
   "description": "Integrations with the WorkTech work order management system.",
   "type": "module",
-  "exports": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./debug": "./debug.config.js"
+  },
   "scripts": {
     "test": "node --test --test-concurrency=1",
-    "test:equipment": "cross-env NODE_ENV=dev DEBUG=worktech-api:* node --test \"test/equipment.test.js\"",
-    "test:items": "cross-env NODE_ENV=dev DEBUG=worktech-api:* node --test \"test/items.test.js\"",
-    "test:workOrders": "cross-env NODE_ENV=dev DEBUG=worktech-api:* node --test \"test/workOrders.test.js\"",
+    "test:equipment": "node --test \"test/equipment.test.js\"",
+    "test:helpers": "node --test \"test/helpers.test.js\"",
+    "test:items": "node --test \"test/items.test.js\"",
+    "test:workOrders": "node --test \"test/workOrders.test.js\"",
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --test --test-concurrency=1"
   },
   "keywords": [
@@ -32,7 +36,7 @@
     "prettier-config-cityssm": "^1.0.0"
   },
   "dependencies": {
-    "@cityssm/mssql-multi-pool": "^4.1.0",
+    "@cityssm/mssql-multi-pool": "^5.0.0",
     "@cityssm/to-millis": "^1.0.0",
     "@cityssm/utils-datetime": "^1.3.0",
     "debug": "^4.4.0",

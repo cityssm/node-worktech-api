@@ -1,8 +1,11 @@
 import assert from 'node:assert';
 import { after, describe, it } from 'node:test';
 import { releaseAll } from '@cityssm/mssql-multi-pool';
+import Debug from 'debug';
+import { DEBUG_ENABLE_NAMESPACES } from '../debug.config.js';
 import { WorkTechAPI } from '../index.js';
 import { accountNumberObjectCode, accountNumberWorkOrderNumber, mssqlConfig, validActivityId, validItemId, validJobId, validObjectCode, validWorkOrderNumber } from './config.js';
+Debug.enable(DEBUG_ENABLE_NAMESPACES);
 await describe('WorkTechAPI()', async () => {
     const api = new WorkTechAPI(mssqlConfig);
     after(async () => {

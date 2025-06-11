@@ -35,7 +35,7 @@ await describe('queries/equipment', async () => {
         const equipmentSystemId = await worktechApi.addEquipment(equipmentRecord);
         console.log(`New equipment system id: ${equipmentSystemId}`);
         const equipment = await worktechApi.getEquipmentByEquipmentId(equipmentId);
-        assert(equipment !== undefined);
+        assert.ok(equipment !== undefined);
         assert.strictEqual(equipment.equipmentId, equipmentId);
         assert.strictEqual(equipment.equipmentDescription, equipmentDescription);
         const newEquipmentDescription = randomUUID();
@@ -43,7 +43,7 @@ await describe('queries/equipment', async () => {
             equipmentDescription: newEquipmentDescription
         });
         const updatedEquipment = await worktechApi.getEquipmentByEquipmentId(equipmentId);
-        assert(updatedEquipment !== undefined);
+        assert.ok(updatedEquipment !== undefined);
         assert.strictEqual(updatedEquipment.equipmentDescription, newEquipmentDescription);
     });
 });

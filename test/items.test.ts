@@ -56,7 +56,7 @@ await describe('queries/items', async () => {
 
     item = await getItemByItemId(mssqlConfig, newItemId)
 
-    assert(item)
+    assert.ok(item)
     assert.strictEqual(item.itemSystemId.toString(), itemSystemId)
     assert.strictEqual(item.itemId, newItemId)
   })
@@ -67,6 +67,6 @@ await describe('queries/items', async () => {
       stockTransactionBatch
     )
 
-    assert(batchId)
+    assert.ok(batchId)
   })
 })

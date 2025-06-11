@@ -31,12 +31,12 @@ await describe('queries/items', async () => {
             unit: 'EA'
         });
         item = await getItemByItemId(mssqlConfig, newItemId);
-        assert(item);
+        assert.ok(item);
         assert.strictEqual(item.itemSystemId.toString(), itemSystemId);
         assert.strictEqual(item.itemId, newItemId);
     });
     await it('Creates a stock transactions batch', async () => {
         const batchId = await createStockTransactionBatch(mssqlConfig, stockTransactionBatch);
-        assert(batchId);
+        assert.ok(batchId);
     });
 });

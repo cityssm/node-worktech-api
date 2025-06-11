@@ -65,7 +65,7 @@ await describe('queries/equipment', async () => {
 
     const equipment = await worktechApi.getEquipmentByEquipmentId(equipmentId)
 
-    assert(equipment !== undefined)
+    assert.ok(equipment !== undefined)
     assert.strictEqual(equipment.equipmentId, equipmentId)
     assert.strictEqual(equipment.equipmentDescription, equipmentDescription)
 
@@ -78,7 +78,7 @@ await describe('queries/equipment', async () => {
     const updatedEquipment =
       await worktechApi.getEquipmentByEquipmentId(equipmentId)
 
-    assert(updatedEquipment !== undefined)
+    assert.ok(updatedEquipment !== undefined)
     assert.strictEqual(
       updatedEquipment.equipmentDescription,
       newEquipmentDescription

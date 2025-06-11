@@ -366,18 +366,18 @@ export class WorkTechAPI {
 
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js'
 
-export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
 export { addEquipment } from './queries/equipment/addEquipment.js'
+export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
 export {
   type UpdateEquipmentFields,
   updateEquipmentFields
 } from './queries/equipment/updateEquipment.js'
 
-export { getItemByItemId } from './queries/items/getItems.js'
 export {
   type AddResourceItem,
   addResourceItem
 } from './queries/items/addResourceItem.js'
+export { getItemByItemId } from './queries/items/getItems.js'
 
 export {
   type CreateStockTransactionBatch,
@@ -386,27 +386,27 @@ export {
 } from './queries/items/createStockTransactionBatch.js'
 
 export {
-  getActivityByActivityId,
-  getActivitiesAssignedToJobByFiscalYear
+  getActivitiesAssignedToJobByFiscalYear,
+  getActivityByActivityId
 } from './queries/jobs/getActivities.js'
+export { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js'
 export { getJobByJobId } from './queries/jobs/getJobs.js'
 export {
+  getObjectCodeAssignedToJobByObjectCodeAndFiscalYear,
   getObjectCodeByObjectCode,
-  getObjectCodesAssignedToJobByFiscalYear,
-  getObjectCodeAssignedToJobByObjectCodeAndFiscalYear
+  getObjectCodesAssignedToJobByFiscalYear
 } from './queries/jobs/getObjectCodes.js'
-export { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js'
 
 export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js'
 
 export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js'
+export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js'
 export {
   getWorkOrderResourcesByStartDate,
   getWorkOrderResourcesByStartDateTimeRange,
   getWorkOrderResourcesByWorkOrderNumber
 } from './queries/workOrders/getWorkOrderResources.js'
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js'
-export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js'
 
 /*
  * Export Types
@@ -415,10 +415,10 @@ export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderRes
 export type { EquipmentItem } from './queries/equipment/types.js'
 export type { ResourceItem } from './queries/items/types.js'
 export type {
-  Job,
   Activity,
-  ObjectCode,
-  JobActivityObjectCode
+  Job,
+  JobActivityObjectCode,
+  ObjectCode
 } from './queries/jobs/types.js'
 export type {
   WorkOrder,

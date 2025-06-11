@@ -205,18 +205,18 @@ export class WorkTechAPI {
     }
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
-export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';
+export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 export { updateEquipmentFields } from './queries/equipment/updateEquipment.js';
-export { getItemByItemId } from './queries/items/getItems.js';
 export { addResourceItem } from './queries/items/addResourceItem.js';
+export { getItemByItemId } from './queries/items/getItems.js';
 export { createStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';
-export { getActivityByActivityId, getActivitiesAssignedToJobByFiscalYear } from './queries/jobs/getActivities.js';
-export { getJobByJobId } from './queries/jobs/getJobs.js';
-export { getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear, getObjectCodeAssignedToJobByObjectCodeAndFiscalYear } from './queries/jobs/getObjectCodes.js';
+export { getActivitiesAssignedToJobByFiscalYear, getActivityByActivityId } from './queries/jobs/getActivities.js';
 export { getJobActivityObjectCodeByKeys } from './queries/jobs/getJobActivityObjectCodes.js';
+export { getJobByJobId } from './queries/jobs/getJobs.js';
+export { getObjectCodeAssignedToJobByObjectCodeAndFiscalYear, getObjectCodeByObjectCode, getObjectCodesAssignedToJobByFiscalYear } from './queries/jobs/getObjectCodes.js';
 export { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
 export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.js';
+export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';
 export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
-export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';

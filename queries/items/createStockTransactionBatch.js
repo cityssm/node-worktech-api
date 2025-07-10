@@ -47,7 +47,7 @@ export async function createStockTransactionBatch(mssqlConfig, batch) {
          * Insert batch entries
          */
         const itemNumberToLocationCode = {};
-        debug('Creating batch entries', batch.entries.length);
+        debug('Creating batch entries:', batch.entries.length);
         for (const entry of batch.entries) {
             let jobId = entry.jobId;
             let activityId = entry.activityId;
@@ -101,6 +101,7 @@ export async function createStockTransactionBatch(mssqlConfig, batch) {
         }
         debug('Committing transaction for batch creation');
         await transaction.commit();
+        debug('Batch created successfully with ID:', batchId);
         return batchId;
     }
     catch (error) {

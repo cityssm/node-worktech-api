@@ -2,8 +2,11 @@
 /* eslint-disable unicorn/no-null */
 import { connect } from '@cityssm/mssql-multi-pool';
 import { dateToString } from '@cityssm/utils-datetime';
+import Debug from 'debug';
+import { DEBUG_NAMESPACE } from '../../debug.config.js';
 import { lockTable } from '../../helpers/lockTable.js';
 import { _getWorkOrderByWorkOrderNumber } from '../workOrders/getWorkOrders.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:createStockTransactionBatch`);
 const batchDefaults = {
     batchType: 'Stock Transactions',
     userId: '@cityssm/worktech-api'
@@ -22,6 +25,7 @@ export async function createStockTransactionBatch(mssqlConfig, batch) {
     const transaction = pool.transaction();
     try {
         await transaction.begin();
+        debug('Locking tables for batch creation');
         await lockTable(transaction, 'WMBAC');
         await lockTable(transaction, 'WMTSI');
         /*
@@ -30,6 +34,7 @@ export async function createStockTransactionBatch(mssqlConfig, batch) {
         const userId = batch.userId ?? batchDefaults.userId;
         const batchDate = batch.batchDate ?? dateToString(new Date());
         const batchDescription = (batch.batchDescription ?? `${batchDate} - ${batchDefaults.batchType}`).slice(0, 50);
+        debug('Creating batch', batchDescription);
         const batchCreateResult = (await transaction
             .request()
             .input('Type', batchDefaults.batchType)
@@ -42,6 +47,7 @@ export async function createStockTransactionBatch(mssqlConfig, batch) {
          * Insert batch entries
          */
         const itemNumberToLocationCode = {};
+        debug('Creating batch entries', batch.entries.length);
         for (const entry of batch.entries) {
             let jobId = entry.jobId;
             let activityId = entry.activityId;
@@ -93,10 +99,12 @@ export async function createStockTransactionBatch(mssqlConfig, batch) {
                 .input('LocationCode', locationCode)
                 .execute('WT_INSERT_WMTSI');
         }
+        debug('Committing transaction for batch creation');
         await transaction.commit();
         return batchId;
     }
     catch (error) {
+        debug('Rolling back transaction for batch creation due to error:', error);
         await transaction.rollback();
         throw error;
     }

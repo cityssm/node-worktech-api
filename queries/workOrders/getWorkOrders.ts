@@ -1,5 +1,5 @@
-import { connect, type mssql } from '@cityssm/mssql-multi-pool'
-import NodeCache from 'node-cache'
+import { NodeCache } from '@cacheable/node-cache'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
 
@@ -52,7 +52,7 @@ const sql = `SELECT [SRQISysID] as serviceRequestSystemId,
   
   FROM [AMSRQI] WITH (NOLOCK)`
 
-const cache = new NodeCache({
+const cache = new NodeCache<WorkOrder>({
   stdTTL: cacheTimeToLiveSeconds
 })
 
@@ -75,7 +75,7 @@ export async function _getWorkOrderByWorkOrderNumber(
   request: mssql.Request,
   workOrderNumber: string
 ): Promise<WorkOrder | undefined> {
-  let workOrder: WorkOrder | undefined = cache.get(workOrderNumber)
+  let workOrder = cache.get(workOrderNumber)
 
   if (workOrder !== undefined) {
     return workOrder

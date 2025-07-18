@@ -1,8 +1,5 @@
-import {
-  connect,
-  type mssql
-} from '@cityssm/mssql-multi-pool'
-import NodeCache from 'node-cache'
+import { NodeCache } from '@cacheable/node-cache'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
 
@@ -42,7 +39,7 @@ const sql = `SELECT [ITMSysID] as equipmentSystemId,
   FROM [WMITM] WITH (NOLOCK)
   where [Type] in ('Equipment')`
 
-const cache = new NodeCache({
+const cache = new NodeCache<EquipmentItem>({
   stdTTL: cacheTimeToLiveSeconds
 })
 
@@ -56,7 +53,7 @@ export async function getEquipmentByEquipmentId(
   mssqlConfig: mssql.config,
   equipmentId: string
 ): Promise<EquipmentItem | undefined> {
-  let equipment: EquipmentItem | undefined = cache.get(equipmentId)
+  let equipment = cache.get(equipmentId)
 
   if (equipment !== undefined) {
     return equipment

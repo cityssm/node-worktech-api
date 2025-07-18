@@ -1,5 +1,5 @@
+import { NodeCache } from '@cacheable/node-cache';
 import { connect } from '@cityssm/mssql-multi-pool';
-import NodeCache from 'node-cache';
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js';
 const sql = `SELECT [JobSysID] as jobSystemId,
   [Job_ID] as jobId,
@@ -36,10 +36,10 @@ export async function getJobByJobId(mssqlConfig, jobId) {
         return jobObject;
     }
     const pool = await connect(mssqlConfig);
-    const jobResult = await pool
+    const jobResult = (await pool
         .request()
         .input('jobId', jobId)
-        .query(`${sql} where Job_ID = @jobId`);
+        .query(`${sql} where Job_ID = @jobId`));
     if (jobResult.recordset.length === 0) {
         return undefined;
     }

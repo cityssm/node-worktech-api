@@ -1,5 +1,5 @@
-import { connect, type mssql } from '@cityssm/mssql-multi-pool'
-import NodeCache from 'node-cache'
+import { NodeCache } from '@cacheable/node-cache'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
 
@@ -11,7 +11,7 @@ const sql = `SELECT [OCSysID] as objectCodeSystemId,
   coalesce([AcctSeg], '') as accountSegment
   FROM [WMOCD] WITH (NOLOCK)`
 
-const cache = new NodeCache({
+const cache = new NodeCache<ObjectCode>({
   stdTTL: cacheTimeToLiveSeconds
 })
 
@@ -25,7 +25,7 @@ export async function getObjectCodeByObjectCode(
   mssqlConfig: mssql.config,
   objectCode: string
 ): Promise<ObjectCode | undefined> {
-  let objectCodeObject: ObjectCode | undefined = cache.get(objectCode)
+  let objectCodeObject = cache.get(objectCode)
 
   if (objectCodeObject !== undefined) {
     return objectCodeObject

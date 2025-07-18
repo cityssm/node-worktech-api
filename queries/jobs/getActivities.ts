@@ -1,8 +1,5 @@
-import {
-  connect,
-  type mssql
-} from '@cityssm/mssql-multi-pool'
-import NodeCache from 'node-cache'
+import { NodeCache } from '@cacheable/node-cache'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
 
@@ -17,7 +14,7 @@ const sql = `SELECT [ActvSysID] as activitySystemId,
   coalesce([AcctSeg], '') as accountSegment
   FROM [WMACD] WITH (NOLOCK)`
 
-const cache = new NodeCache({
+const cache = new NodeCache<Activity>({
   stdTTL: cacheTimeToLiveSeconds
 })
 
@@ -31,7 +28,7 @@ export async function getActivityByActivityId(
   mssqlConfig: mssql.config,
   activityId: string
 ): Promise<Activity | undefined> {
-  let activityObject: Activity | undefined = cache.get(activityId)
+  let activityObject = cache.get(activityId)
 
   if (activityObject !== undefined) {
     return activityObject

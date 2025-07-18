@@ -1,5 +1,5 @@
+import { NodeCache } from '@cacheable/node-cache';
 import { connect } from '@cityssm/mssql-multi-pool';
-import NodeCache from 'node-cache';
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js';
 const sql = `SELECT [ActvSysID] as activitySystemId,
   [Actv_ID] as activityId,

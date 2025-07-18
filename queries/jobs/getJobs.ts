@@ -1,8 +1,5 @@
-import {
-  connect,
-  type mssql
-} from '@cityssm/mssql-multi-pool'
-import NodeCache from 'node-cache'
+import { NodeCache } from '@cacheable/node-cache'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
 
@@ -29,7 +26,7 @@ const sql = `SELECT [JobSysID] as jobSystemId,
   coalesce([Asset_ID], '') as defaultAssetId
   FROM [WMJOM] WITH (NOLOCK)`
 
-const cache = new NodeCache({
+const cache = new NodeCache<Job>({
   stdTTL: cacheTimeToLiveSeconds
 })
 
@@ -43,7 +40,7 @@ export async function getJobByJobId(
   mssqlConfig: mssql.config,
   jobId: string
 ): Promise<Job | undefined> {
-  let jobObject: Job | undefined = cache.get(jobId)
+  let jobObject = cache.get(jobId)
 
   if (jobObject !== undefined) {
     return jobObject
@@ -51,10 +48,10 @@ export async function getJobByJobId(
 
   const pool = await connect(mssqlConfig)
 
-  const jobResult = await pool
+  const jobResult = (await pool
     .request()
     .input('jobId', jobId)
-    .query(`${sql} where Job_ID = @jobId`) as mssql.IResult<Job>
+    .query(`${sql} where Job_ID = @jobId`)) as mssql.IResult<Job>
 
   if (jobResult.recordset.length === 0) {
     return undefined

@@ -4,7 +4,7 @@ import type { Activity } from './types.js';
  * Retrieves an activity.
  * @param mssqlConfig - SQL Server configuration.
  * @param activityId - The activity id
- * @returns - The activity, if available.
+ * @returns The activity, if available.
  */
 export declare function getActivityByActivityId(mssqlConfig: mssql.config, activityId: string): Promise<Activity | undefined>;
 /**

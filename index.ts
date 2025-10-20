@@ -6,6 +6,8 @@ import {
   type AccountNumberSource,
   getAccountNumberByWorkOrderNumberAndObjectCode
 } from './helpers/getAccountNumber.js'
+import { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js'
+import type { EmployeePayCode } from './queries/employees/types.js'
 import {
   type AddEquipment,
   addEquipment
@@ -62,6 +64,7 @@ import {
   updateWorkOrderResource
 } from './queries/workOrders/updateWorkOrderResource.js'
 
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const timeoutMillis = minutesToMillis(5)
 
 /**
@@ -360,6 +363,23 @@ export class WorkTechAPI {
       this.#mssqlConfig,
       workOrderNumber,
       optionalObjectCode
+    )
+  }
+
+  /**
+   * Retrieves employee pay codes.
+   * @param employeeNumber - The employee number.
+   * @param effectiveDate - The effective date.
+   * @returns The employee pay codes.
+   */
+  async getEmployeePayCodes(
+    employeeNumber: string,
+    effectiveDate?: Date
+  ): Promise<EmployeePayCode[]> {
+    return await getEmployeePayCodes(
+      this.#mssqlConfig,
+      employeeNumber,
+      effectiveDate
     )
   }
 }

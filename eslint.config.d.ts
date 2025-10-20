@@ -1,2 +1,2 @@
-export declare const config: import("@typescript-eslint/utils/ts-eslint").FlatConfig.ConfigArray;
+export declare const config: import("@eslint/config-helpers", { with: { "resolution-mode": "require" } }).Config[];
 export default config;

@@ -1,7 +1,9 @@
-import configCityssm, { cspellWords } from 'eslint-config-cityssm'
-import tseslint from 'typescript-eslint'
+import { cspellWords } from 'eslint-config-cityssm/exports.js'
+import configCityssm, {
+  defineConfig
+} from 'eslint-config-cityssm/packageConfig'
 
-export const config = tseslint.config(...configCityssm, {
+export const config = defineConfig(configCityssm, {
   files: ['**/*.ts'],
   rules: {
     '@cspell/spellchecker': [
@@ -34,19 +36,24 @@ export const config = tseslint.config(...configCityssm, {
             'wmabca',
             'wmacd',
             'wmbac',
+            'wmepci',
+            'wmepd',
             'wmiln',
             'wmitm',
             'wmjaca',
             'wmjoca',
             'wmjom',
             'wmocd',
+            'wmpod',
             'wmtsi'
           ]
         }
       }
     ],
-    '@typescript-eslint/no-unsafe-type-assertion': 'off',
+
     '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/no-unsafe-type-assertion': 'off',
+    
     'unicorn/no-null': 'warn'
   }
 })

@@ -1,5 +1,6 @@
 import { minutesToMillis } from '@cityssm/to-millis';
 import { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
+import { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js';
 import { addEquipment } from './queries/equipment/addEquipment.js';
 import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 import { updateEquipmentFields } from './queries/equipment/updateEquipment.js';
@@ -15,6 +16,7 @@ import { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderRes
 import { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 import { getWorkOrderByWorkOrderNumber } from './queries/workOrders/getWorkOrders.js';
 import { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const timeoutMillis = minutesToMillis(5);
 /**
  * WorkTech API
@@ -202,6 +204,15 @@ export class WorkTechAPI {
      */
     async getAccountNumberByWorkOrderNumberAndObjectCode(workOrderNumber, optionalObjectCode) {
         return await getAccountNumberByWorkOrderNumberAndObjectCode(this.#mssqlConfig, workOrderNumber, optionalObjectCode);
+    }
+    /**
+     * Retrieves employee pay codes.
+     * @param employeeNumber - The employee number.
+     * @param effectiveDate - The effective date.
+     * @returns The employee pay codes.
+     */
+    async getEmployeePayCodes(employeeNumber, effectiveDate) {
+        return await getEmployeePayCodes(this.#mssqlConfig, employeeNumber, effectiveDate);
     }
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';

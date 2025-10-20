@@ -16,7 +16,7 @@ const cache = new NodeCache({
  * Retrieves an activity.
  * @param mssqlConfig - SQL Server configuration.
  * @param activityId - The activity id
- * @returns - The activity, if available.
+ * @returns The activity, if available.
  */
 export async function getActivityByActivityId(mssqlConfig, activityId) {
     let activityObject = cache.get(activityId);

@@ -1,6 +1,7 @@
 import type { mssql } from '@cityssm/mssql-multi-pool';
 import type { DateString } from '@cityssm/utils-datetime';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
+import type { EmployeePayCode } from './queries/employees/types.js';
 import { type AddEquipment } from './queries/equipment/addEquipment.js';
 import type { EquipmentItem } from './queries/equipment/types.js';
 import { type AddResourceItem } from './queries/items/addResourceItem.js';
@@ -157,6 +158,13 @@ export declare class WorkTechAPI {
      * @returns - The account number and its source, if available.
      */
     getAccountNumberByWorkOrderNumberAndObjectCode(workOrderNumber: string, optionalObjectCode?: string): Promise<AccountNumberSource | undefined>;
+    /**
+     * Retrieves employee pay codes.
+     * @param employeeNumber - The employee number.
+     * @param effectiveDate - The effective date.
+     * @returns The employee pay codes.
+     */
+    getEmployeePayCodes(employeeNumber: string, effectiveDate?: Date): Promise<EmployeePayCode[]>;
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';

@@ -1,5 +1,5 @@
 // eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable max-nested-callbacks */
+/* eslint-disable max-nested-callbacks, no-console */
 
 import assert from 'node:assert'
 import { randomUUID } from 'node:crypto'
@@ -96,7 +96,7 @@ await describe('queries/workOrders', async () => {
         lockUnitPrice: 1
       })
 
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, sonarjs/different-types-comparison
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       assert.ok(systemId !== undefined)
 
       let workOrderResourcesAfter =
@@ -139,7 +139,7 @@ await describe('queries/workOrders', async () => {
 
       const newDescription = `Updated description - ${randomUUID().slice(-10)}`
 
-      assert(
+      assert.ok(
         await updateWorkOrderResource(mssqlConfig, {
           serviceRequestItemSystemId: systemId,
           workDescription: newDescription,
@@ -164,7 +164,7 @@ await describe('queries/workOrders', async () => {
        * Delete details
        */
 
-      assert(await deleteWorkOrderResource(mssqlConfig, systemId))
+      assert.ok(await deleteWorkOrderResource(mssqlConfig, systemId))
 
       workOrderResourcesAfter = await getWorkOrderResourcesByWorkOrderNumber(
         mssqlConfig,

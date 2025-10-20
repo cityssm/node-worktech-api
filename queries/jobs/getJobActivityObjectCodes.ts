@@ -1,4 +1,4 @@
-import { connect, type mssql } from '@cityssm/mssql-multi-pool'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import type { JobActivityObjectCode } from './types.js'
 

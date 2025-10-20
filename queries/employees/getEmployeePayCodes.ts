@@ -39,11 +39,13 @@ export async function getEmployeePayCodes(
       p.[Desc] as position,
       isnull(pc.effectiveDateTime, epc.effectiveDate) as effectiveDate,
       cast ([Primary] as bit) as isPrimary
-    FROM WMEPCI epc
-    left join WMEPD as pc on epc.EPCode = pc.EPCode
+    FROM WMEPCI epc WITH (NOLOCK)
+    left join WMEPD pc WITH (NOLOCK)
+      on epc.EPCode = pc.EPCode
       and (pc.EffectiveDateTime is null or pc.EffectiveDateTime >= epc.EffectiveDate)
       and pc.NotUsedForOverride = 0
-    left join WMPOD p on epc.POS_ID = p.POS_ID
+    left join WMPOD p WITH (NOLOCK)
+      on epc.POS_ID = p.POS_ID
       and p.Status <> 1
       and (p.EndDateTime is null or p.EndDateTime >= epc.EffectiveDate)
     WHERE epc.Item_ID = @employeeNumber

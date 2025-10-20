@@ -10,3 +10,10 @@ export interface EmployeePayCode {
   effectiveDate: Date
   isPrimary: boolean
 }
+
+export interface TimeCode {
+  timeCode: string
+  timeCodeDescription: string
+  
+  externalCode: string | null
+}

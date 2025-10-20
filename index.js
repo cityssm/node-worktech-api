@@ -1,6 +1,7 @@
 import { minutesToMillis } from '@cityssm/to-millis';
 import { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 import { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js';
+import { getTimeCodes } from './queries/employees/getTimeCodes.js';
 import { addEquipment } from './queries/equipment/addEquipment.js';
 import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 import { updateEquipmentFields } from './queries/equipment/updateEquipment.js';
@@ -214,8 +215,18 @@ export class WorkTechAPI {
     async getEmployeePayCodes(employeeNumber, effectiveDate) {
         return await getEmployeePayCodes(this.#mssqlConfig, employeeNumber, effectiveDate);
     }
+    /**
+     * Retrieves available time codes.
+     * @returns The available time codes.
+     */
+    async getTimeCodes() {
+        const timeCodes = await getTimeCodes(this.#mssqlConfig);
+        return timeCodes;
+    }
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
+export { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js';
+export { getTimeCodes } from './queries/employees/getTimeCodes.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 export { updateEquipmentFields } from './queries/equipment/updateEquipment.js';

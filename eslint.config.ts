@@ -21,6 +21,7 @@ export const config = defineConfig(configCityssm, {
             'actv',
             'defaul',
             'enddatetime',
+            'extcode',
             'sched',
             'scheddatetime',
             'srisysid',
@@ -45,6 +46,7 @@ export const config = defineConfig(configCityssm, {
             'wmjom',
             'wmocd',
             'wmpod',
+            'wmtcd',
             'wmtsi'
           ]
         }
@@ -53,7 +55,7 @@ export const config = defineConfig(configCityssm, {
 
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-type-assertion': 'off',
-    
+
     'unicorn/no-null': 'warn'
   }
 })

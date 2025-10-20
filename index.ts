@@ -7,7 +7,8 @@ import {
   getAccountNumberByWorkOrderNumberAndObjectCode
 } from './helpers/getAccountNumber.js'
 import { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js'
-import type { EmployeePayCode } from './queries/employees/types.js'
+import { getTimeCodes } from './queries/employees/getTimeCodes.js'
+import type { EmployeePayCode, TimeCode } from './queries/employees/types.js'
 import {
   type AddEquipment,
   addEquipment
@@ -382,9 +383,22 @@ export class WorkTechAPI {
       effectiveDate
     )
   }
+
+  /**
+   * Retrieves available time codes.
+   * @returns The available time codes.
+   */
+  async getTimeCodes(): Promise<TimeCode[]> {
+    const timeCodes = await getTimeCodes(this.#mssqlConfig)
+
+    return timeCodes
+  }
 }
 
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js'
+
+export { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js'
+export { getTimeCodes } from './queries/employees/getTimeCodes.js'
 
 export { addEquipment } from './queries/equipment/addEquipment.js'
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
@@ -432,6 +446,7 @@ export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderRes
  * Export Types
  */
 
+export type { EmployeePayCode, TimeCode } from './queries/employees/types.js'
 export type { EquipmentItem } from './queries/equipment/types.js'
 export type { ResourceItem } from './queries/items/types.js'
 export type {

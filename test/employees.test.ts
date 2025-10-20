@@ -9,6 +9,7 @@ import Debug from 'debug'
 
 import { DEBUG_ENABLE_NAMESPACES } from '../debug.config.js'
 import { getEmployeePayCodes } from '../queries/employees/getEmployeePayCodes.js'
+import { getTimeCodes } from '../queries/employees/getTimeCodes.js'
 
 import { mssqlConfig, validEmployeeNumber } from './config.js'
 
@@ -34,6 +35,18 @@ await describe('queries/employees', async () => {
 
       for (const employeePayCode of employeePayCodes) {
         assert.strictEqual(employeePayCode.employeeNumber, validEmployeeNumber)
+      }
+    })
+  })
+
+  await describe('getTimeCodes()', async () => {
+    await it('Retrieves employee time codes', async () => {
+      const timeCodes = await getTimeCodes(mssqlConfig)
+
+      console.log(timeCodes)
+
+      if (timeCodes.length === 0) {
+        throw new Error('No time codes retrieved')
       }
     })
   })

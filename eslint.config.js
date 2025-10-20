@@ -16,6 +16,7 @@ export const config = defineConfig(configCityssm, {
                         'actv',
                         'defaul',
                         'enddatetime',
+                        'extcode',
                         'sched',
                         'scheddatetime',
                         'srisysid',
@@ -39,6 +40,7 @@ export const config = defineConfig(configCityssm, {
                         'wmjom',
                         'wmocd',
                         'wmpod',
+                        'wmtcd',
                         'wmtsi'
                     ]
                 }

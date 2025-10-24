@@ -17,7 +17,7 @@ export async function getTimeCodes(
         TC_ID as timeCode,
         DESCRIPTION as timeCodeDescription,
         EXTCODE as externalCode
-      FROM WMTCD
+      FROM WMTCD WITH (NOLOCK)
       WHERE 
         Inactive = 0
         and AdminOnly = 0

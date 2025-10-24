@@ -49,7 +49,7 @@ export async function getTimesheetBatchEntries(
 
       [Qty] as timesheetHours
 
-    FROM [WMTSI]
+    FROM [WMTSI] WITH (NOLOCK)
 
     where transType = 'Time Sheets'
       and type = 'Employee'

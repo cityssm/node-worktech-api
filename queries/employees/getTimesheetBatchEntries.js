@@ -50,6 +50,9 @@ export async function getTimesheetBatchEntries(mssqlConfig, filters) {
     if (filters.workOrderNumber !== undefined) {
         sql += ' AND [WONOS] = @workOrderNumber';
     }
+    if (filters.timesheetHours !== undefined) {
+        sql += ' AND [Qty] = @timesheetHours';
+    }
     sql += ' order by [BatchSysID] desc, [SeqNo]';
     const result = (await request
         .input('employeeNumber', filters.employeeNumber)
@@ -57,6 +60,7 @@ export async function getTimesheetBatchEntries(mssqlConfig, filters) {
         .input('jobId', filters.jobId)
         .input('activityId', filters.activityId)
         .input('workOrderNumber', filters.workOrderNumber)
+        .input('timesheetHours', filters.timesheetHours)
         .query(sql));
     return result.recordset;
 }

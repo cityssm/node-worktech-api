@@ -36,13 +36,16 @@ await describe('queries/employees', async () => {
         });
     });
     await describe('getTimesheetBatchEntries()', async () => {
-        await it('Retrieves timesheet batch entries by employee number', async () => {
+        await it('Retrieves timesheet batch entries by employee number and hours', async () => {
+            const timesheetHours = 8;
             const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
-                employeeNumber: validEmployeeNumber
+                employeeNumber: validEmployeeNumber,
+                timesheetHours
             });
             assert.ok(timesheetBatchEntries.length > 0);
             for (const timesheetBatchEntry of timesheetBatchEntries) {
                 assert.strictEqual(timesheetBatchEntry.employeeNumber, validEmployeeNumber);
+                assert.strictEqual(timesheetBatchEntry.timesheetHours, timesheetHours);
             }
         });
         await it('Retrieves timesheet batch entries by employee number and date', async () => {

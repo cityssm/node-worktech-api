@@ -53,11 +53,14 @@ await describe('queries/employees', async () => {
   })
 
   await describe('getTimesheetBatchEntries()', async () => {
-    await it('Retrieves timesheet batch entries by employee number', async () => {
+    await it('Retrieves timesheet batch entries by employee number and hours', async () => {
+      const timesheetHours = 8
+
       const timesheetBatchEntries = await getTimesheetBatchEntries(
         mssqlConfig,
         {
-          employeeNumber: validEmployeeNumber
+          employeeNumber: validEmployeeNumber,
+          timesheetHours
         }
       )
 
@@ -67,6 +70,11 @@ await describe('queries/employees', async () => {
         assert.strictEqual(
           timesheetBatchEntry.employeeNumber,
           validEmployeeNumber
+        )
+
+        assert.strictEqual(
+          timesheetBatchEntry.timesheetHours,
+          timesheetHours
         )
       }
     })

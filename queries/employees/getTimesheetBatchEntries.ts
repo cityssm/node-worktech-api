@@ -12,6 +12,8 @@ export interface GetTimesheetBatchEntriesFilters {
   activityId?: string
   jobId?: string
   workOrderNumber?: string
+
+  timesheetHours?: number
 }
 
 /**
@@ -74,6 +76,10 @@ export async function getTimesheetBatchEntries(
     sql += ' AND [WONOS] = @workOrderNumber'
   }
 
+  if (filters.timesheetHours !== undefined) {
+    sql += ' AND [Qty] = @timesheetHours'
+  }
+
   sql += ' order by [BatchSysID] desc, [SeqNo]'
 
   const result = (await request
@@ -82,6 +88,7 @@ export async function getTimesheetBatchEntries(
     .input('jobId', filters.jobId)
     .input('activityId', filters.activityId)
     .input('workOrderNumber', filters.workOrderNumber)
+    .input('timesheetHours', filters.timesheetHours)
     .query(sql)) as mssql.IResult<TimesheetBatchEntry>
 
   return result.recordset

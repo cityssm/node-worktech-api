@@ -8,6 +8,7 @@ export interface GetTimesheetBatchEntriesFilters {
     activityId?: string;
     jobId?: string;
     workOrderNumber?: string;
+    timesheetHours?: number;
 }
 /**
  * Retrieves timesheet batch entries based on provided filters.

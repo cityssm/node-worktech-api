@@ -1,7 +1,8 @@
 import type { mssql } from '@cityssm/mssql-multi-pool';
 import type { DateString } from '@cityssm/utils-datetime';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
-import type { EmployeePayCode, TimeCode } from './queries/employees/types.js';
+import { type GetTimesheetBatchEntriesFilters } from './queries/employees/getTimesheetBatchEntries.js';
+import type { EmployeePayCode, TimeCode, TimesheetBatchEntry } from './queries/employees/types.js';
 import { type AddEquipment } from './queries/equipment/addEquipment.js';
 import type { EquipmentItem } from './queries/equipment/types.js';
 import { type AddResourceItem } from './queries/items/addResourceItem.js';
@@ -146,8 +147,8 @@ export declare class WorkTechAPI {
      * @returns - The job - activity - object code combination if available.
      */
     getJobActivityObjectCodeByKeys(keys: {
-        jobId: string;
         activityId: string;
+        jobId: string;
         objectCode: string;
         fiscalYear: number | string;
     }): Promise<JobActivityObjectCode | undefined>;
@@ -170,10 +171,12 @@ export declare class WorkTechAPI {
      * @returns The available time codes.
      */
     getTimeCodes(): Promise<TimeCode[]>;
+    getTimesheetBatchEntries(filters: GetTimesheetBatchEntriesFilters): Promise<TimesheetBatchEntry[]>;
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js';
 export { getTimeCodes } from './queries/employees/getTimeCodes.js';
+export { type GetTimesheetBatchEntriesFilters, getTimesheetBatchEntries } from './queries/employees/getTimesheetBatchEntries.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
 export { type UpdateEquipmentFields, updateEquipmentFields } from './queries/equipment/updateEquipment.js';
@@ -189,7 +192,7 @@ export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.
 export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';
 export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
-export type { EmployeePayCode, TimeCode } from './queries/employees/types.js';
+export type { EmployeePayCode, TimeCode, TimesheetBatchEntry } from './queries/employees/types.js';
 export type { EquipmentItem } from './queries/equipment/types.js';
 export type { ResourceItem } from './queries/items/types.js';
 export type { Activity, Job, JobActivityObjectCode, ObjectCode } from './queries/jobs/types.js';

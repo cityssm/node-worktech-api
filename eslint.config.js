@@ -9,6 +9,7 @@ export const config = defineConfig(configCityssm, {
                 cspell: {
                     words: [
                         ...cspellWords,
+                        'timesheet',
                         'worktech',
                         'rtrim',
                         // Column name abbreviations

@@ -8,7 +8,15 @@ import {
 } from './helpers/getAccountNumber.js'
 import { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js'
 import { getTimeCodes } from './queries/employees/getTimeCodes.js'
-import type { EmployeePayCode, TimeCode } from './queries/employees/types.js'
+import {
+  type GetTimesheetBatchEntriesFilters,
+  getTimesheetBatchEntries
+} from './queries/employees/getTimesheetBatchEntries.js'
+import type {
+  EmployeePayCode,
+  TimeCode,
+  TimesheetBatchEntry
+} from './queries/employees/types.js'
 import {
   type AddEquipment,
   addEquipment
@@ -342,9 +350,10 @@ export class WorkTechAPI {
    * @returns - The job - activity - object code combination if available.
    */
   async getJobActivityObjectCodeByKeys(keys: {
-    jobId: string
     activityId: string
+    jobId: string
     objectCode: string
+
     fiscalYear: number | string
   }): Promise<JobActivityObjectCode | undefined> {
     return await getJobActivityObjectCodeByKeys(this.#mssqlConfig, keys)
@@ -393,12 +402,22 @@ export class WorkTechAPI {
 
     return timeCodes
   }
+
+  async getTimesheetBatchEntries(
+    filters: GetTimesheetBatchEntriesFilters
+  ): Promise<TimesheetBatchEntry[]> {
+    return await getTimesheetBatchEntries(this.#mssqlConfig, filters)
+  }
 }
 
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js'
 
 export { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js'
 export { getTimeCodes } from './queries/employees/getTimeCodes.js'
+export {
+  type GetTimesheetBatchEntriesFilters,
+  getTimesheetBatchEntries
+} from './queries/employees/getTimesheetBatchEntries.js'
 
 export { addEquipment } from './queries/equipment/addEquipment.js'
 export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
@@ -446,7 +465,11 @@ export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderRes
  * Export Types
  */
 
-export type { EmployeePayCode, TimeCode } from './queries/employees/types.js'
+export type {
+  EmployeePayCode,
+  TimeCode,
+  TimesheetBatchEntry
+} from './queries/employees/types.js'
 export type { EquipmentItem } from './queries/equipment/types.js'
 export type { ResourceItem } from './queries/items/types.js'
 export type {

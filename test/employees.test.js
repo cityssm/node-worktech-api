@@ -7,7 +7,8 @@ import Debug from 'debug';
 import { DEBUG_ENABLE_NAMESPACES } from '../debug.config.js';
 import { getEmployeePayCodes } from '../queries/employees/getEmployeePayCodes.js';
 import { getTimeCodes } from '../queries/employees/getTimeCodes.js';
-import { mssqlConfig, validEmployeeNumber } from './config.js';
+import { getTimesheetBatchEntries } from '../queries/employees/getTimesheetBatchEntries.js';
+import { mssqlConfig, validActivityId, validEmployeeNumber, validJobId } from './config.js';
 Debug.enable(DEBUG_ENABLE_NAMESPACES);
 await describe('queries/employees', async () => {
     after(async () => {
@@ -31,6 +32,47 @@ await describe('queries/employees', async () => {
             console.log(timeCodes);
             if (timeCodes.length === 0) {
                 throw new Error('No time codes retrieved');
+            }
+        });
+    });
+    await describe('getTimesheetBatchEntries()', async () => {
+        await it('Retrieves timesheet batch entries by employee number', async () => {
+            const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
+                employeeNumber: validEmployeeNumber
+            });
+            assert.ok(timesheetBatchEntries.length > 0);
+            for (const timesheetBatchEntry of timesheetBatchEntries) {
+                assert.strictEqual(timesheetBatchEntry.employeeNumber, validEmployeeNumber);
+            }
+        });
+        await it('Retrieves timesheet batch entries by employee number and date', async () => {
+            const timesheetDateString = '2025-03-14';
+            const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
+                employeeNumber: validEmployeeNumber,
+                timesheetDate: timesheetDateString
+            });
+            assert.ok(timesheetBatchEntries.length > 0);
+            for (const timesheetBatchEntry of timesheetBatchEntries) {
+                assert.strictEqual(timesheetBatchEntry.employeeNumber, validEmployeeNumber);
+                assert.strictEqual(timesheetBatchEntry.timesheetDateString, timesheetDateString);
+            }
+        });
+        await it('Retrieves timesheet batch entries by job ID', async () => {
+            const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
+                jobId: validJobId
+            });
+            assert.ok(timesheetBatchEntries.length > 0);
+            for (const timesheetBatchEntry of timesheetBatchEntries) {
+                assert.strictEqual(timesheetBatchEntry.jobId, validJobId);
+            }
+        });
+        await it('Retrieves timesheet batch entries by activity ID', async () => {
+            const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
+                activityId: validActivityId
+            });
+            assert.ok(timesheetBatchEntries.length > 0);
+            for (const timesheetBatchEntry of timesheetBatchEntries) {
+                assert.strictEqual(timesheetBatchEntry.activityId, validActivityId);
             }
         });
     });

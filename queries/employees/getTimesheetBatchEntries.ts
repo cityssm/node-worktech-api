@@ -7,7 +7,9 @@ export const getTimesheetBatchEntriesLimit = 2000
 
 export interface GetTimesheetBatchEntriesFilters {
   employeeNumber?: string
+
   timesheetDate?: DateString
+  timesheetMaxAgeDays?: number
 
   activityId?: string
   jobId?: string
@@ -56,12 +58,17 @@ export async function getTimesheetBatchEntries(
     where transType = 'Time Sheets'
       and type = 'Employee'
   `
+
   if (filters.employeeNumber !== undefined) {
     sql += ' AND [Item_ID] = @employeeNumber'
   }
 
   if (filters.timesheetDate !== undefined) {
     sql += ' AND [DateTime] = @timesheetDate'
+  }
+
+  if (filters.timesheetMaxAgeDays !== undefined) {
+    sql += ' AND [DateTime] >= DATEADD(day, -1 * @timesheetMaxAgeDays, CAST(GETDATE() AS date))'
   }
 
   if (filters.jobId !== undefined) {
@@ -85,6 +92,7 @@ export async function getTimesheetBatchEntries(
   const result = (await request
     .input('employeeNumber', filters.employeeNumber)
     .input('timesheetDate', filters.timesheetDate)
+    .input('timesheetMaxAgeDays', filters.timesheetMaxAgeDays)
     .input('jobId', filters.jobId)
     .input('activityId', filters.activityId)
     .input('workOrderNumber', filters.workOrderNumber)

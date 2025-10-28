@@ -12,7 +12,12 @@ import { getEmployeePayCodes } from '../queries/employees/getEmployeePayCodes.js
 import { getTimeCodes } from '../queries/employees/getTimeCodes.js'
 import { getTimesheetBatchEntries } from '../queries/employees/getTimesheetBatchEntries.js'
 
-import { mssqlConfig, validActivityId, validEmployeeNumber, validJobId } from './config.js'
+import {
+  mssqlConfig,
+  validActivityId,
+  validEmployeeNumber,
+  validJobId
+} from './config.js'
 
 Debug.enable(DEBUG_ENABLE_NAMESPACES)
 
@@ -72,10 +77,7 @@ await describe('queries/employees', async () => {
           validEmployeeNumber
         )
 
-        assert.strictEqual(
-          timesheetBatchEntry.timesheetHours,
-          timesheetHours
-        )
+        assert.strictEqual(timesheetBatchEntry.timesheetHours, timesheetHours)
       }
     })
 
@@ -104,8 +106,33 @@ await describe('queries/employees', async () => {
       }
     })
 
-    await it('Retrieves timesheet batch entries by job ID', async () => {
+    await it('Retrieves timesheet batch entries by max age days', async () => {
+      const timesheetMaxAgeDays = 90
 
+      const timesheetBatchEntries = await getTimesheetBatchEntries(
+        mssqlConfig,
+        {
+          timesheetMaxAgeDays
+        }
+      )
+
+      assert.ok(timesheetBatchEntries.length > 0)
+
+      const currentDate = new Date()
+
+      for (const timesheetBatchEntry of timesheetBatchEntries) {
+        const timesheetDate = timesheetBatchEntry.timesheetDate as Date
+
+        const ageInDays = Math.floor(
+          (currentDate.getTime() - timesheetDate.getTime()) /
+            (1000 * 60 * 60 * 24)
+        )
+
+        assert.ok(ageInDays <= timesheetMaxAgeDays)
+      }
+    })
+
+    await it('Retrieves timesheet batch entries by job ID', async () => {
       const timesheetBatchEntries = await getTimesheetBatchEntries(
         mssqlConfig,
         {
@@ -116,15 +143,11 @@ await describe('queries/employees', async () => {
       assert.ok(timesheetBatchEntries.length > 0)
 
       for (const timesheetBatchEntry of timesheetBatchEntries) {
-        assert.strictEqual(
-          timesheetBatchEntry.jobId,
-          validJobId
-        )
+        assert.strictEqual(timesheetBatchEntry.jobId, validJobId)
       }
     })
 
     await it('Retrieves timesheet batch entries by activity ID', async () => {
-
       const timesheetBatchEntries = await getTimesheetBatchEntries(
         mssqlConfig,
         {
@@ -135,10 +158,7 @@ await describe('queries/employees', async () => {
       assert.ok(timesheetBatchEntries.length > 0)
 
       for (const timesheetBatchEntry of timesheetBatchEntries) {
-        assert.strictEqual(
-          timesheetBatchEntry.activityId,
-          validActivityId
-        )
+        assert.strictEqual(timesheetBatchEntry.activityId, validActivityId)
       }
     })
   })

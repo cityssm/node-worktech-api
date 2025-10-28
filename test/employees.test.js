@@ -60,6 +60,20 @@ await describe('queries/employees', async () => {
                 assert.strictEqual(timesheetBatchEntry.timesheetDateString, timesheetDateString);
             }
         });
+        await it('Retrieves timesheet batch entries by max age days', async () => {
+            const timesheetMaxAgeDays = 90;
+            const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
+                timesheetMaxAgeDays
+            });
+            assert.ok(timesheetBatchEntries.length > 0);
+            const currentDate = new Date();
+            for (const timesheetBatchEntry of timesheetBatchEntries) {
+                const timesheetDate = timesheetBatchEntry.timesheetDate;
+                const ageInDays = Math.floor((currentDate.getTime() - timesheetDate.getTime()) /
+                    (1000 * 60 * 60 * 24));
+                assert.ok(ageInDays <= timesheetMaxAgeDays);
+            }
+        });
         await it('Retrieves timesheet batch entries by job ID', async () => {
             const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
                 jobId: validJobId

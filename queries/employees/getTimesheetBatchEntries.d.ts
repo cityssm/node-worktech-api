@@ -5,6 +5,7 @@ export declare const getTimesheetBatchEntriesLimit = 2000;
 export interface GetTimesheetBatchEntriesFilters {
     employeeNumber?: string;
     timesheetDate?: DateString;
+    timesheetMaxAgeDays?: number;
     activityId?: string;
     jobId?: string;
     workOrderNumber?: string;

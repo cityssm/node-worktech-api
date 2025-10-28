@@ -15,6 +15,7 @@ export const config = defineConfig(configCityssm, {
             'timesheet',
             'worktech',
 
+            'dateadd',
             'rtrim',
 
             // Column name abbreviations

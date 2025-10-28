@@ -41,6 +41,9 @@ export async function getTimesheetBatchEntries(mssqlConfig, filters) {
     if (filters.timesheetDate !== undefined) {
         sql += ' AND [DateTime] = @timesheetDate';
     }
+    if (filters.timesheetMaxAgeDays !== undefined) {
+        sql += ' AND [DateTime] >= DATEADD(day, -1 * @timesheetMaxAgeDays, CAST(GETDATE() AS date))';
+    }
     if (filters.jobId !== undefined) {
         sql += ' AND [ExJob_ID] = @jobId';
     }
@@ -57,6 +60,7 @@ export async function getTimesheetBatchEntries(mssqlConfig, filters) {
     const result = (await request
         .input('employeeNumber', filters.employeeNumber)
         .input('timesheetDate', filters.timesheetDate)
+        .input('timesheetMaxAgeDays', filters.timesheetMaxAgeDays)
         .input('jobId', filters.jobId)
         .input('activityId', filters.activityId)
         .input('workOrderNumber', filters.workOrderNumber)

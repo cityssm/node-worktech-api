@@ -171,10 +171,18 @@ export declare class WorkTechAPI {
      * @returns The available time codes.
      */
     getTimeCodes(): Promise<TimeCode[]>;
+    /**
+     * Retrieves time codes for a specific employee.
+     * @param employeeNumber - The employee number.
+     * @param timesheetMaxAgeDays - The maximum timesheet age.
+     * @returns The time codes for the specified employee.
+     */
+    getEmployeeTimeCodes(employeeNumber: string, timesheetMaxAgeDays: number): Promise<TimeCode[]>;
     getTimesheetBatchEntries(filters: GetTimesheetBatchEntriesFilters): Promise<TimesheetBatchEntry[]>;
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js';
+export { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.js';
 export { getTimeCodes } from './queries/employees/getTimeCodes.js';
 export { type GetTimesheetBatchEntriesFilters, getTimesheetBatchEntries } from './queries/employees/getTimesheetBatchEntries.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';

@@ -1,6 +1,7 @@
 import { minutesToMillis } from '@cityssm/to-millis';
 import { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 import { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js';
+import { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.js';
 import { getTimeCodes } from './queries/employees/getTimeCodes.js';
 import { getTimesheetBatchEntries } from './queries/employees/getTimesheetBatchEntries.js';
 import { addEquipment } from './queries/equipment/addEquipment.js';
@@ -224,12 +225,23 @@ export class WorkTechAPI {
         const timeCodes = await getTimeCodes(this.#mssqlConfig);
         return timeCodes;
     }
+    /**
+     * Retrieves time codes for a specific employee.
+     * @param employeeNumber - The employee number.
+     * @param timesheetMaxAgeDays - The maximum timesheet age.
+     * @returns The time codes for the specified employee.
+     */
+    async getEmployeeTimeCodes(employeeNumber, timesheetMaxAgeDays) {
+        const timeCodes = await getEmployeeTimeCodes(this.#mssqlConfig, employeeNumber, timesheetMaxAgeDays);
+        return timeCodes;
+    }
     async getTimesheetBatchEntries(filters) {
         return await getTimesheetBatchEntries(this.#mssqlConfig, filters);
     }
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js';
+export { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.js';
 export { getTimeCodes } from './queries/employees/getTimeCodes.js';
 export { getTimesheetBatchEntries } from './queries/employees/getTimesheetBatchEntries.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';

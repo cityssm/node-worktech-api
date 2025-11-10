@@ -7,6 +7,7 @@ import {
   getAccountNumberByWorkOrderNumberAndObjectCode
 } from './helpers/getAccountNumber.js'
 import { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js'
+import { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.js'
 import { getTimeCodes } from './queries/employees/getTimeCodes.js'
 import {
   type GetTimesheetBatchEntriesFilters,
@@ -403,6 +404,25 @@ export class WorkTechAPI {
     return timeCodes
   }
 
+  /**
+   * Retrieves time codes for a specific employee.
+   * @param employeeNumber - The employee number.
+   * @param timesheetMaxAgeDays - The maximum timesheet age.
+   * @returns The time codes for the specified employee.
+   */
+  async getEmployeeTimeCodes(
+    employeeNumber: string,
+    timesheetMaxAgeDays: number
+  ): Promise<TimeCode[]> {
+    const timeCodes = await getEmployeeTimeCodes(
+      this.#mssqlConfig,
+      employeeNumber,
+      timesheetMaxAgeDays
+    )
+
+    return timeCodes
+  }
+
   async getTimesheetBatchEntries(
     filters: GetTimesheetBatchEntriesFilters
   ): Promise<TimesheetBatchEntry[]> {
@@ -413,6 +433,7 @@ export class WorkTechAPI {
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js'
 
 export { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js'
+export { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.js'
 export { getTimeCodes } from './queries/employees/getTimeCodes.js'
 export {
   type GetTimesheetBatchEntriesFilters,

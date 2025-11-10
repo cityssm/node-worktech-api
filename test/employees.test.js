@@ -38,10 +38,19 @@ await describe('queries/employees', async () => {
     });
     await describe('getEmployeeTimeCodes()', async () => {
         await it('Retrieves employee time codes', async () => {
+            const startMillis = Date.now();
             const timeCodes = await getEmployeeTimeCodes(mssqlConfig, validEmployeeNumber, 180);
+            const midMillis = Date.now();
             console.log(timeCodes);
             if (timeCodes.length === 0) {
                 throw new Error('No time codes retrieved');
+            }
+            await getEmployeeTimeCodes(mssqlConfig, validEmployeeNumber, 180);
+            const endMillis = Date.now();
+            const firstDurationMillis = midMillis - startMillis;
+            const secondDurationMillis = endMillis - midMillis;
+            if (secondDurationMillis >= firstDurationMillis) {
+                throw new Error(`Cache not used: first call ${firstDurationMillis} ms, second call ${secondDurationMillis} ms`);
             }
         });
     });

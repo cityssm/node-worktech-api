@@ -1,19 +1,36 @@
+import NodeCache from '@cacheable/node-cache'
 import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
+import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
+
 import type { TimeCode } from './types.js'
+
+const cache = new NodeCache<TimeCode[]>({
+  stdTTL: cacheTimeToLiveSeconds
+})
 
 /**
  * Retrieves time codes for a specific employee.
  * @param mssqlConfig - SQL Server configuration.
  * @param employeeNumber - The employee number.
  * @param timesheetMaxAgeDays - The maximum age of timesheets to consider.
+ * @param bypassCache - Whether to bypass the cache.
  * @returns The time codes for the specified employee.
  */
 export async function getEmployeeTimeCodes(
   mssqlConfig: mssql.config,
   employeeNumber: string,
-  timesheetMaxAgeDays: number
+  timesheetMaxAgeDays: number,
+  bypassCache = false
 ): Promise<TimeCode[]> {
+  const cacheKey = `${employeeNumber}-${timesheetMaxAgeDays}`
+
+  let timeCodes = bypassCache ? undefined : cache.get(cacheKey)
+
+  if (timeCodes !== undefined) {
+    return timeCodes
+  }
+
   const pool = await connect(mssqlConfig)
 
   const result = (await pool
@@ -38,5 +55,9 @@ export async function getEmployeeTimeCodes(
         )
       ORDER BY TC_ID`)) as mssql.IResult<TimeCode>
 
-  return result.recordset
+  timeCodes = result.recordset
+
+  cache.set(cacheKey, timeCodes)
+
+  return timeCodes
 }

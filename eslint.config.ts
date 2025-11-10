@@ -13,6 +13,7 @@ export const config = defineConfig(configCityssm, {
           words: [
             ...cspellWords,
             'timesheet',
+            'timesheets',
             'worktech',
 
             'dateadd',

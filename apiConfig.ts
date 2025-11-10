@@ -6,4 +6,4 @@ export const accountSegmentSeparator = '-'
 /**
  * The number of seconds cached lookups should stay cached.
  */
-export const cacheTimeToLiveSeconds = 10
+export const cacheTimeToLiveSeconds = 30

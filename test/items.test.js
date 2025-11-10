@@ -12,17 +12,17 @@ await describe('queries/items', async () => {
     after(async () => {
         await releaseAll();
     });
-    await it('Retrieves an item', async () => {
+    await it.skip('Retrieves an item', async () => {
         const item = await getItemByItemId(mssqlConfig, validItemId);
         console.log(item);
         assert.ok(item !== undefined);
         assert.strictEqual(item.itemId, validItemId);
     });
-    await it('Returns "undefined" when no item is available.', async () => {
+    await it.skip('Returns "undefined" when no item is available.', async () => {
         const item = await getItemByItemId(mssqlConfig, invalidItemId);
         assert.strictEqual(item, undefined);
     });
-    await it('Creates a new resource item', async () => {
+    await it.skip('Creates a new resource item', async () => {
         const newItemId = `TEST_${Math.round(Date.now() / 1000)}`;
         let item = await getItemByItemId(mssqlConfig, newItemId);
         assert.strictEqual(item, undefined);

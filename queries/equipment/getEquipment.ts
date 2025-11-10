@@ -47,13 +47,15 @@ const cache = new NodeCache<EquipmentItem>({
  * Retrieves a piece of equipment.
  * @param mssqlConfig - SQL Server configuration.
  * @param equipmentId - The equipment id.
+ * @param bypassCache - Whether to bypass the cache
  * @returns - The equipment record, if available.
  */
 export async function getEquipmentByEquipmentId(
   mssqlConfig: mssql.config,
-  equipmentId: string
+  equipmentId: string,
+  bypassCache = false
 ): Promise<EquipmentItem | undefined> {
-  let equipment = cache.get(equipmentId)
+  let equipment = bypassCache ? undefined : cache.get(equipmentId)
 
   if (equipment !== undefined) {
     return equipment

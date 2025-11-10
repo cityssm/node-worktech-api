@@ -28,10 +28,11 @@ const cache = new NodeCache({
  * Retrieves a job.
  * @param mssqlConfig - SQL Server configuration.
  * @param jobId - The job id
+ * @param bypassCache - Whether to bypass the cache
  * @returns - The job, if available.
  */
-export async function getJobByJobId(mssqlConfig, jobId) {
-    let jobObject = cache.get(jobId);
+export async function getJobByJobId(mssqlConfig, jobId, bypassCache = false) {
+    let jobObject = bypassCache ? undefined : cache.get(jobId);
     if (jobObject !== undefined) {
         return jobObject;
     }

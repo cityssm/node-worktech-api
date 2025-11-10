@@ -22,13 +22,15 @@ const cache = new NodeCache<Activity>({
  * Retrieves an activity.
  * @param mssqlConfig - SQL Server configuration.
  * @param activityId - The activity id
+ * @param bypassCache - Whether to bypass the cache
  * @returns The activity, if available.
  */
 export async function getActivityByActivityId(
   mssqlConfig: mssql.config,
-  activityId: string
+  activityId: string,
+  bypassCache = false
 ): Promise<Activity | undefined> {
-  let activityObject = cache.get(activityId)
+  let activityObject = bypassCache ? undefined : cache.get(activityId)
 
   if (activityObject !== undefined) {
     return activityObject

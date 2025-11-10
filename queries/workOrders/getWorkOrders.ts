@@ -60,22 +60,25 @@ const cache = new NodeCache<WorkOrder>({
  * Retrieves a work order.
  * @param mssqlConfig - SQL Server configuration.
  * @param workOrderNumber - The work order number.
+ * @param bypassCache - Whether to bypass the cache
  * @returns - The work order, if available.
  */
 export async function getWorkOrderByWorkOrderNumber(
   mssqlConfig: mssql.config,
-  workOrderNumber: string
+  workOrderNumber: string,
+  bypassCache = false
 ): Promise<WorkOrder | undefined> {
   const pool = await connect(mssqlConfig)
 
-  return await _getWorkOrderByWorkOrderNumber(pool.request(), workOrderNumber)
+  return await _getWorkOrderByWorkOrderNumber(pool.request(), workOrderNumber, bypassCache)
 }
 
 export async function _getWorkOrderByWorkOrderNumber(
   request: mssql.Request,
-  workOrderNumber: string
+  workOrderNumber: string,
+  bypassCache = false
 ): Promise<WorkOrder | undefined> {
-  let workOrder = cache.get(workOrderNumber)
+  let workOrder = bypassCache ? undefined : cache.get(workOrderNumber)
 
   if (workOrder !== undefined) {
     return workOrder

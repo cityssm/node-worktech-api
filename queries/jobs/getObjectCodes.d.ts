@@ -4,9 +4,10 @@ import type { JobAssignedObjectCode, ObjectCode } from './types.js';
  * Retrieves an object code.
  * @param mssqlConfig - SQL Server configuration.
  * @param objectCode - The object code
+ * @param bypassCache - Whether to bypass the cache
  * @returns - The object code, if available.
  */
-export declare function getObjectCodeByObjectCode(mssqlConfig: mssql.config, objectCode: string): Promise<ObjectCode | undefined>;
+export declare function getObjectCodeByObjectCode(mssqlConfig: mssql.config, objectCode: string, bypassCache?: boolean): Promise<ObjectCode | undefined>;
 /**
  * Retrieves a list of object codes associated with a given job and fiscal year.
  * @param mssqlConfig - SQL Server configuration.

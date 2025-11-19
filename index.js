@@ -1,6 +1,7 @@
 import { minutesToMillis } from '@cityssm/to-millis';
 import { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 import { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js';
+import { getEmployees } from './queries/employees/getEmployees.js';
 import { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.js';
 import { getTimeCodes } from './queries/employees/getTimeCodes.js';
 import { getTimesheetBatchEntries } from './queries/employees/getTimesheetBatchEntries.js';
@@ -209,6 +210,28 @@ export class WorkTechAPI {
         return await getAccountNumberByWorkOrderNumberAndObjectCode(this.#mssqlConfig, workOrderNumber, optionalObjectCode);
     }
     /**
+     * Retrieves employees.
+     * @param employeeFilters - The employee filters.
+     * @returns The employees.
+     */
+    async getEmployees(employeeFilters) {
+        return await getEmployees(this.#mssqlConfig, employeeFilters);
+    }
+    /**
+     * Retrieves an employee.
+     * @param employeeNumber - The employee number
+     * @returns The employee, if available.
+     */
+    async getEmployeeByEmployeeNumber(employeeNumber) {
+        const employees = await getEmployees(this.#mssqlConfig, {
+            employeeNumbers: [employeeNumber]
+        });
+        if (employees.length === 0) {
+            return undefined;
+        }
+        return employees[0];
+    }
+    /**
      * Retrieves employee pay codes.
      * @param employeeNumber - The employee number.
      * @param effectiveDate - The effective date.
@@ -241,6 +264,7 @@ export class WorkTechAPI {
 }
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js';
 export { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js';
+export { getEmployees } from './queries/employees/getEmployees.js';
 export { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.js';
 export { getTimeCodes } from './queries/employees/getTimeCodes.js';
 export { getTimesheetBatchEntries } from './queries/employees/getTimesheetBatchEntries.js';

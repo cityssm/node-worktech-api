@@ -1,3 +1,34 @@
+import type { BigIntString } from '../types.js'
+
+export interface Employee {
+  itemSystemId: BigIntString | number
+
+  employeeNumber: string
+  employeeName: string
+  employeeClass: string
+  employeeStatus: string
+  department: string
+  startDate: Date | null
+
+  address1: string
+  address2: string
+  address3: string
+  address4: string
+
+  birthDate: Date | null
+
+  phoneNumber1: string
+  phoneNumberType1: string
+  
+  emailAddress: string
+  positionId: string
+  hoursPerPayPeriod: number
+  payOvertime: boolean
+  bankOvertime: boolean
+  defaultEquipmentId: string
+  patrol: string
+}
+
 export interface EmployeePayCode {
   employeeNumber: string
   payCode: string

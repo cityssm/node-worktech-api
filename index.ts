@@ -7,6 +7,10 @@ import {
   getAccountNumberByWorkOrderNumberAndObjectCode
 } from './helpers/getAccountNumber.js'
 import { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js'
+import {
+  type GetEmployeesFilters,
+  getEmployees
+} from './queries/employees/getEmployees.js'
 import { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.js'
 import { getTimeCodes } from './queries/employees/getTimeCodes.js'
 import {
@@ -14,6 +18,7 @@ import {
   getTimesheetBatchEntries
 } from './queries/employees/getTimesheetBatchEntries.js'
 import type {
+  Employee,
   EmployeePayCode,
   TimeCode,
   TimesheetBatchEntry
@@ -378,6 +383,36 @@ export class WorkTechAPI {
   }
 
   /**
+   * Retrieves employees.
+   * @param employeeFilters - The employee filters.
+   * @returns The employees.
+   */
+  async getEmployees(
+    employeeFilters: GetEmployeesFilters
+  ): Promise<Employee[]> {
+    return await getEmployees(this.#mssqlConfig, employeeFilters)
+  }
+
+  /**
+   * Retrieves an employee.
+   * @param employeeNumber - The employee number
+   * @returns The employee, if available.
+   */
+  async getEmployeeByEmployeeNumber(
+    employeeNumber: string
+  ): Promise<Employee | undefined> {
+    const employees = await getEmployees(this.#mssqlConfig, {
+      employeeNumbers: [employeeNumber]
+    })
+
+    if (employees.length === 0) {
+      return undefined
+    }
+
+    return employees[0]
+  }
+
+  /**
    * Retrieves employee pay codes.
    * @param employeeNumber - The employee number.
    * @param effectiveDate - The effective date.
@@ -433,6 +468,10 @@ export class WorkTechAPI {
 export { getAccountNumberByWorkOrderNumberAndObjectCode } from './helpers/getAccountNumber.js'
 
 export { getEmployeePayCodes } from './queries/employees/getEmployeePayCodes.js'
+export {
+  type GetEmployeesFilters,
+  getEmployees
+} from './queries/employees/getEmployees.js'
 export { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.js'
 export { getTimeCodes } from './queries/employees/getTimeCodes.js'
 export {
@@ -487,6 +526,7 @@ export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderRes
  */
 
 export type {
+  Employee,
   EmployeePayCode,
   TimeCode,
   TimesheetBatchEntry

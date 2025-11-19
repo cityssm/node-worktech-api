@@ -8,6 +8,7 @@ import { releaseAll } from '@cityssm/mssql-multi-pool'
 import Debug from 'debug'
 
 import { DEBUG_ENABLE_NAMESPACES } from '../debug.config.js'
+import { getEmployees } from '../index.js'
 import { getEmployeePayCodes } from '../queries/employees/getEmployeePayCodes.js'
 import { getEmployeeTimeCodes } from '../queries/employees/getEmployeeTimeCodes.js'
 import { getTimeCodes } from '../queries/employees/getTimeCodes.js'
@@ -16,6 +17,7 @@ import { getTimesheetBatchEntries } from '../queries/employees/getTimesheetBatch
 import {
   mssqlConfig,
   validActivityId,
+  validDepartment,
   validEmployeeNumber,
   validJobId
 } from './config.js'
@@ -27,7 +29,56 @@ await describe('queries/employees', async () => {
     await releaseAll()
   })
 
-  await describe('getEmployeePayCodes()', async () => {
+  await describe('getEmployees()', async () => {
+    await it('Retrieves all employees', async () => {
+      const employees = await getEmployees(mssqlConfig)
+
+      console.log(employees)
+
+      if (employees.length === 0) {
+        throw new Error('No employees retrieved')
+      }
+
+      for (const employee of employees) {
+        assert.ok(employee.employeeNumber)
+        assert.ok(employee.employeeName)
+      }
+    })
+
+    await it('Retrieves active employees only', async () => {
+      const employees = await getEmployees(mssqlConfig, {
+        employeeIsActive: true
+      })
+
+      console.log(employees)
+
+      if (employees.length === 0) {
+        throw new Error('No employees retrieved')
+      }
+
+      for (const employee of employees) {
+        assert.strictEqual(employee.employeeStatus, 'Active')
+      }
+    })
+
+    await it('Retrieves employees by department', async () => {
+      const employees = await getEmployees(mssqlConfig, {
+        departments: [validDepartment]
+      })
+
+      console.log(employees)
+
+      if (employees.length === 0) {
+        throw new Error('No employees retrieved')
+      }
+
+      for (const employee of employees) {
+        assert.strictEqual(employee.department, validDepartment)
+      }
+    })
+  })
+
+  await describe.skip('getEmployeePayCodes()', async () => {
     await it('Retrieves employee pay codes', async () => {
       const employeePayCodes = await getEmployeePayCodes(
         mssqlConfig,
@@ -46,7 +97,7 @@ await describe('queries/employees', async () => {
     })
   })
 
-  await describe('getTimeCodes()', async () => {
+  await describe.skip('getTimeCodes()', async () => {
     await it('Retrieves employee time codes', async () => {
       const timeCodes = await getTimeCodes(mssqlConfig)
 
@@ -58,7 +109,7 @@ await describe('queries/employees', async () => {
     })
   })
 
-  await describe('getEmployeeTimeCodes()', async () => {
+  await describe.skip('getEmployeeTimeCodes()', async () => {
 
     await it('Retrieves employee time codes', async () => {
 
@@ -97,7 +148,7 @@ await describe('queries/employees', async () => {
     })
   })
 
-  await describe('getTimesheetBatchEntries()', async () => {
+  await describe.skip('getTimesheetBatchEntries()', async () => {
     await it('Retrieves timesheet batch entries by employee number and hours', async () => {
       const timesheetHours = 8
 

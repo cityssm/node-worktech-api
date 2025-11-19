@@ -14,7 +14,7 @@ const cache = new NodeCache({
  * @param mssqlConfig - SQL Server configuration.
  * @param objectCode - The object code
  * @param bypassCache - Whether to bypass the cache
- * @returns - The object code, if available.
+ * @returns The object code, if available.
  */
 export async function getObjectCodeByObjectCode(mssqlConfig, objectCode, bypassCache = false) {
     let objectCodeObject = bypassCache ? undefined : cache.get(objectCode);

@@ -20,7 +20,7 @@ const cache = new NodeCache<ObjectCode>({
  * @param mssqlConfig - SQL Server configuration.
  * @param objectCode - The object code
  * @param bypassCache - Whether to bypass the cache
- * @returns - The object code, if available.
+ * @returns The object code, if available.
  */
 export async function getObjectCodeByObjectCode(
   mssqlConfig: mssql.config,

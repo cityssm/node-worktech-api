@@ -6,7 +6,8 @@ import { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.j
 import { getTimeCodes } from './queries/employees/getTimeCodes.js';
 import { getTimesheetBatchEntries } from './queries/employees/getTimesheetBatchEntries.js';
 import { addEquipment } from './queries/equipment/addEquipment.js';
-import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
+import { getEquipment } from './queries/equipment/getEquipment.js';
+import { getEquipmentByEquipmentId } from './queries/equipment/getEquipmentByEquipmentId.js';
 import { updateEquipmentFields } from './queries/equipment/updateEquipment.js';
 import { addResourceItem } from './queries/items/addResourceItem.js';
 import { createStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';
@@ -34,6 +35,14 @@ export class WorkTechAPI {
         this.#mssqlConfig = mssqlConfig;
         this.#mssqlConfig.connectionTimeout = Math.max(this.#mssqlConfig.connectionTimeout ?? 0, timeoutMillis);
         this.#mssqlConfig.requestTimeout = Math.max(this.#mssqlConfig.requestTimeout ?? 0, timeoutMillis);
+    }
+    /**
+     * Retrieves equipment based on filters.
+     * @param filters - The equipment filters.
+     * @returns The equipment list.
+     */
+    async getEquipment(filters) {
+        return await getEquipment(this.#mssqlConfig, filters);
     }
     /**
      * Retrieves a piece of equipment.
@@ -269,7 +278,8 @@ export { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.j
 export { getTimeCodes } from './queries/employees/getTimeCodes.js';
 export { getTimesheetBatchEntries } from './queries/employees/getTimesheetBatchEntries.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';
-export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
+export { getEquipment } from './queries/equipment/getEquipment.js';
+export { getEquipmentByEquipmentId } from './queries/equipment/getEquipmentByEquipmentId.js';
 export { updateEquipmentFields } from './queries/equipment/updateEquipment.js';
 export { addResourceItem } from './queries/items/addResourceItem.js';
 export { getItemByItemId } from './queries/items/getItems.js';

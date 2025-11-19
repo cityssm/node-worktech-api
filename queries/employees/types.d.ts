@@ -1,5 +1,5 @@
 import type { BigIntString } from '../types.js';
-export interface Employee {
+export interface EmployeeItem {
     itemSystemId: BigIntString | number;
     employeeNumber: string;
     employeeName: string;

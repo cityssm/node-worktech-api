@@ -1,8 +1,8 @@
-import { connect, type mssql } from '@cityssm/mssql-multi-pool'
+import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
 import type { BigIntString } from '../types.js'
 
-import { clearEquipmentCache } from './getEquipment.js'
+import { clearEquipmentCache } from './getEquipmentByEquipmentId.js'
 
 export interface UpdateEquipmentFields {
   equipmentDescription: string

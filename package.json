@@ -1,7 +1,7 @@
 {
   "name": "@cityssm/worktech-api",
-  "version": "0.16.0",
-  "description": "Integrations with the WorkTech work order management system.",
+  "version": "0.17.0",
+  "description": "Integrations with the WorkTech (Pearl) work order management system.",
   "keywords": [
     "worktech",
     "work-manager",

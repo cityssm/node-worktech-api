@@ -1,87 +1,194 @@
-import { NodeCache } from '@cacheable/node-cache'
 import { type mssql, connect } from '@cityssm/mssql-multi-pool'
-
-import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
 
 import type { EquipmentItem } from './types.js'
 
-const sql = `SELECT [ITMSysID] as equipmentSystemId,
-  [Item_ID] as equipmentId,
-  coalesce([DESC], '') as equipmentDescription,
-  coalesce([ItemClass], '') as equipmentClass,
+export interface GetEquipmentFilters {
+  equipmentStatuses?: string[]
+  notEquipmentStatuses?: string[]
 
-  coalesce([Brand], '') as equipmentBrand,
-  coalesce([Model], '') as equipmentModel,
-  [Year] as equipmentModelYear,
+  equipmentIds?: string[]
+  notEquipmentIds?: string[]
 
-  coalesce([Serial], '') as serialNumber,
-  coalesce([Plate], '') as plate,
+  equipmentClasses?: string[]
+  notEquipmentClasses?: string[]
 
-  coalesce([FlType], '') as fuelType,
-
-  coalesce([Status], '') as equipmentStatus,
-  coalesce([Comments], '') as comments,
-
-  coalesce([Location], '') as location,
-  coalesce([Dept], '') as departmentOwned,
-  coalesce([Division], '') as departmentManaged,
-
-  coalesce([ExJob_ID], '') as expenseJobId,
-  coalesce([ExActv_ID], '') as expenseActivityId,
-  coalesce([ExObjCode], '') as expenseObjectCode,
-  coalesce([RevJob_ID], '') as revenueJobId,
-  coalesce([RevActv_ID], '') as revenueActivityId,
-  coalesce([RevObjCode], '') as revenueObjectCode,
-  
-  [Odom] as odometer,
-  [Hours] as jobCostHours,
-  [RunHrs] as hourMeter
-  FROM [WMITM] WITH (NOLOCK)
-  where [Type] in ('Equipment')`
-
-const cache = new NodeCache<EquipmentItem>({
-  stdTTL: cacheTimeToLiveSeconds
-})
-
-/**
- * Retrieves a piece of equipment.
- * @param mssqlConfig - SQL Server configuration.
- * @param equipmentId - The equipment id.
- * @param bypassCache - Whether to bypass the cache
- * @returns - The equipment record, if available.
- */
-export async function getEquipmentByEquipmentId(
-  mssqlConfig: mssql.config,
-  equipmentId: string,
-  bypassCache = false
-): Promise<EquipmentItem | undefined> {
-  let equipment = bypassCache ? undefined : cache.get(equipmentId)
-
-  if (equipment !== undefined) {
-    return equipment
-  }
-
-  const pool = await connect(mssqlConfig)
-
-  const equipmentResult = (await pool
-    .request()
-    .input('equipmentId', equipmentId)
-    .query(`${sql} and Item_ID = @equipmentId`)) as mssql.IResult<EquipmentItem>
-
-  if (equipmentResult.recordset.length === 0) {
-    return undefined
-  }
-
-  equipment = equipmentResult.recordset[0]
-
-  cache.set(equipmentId, equipment)
-
-  return equipment
+  departmentsOwned?: string[]
+  notDepartmentsOwned?: string[]
 }
 
 /**
- * Clears the equipment cache.
+ * Retrieves equipment based on filters.
+ * @param mssqlConfig - SQL Server configuration
+ * @param filters - Filters to apply to the equipment query.
+ * @returns The equipment
  */
-export function clearEquipmentCache(): void {
-  cache.flushAll()
+export async function getEquipment(
+  mssqlConfig: mssql.config,
+  filters: GetEquipmentFilters
+): Promise<EquipmentItem[]> {
+  const pool = await connect(mssqlConfig)
+
+  let request = pool.request()
+
+  let sql = /* sql */ `
+    SELECT [ITMSysID] as equipmentSystemId,
+      [Item_ID] as equipmentId,
+      coalesce([DESC], '') as equipmentDescription,
+      coalesce([ItemClass], '') as equipmentClass,
+
+      coalesce([Brand], '') as equipmentBrand,
+      coalesce([Model], '') as equipmentModel,
+      [Year] as equipmentModelYear,
+
+      coalesce([Serial], '') as serialNumber,
+      coalesce([Plate], '') as plate,
+
+      coalesce([FlType], '') as fuelType,
+
+      coalesce([Status], '') as equipmentStatus,
+      coalesce([Comments], '') as comments,
+
+      coalesce([Location], '') as location,
+      coalesce([Dept], '') as departmentOwned,
+      coalesce([Division], '') as departmentManaged,
+
+      coalesce([ExJob_ID], '') as expenseJobId,
+      coalesce([ExActv_ID], '') as expenseActivityId,
+      coalesce([ExObjCode], '') as expenseObjectCode,
+      coalesce([RevJob_ID], '') as revenueJobId,
+      coalesce([RevActv_ID], '') as revenueActivityId,
+      coalesce([RevObjCode], '') as revenueObjectCode,
+      
+      [Odom] as odometer,
+      [Hours] as jobCostHours,
+      [RunHrs] as hourMeter
+
+    FROM [WMITM] WITH (NOLOCK)
+    
+    where [Type] in ('Equipment')
+  `
+
+  if (
+    filters.equipmentStatuses !== undefined &&
+    filters.equipmentStatuses.length > 0
+  ) {
+    sql += ' and ( 1=0 '
+
+    for (const [
+      index,
+      equipmentStatus
+    ] of filters.equipmentStatuses.entries()) {
+      sql += ` or [Status] = @equipmentStatus${index}`
+      request = request.input(`equipmentStatus${index}`, equipmentStatus)
+    }
+
+    sql += ')'
+  }
+
+  if (
+    filters.notEquipmentStatuses !== undefined &&
+    filters.notEquipmentStatuses.length > 0
+  ) {
+    sql += ' and ( 1=1 '
+
+    for (const [
+      index,
+      equipmentStatus
+    ] of filters.notEquipmentStatuses.entries()) {
+      sql += ` and [Status] <> @notEquipmentStatus${index}`
+      request = request.input(`notEquipmentStatus${index}`, equipmentStatus)
+    }
+
+    sql += ')'
+  }
+
+  if (filters.equipmentIds !== undefined && filters.equipmentIds.length > 0) {
+    sql += ' and ( 1=0 '
+
+    for (const [index, equipmentId] of filters.equipmentIds.entries()) {
+      sql += ` or [Item_ID] = @equipmentId${index}`
+      request = request.input(`equipmentId${index}`, equipmentId)
+    }
+
+    sql += ')'
+  }
+
+  if (
+    filters.notEquipmentIds !== undefined &&
+    filters.notEquipmentIds.length > 0
+  ) {
+    sql += ' and ( 1=1 '
+
+    for (const [index, equipmentId] of filters.notEquipmentIds.entries()) {
+      sql += ` and [Item_ID] <> @notEquipmentId${index}`
+      request = request.input(`notEquipmentId${index}`, equipmentId)
+    }
+
+    sql += ')'
+  }
+
+  if (
+    filters.equipmentClasses !== undefined &&
+    filters.equipmentClasses.length > 0
+  ) {
+    sql += ' and ( 1=0 '
+
+    for (const [index, equipmentClass] of filters.equipmentClasses.entries()) {
+      sql += ` or [ItemClass] = @equipmentClass${index}`
+      request = request.input(`equipmentClass${index}`, equipmentClass)
+    }
+
+    sql += ')'
+  }
+
+  if (
+    filters.notEquipmentClasses !== undefined &&
+    filters.notEquipmentClasses.length > 0
+  ) {
+    sql += ' and ( 1=1 '
+
+    for (const [
+      index,
+      equipmentClass
+    ] of filters.notEquipmentClasses.entries()) {
+      sql += ` and [ItemClass] <> @notEquipmentClass${index}`
+      request = request.input(`notEquipmentClass${index}`, equipmentClass)
+    }
+
+    sql += ')'
+  }
+
+  if (
+    filters.departmentsOwned !== undefined &&
+    filters.departmentsOwned.length > 0
+  ) {
+    sql += ' and ( 1=0 '
+
+    for (const [index, department] of filters.departmentsOwned.entries()) {
+      sql += ` or [Dept] = @departmentOwned${index}`
+      request = request.input(`departmentOwned${index}`, department)
+    }
+
+    sql += ')'
+  }
+
+  if (
+    filters.notDepartmentsOwned !== undefined &&
+    filters.notDepartmentsOwned.length > 0
+  ) {
+    sql += ' and ( 1=1 '
+
+    for (const [index, department] of filters.notDepartmentsOwned.entries()) {
+      sql += ` and [Dept] <> @notDepartmentOwned${index}`
+      request = request.input(`notDepartmentOwned${index}`, department)
+    }
+
+    sql += ')'
+  }
+
+  const equipmentResult = (await request.query(
+    sql
+  )) as mssql.IResult<EquipmentItem>
+
+  return equipmentResult.recordset
 }

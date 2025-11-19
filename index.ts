@@ -18,7 +18,7 @@ import {
   getTimesheetBatchEntries
 } from './queries/employees/getTimesheetBatchEntries.js'
 import type {
-  Employee,
+  EmployeeItem,
   EmployeePayCode,
   TimeCode,
   TimesheetBatchEntry
@@ -27,7 +27,11 @@ import {
   type AddEquipment,
   addEquipment
 } from './queries/equipment/addEquipment.js'
-import { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
+import {
+  type GetEquipmentFilters,
+  getEquipment
+} from './queries/equipment/getEquipment.js'
+import { getEquipmentByEquipmentId } from './queries/equipment/getEquipmentByEquipmentId.js'
 import type { EquipmentItem } from './queries/equipment/types.js'
 import { updateEquipmentFields } from './queries/equipment/updateEquipment.js'
 import {
@@ -103,6 +107,15 @@ export class WorkTechAPI {
       this.#mssqlConfig.requestTimeout ?? 0,
       timeoutMillis
     )
+  }
+
+  /**
+   * Retrieves equipment based on filters.
+   * @param filters - The equipment filters.
+   * @returns The equipment list.
+   */
+  async getEquipment(filters: GetEquipmentFilters): Promise<EquipmentItem[]> {
+    return await getEquipment(this.#mssqlConfig, filters)
   }
 
   /**
@@ -389,7 +402,7 @@ export class WorkTechAPI {
    */
   async getEmployees(
     employeeFilters: GetEmployeesFilters
-  ): Promise<Employee[]> {
+  ): Promise<EmployeeItem[]> {
     return await getEmployees(this.#mssqlConfig, employeeFilters)
   }
 
@@ -400,7 +413,7 @@ export class WorkTechAPI {
    */
   async getEmployeeByEmployeeNumber(
     employeeNumber: string
-  ): Promise<Employee | undefined> {
+  ): Promise<EmployeeItem | undefined> {
     const employees = await getEmployees(this.#mssqlConfig, {
       employeeNumbers: [employeeNumber]
     })
@@ -480,7 +493,11 @@ export {
 } from './queries/employees/getTimesheetBatchEntries.js'
 
 export { addEquipment } from './queries/equipment/addEquipment.js'
-export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js'
+export {
+  type GetEquipmentFilters,
+  getEquipment
+} from './queries/equipment/getEquipment.js'
+export { getEquipmentByEquipmentId } from './queries/equipment/getEquipmentByEquipmentId.js'
 export {
   type UpdateEquipmentFields,
   updateEquipmentFields
@@ -526,7 +543,7 @@ export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderRes
  */
 
 export type {
-  Employee,
+  EmployeeItem,
   EmployeePayCode,
   TimeCode,
   TimesheetBatchEntry

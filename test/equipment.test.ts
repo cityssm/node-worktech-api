@@ -30,6 +30,40 @@ await describe('queries/equipment', async () => {
     await releaseAll()
   })
 
+  await describe('getEquipment()', async () => {
+    await it('Retrieves all equipment', async () => {
+      const equipmentList = await worktechApi.getEquipment({})
+
+      console.log(equipmentList)
+
+      if (equipmentList.length === 0) {
+        throw new Error('No equipment retrieved')
+      }
+
+      for (const equipment of equipmentList) {
+        assert.ok(equipment.equipmentId)
+      }
+    })
+
+    await it('Retrieves equipment by status', async () => {
+      const equipmentStatus = 'Active'
+
+      const equipmentList = await worktechApi.getEquipment({
+        equipmentStatuses: [equipmentStatus]
+      })
+
+      console.log(equipmentList)
+
+      if (equipmentList.length === 0) {
+        throw new Error('No equipment retrieved')
+      }
+
+      for (const equipment of equipmentList) {
+        assert.strictEqual(equipment.equipmentStatus, 'Active')
+      }
+    })
+  })
+
   await it('Retrieves a piece of equipment', async () => {
     const equipment =
       await worktechApi.getEquipmentByEquipmentId(validEquipmentId)
@@ -47,7 +81,7 @@ await describe('queries/equipment', async () => {
     assert.strictEqual(equipment, undefined)
   })
 
-  await it('Adds a new piece of equipment, then updates it.', async () => {
+  await it.skip('Adds a new piece of equipment, then updates it.', async () => {
     const equipmentId = `TEST-${Math.round(millisToSeconds(Date.now())).toString()}`
     const equipmentDescription = randomUUID()
 

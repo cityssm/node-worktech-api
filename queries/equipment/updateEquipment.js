@@ -1,5 +1,5 @@
 import { connect } from '@cityssm/mssql-multi-pool';
-import { clearEquipmentCache } from './getEquipment.js';
+import { clearEquipmentCache } from './getEquipmentByEquipmentId.js';
 const columnNameMappings = {
     equipmentDescription: 'DESC',
     equipmentStatus: 'Status',

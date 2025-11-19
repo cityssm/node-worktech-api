@@ -36,7 +36,7 @@ export async function getEmployees(mssqlConfig, filters = {}) {
       coalesce(ITM.DEFVEH_ID, '') as defaultEquipmentId,
       ITM.PATROL as patrol
 
-      FROM dbo.WMITM ITM 
+      FROM dbo.WMITM ITM WITH (NOLOCK)
 
       WHERE ( TYPE = 'Employee' AND Status <> 'EstOnly' )
     `;

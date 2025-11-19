@@ -1,6 +1,6 @@
 import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 
-import type { Employee } from './types.js'
+import type { EmployeeItem } from './types.js'
 
 export interface GetEmployeesFilters {
   employeeIsActive?: boolean
@@ -25,7 +25,7 @@ export interface GetEmployeesFilters {
 export async function getEmployees(
   mssqlConfig: mssql.config,
   filters: GetEmployeesFilters = {}
-): Promise<Employee[]> {
+): Promise<EmployeeItem[]> {
   const pool = await connect(mssqlConfig)
 
   let request = pool.request()
@@ -57,7 +57,7 @@ export async function getEmployees(
       coalesce(ITM.DEFVEH_ID, '') as defaultEquipmentId,
       ITM.PATROL as patrol
 
-      FROM dbo.WMITM ITM 
+      FROM dbo.WMITM ITM WITH (NOLOCK)
 
       WHERE ( TYPE = 'Employee' AND Status <> 'EstOnly' )
     `
@@ -144,7 +144,7 @@ export async function getEmployees(
     sql += ' ) '
   }
 
-  const result = (await request.query(sql)) as mssql.IResult<Employee>
+  const result = (await request.query(sql)) as mssql.IResult<EmployeeItem>
 
   return result.recordset
 }

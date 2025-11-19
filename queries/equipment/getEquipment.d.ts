@@ -1,14 +1,19 @@
 import { type mssql } from '@cityssm/mssql-multi-pool';
 import type { EquipmentItem } from './types.js';
+export interface GetEquipmentFilters {
+    equipmentStatuses?: string[];
+    notEquipmentStatuses?: string[];
+    equipmentIds?: string[];
+    notEquipmentIds?: string[];
+    equipmentClasses?: string[];
+    notEquipmentClasses?: string[];
+    departmentsOwned?: string[];
+    notDepartmentsOwned?: string[];
+}
 /**
- * Retrieves a piece of equipment.
- * @param mssqlConfig - SQL Server configuration.
- * @param equipmentId - The equipment id.
- * @param bypassCache - Whether to bypass the cache
- * @returns - The equipment record, if available.
+ * Retrieves equipment based on filters.
+ * @param mssqlConfig - SQL Server configuration
+ * @param filters - Filters to apply to the equipment query.
+ * @returns The equipment
  */
-export declare function getEquipmentByEquipmentId(mssqlConfig: mssql.config, equipmentId: string, bypassCache?: boolean): Promise<EquipmentItem | undefined>;
-/**
- * Clears the equipment cache.
- */
-export declare function clearEquipmentCache(): void;
+export declare function getEquipment(mssqlConfig: mssql.config, filters: GetEquipmentFilters): Promise<EquipmentItem[]>;

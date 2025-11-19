@@ -3,8 +3,9 @@ import type { DateString } from '@cityssm/utils-datetime';
 import { type AccountNumberSource } from './helpers/getAccountNumber.js';
 import { type GetEmployeesFilters } from './queries/employees/getEmployees.js';
 import { type GetTimesheetBatchEntriesFilters } from './queries/employees/getTimesheetBatchEntries.js';
-import type { Employee, EmployeePayCode, TimeCode, TimesheetBatchEntry } from './queries/employees/types.js';
+import type { EmployeeItem, EmployeePayCode, TimeCode, TimesheetBatchEntry } from './queries/employees/types.js';
 import { type AddEquipment } from './queries/equipment/addEquipment.js';
+import { type GetEquipmentFilters } from './queries/equipment/getEquipment.js';
 import type { EquipmentItem } from './queries/equipment/types.js';
 import { type AddResourceItem } from './queries/items/addResourceItem.js';
 import { type CreateStockTransactionBatch } from './queries/items/createStockTransactionBatch.js';
@@ -23,6 +24,12 @@ export declare class WorkTechAPI {
      * @param mssqlConfig - SQL Server configuration.
      */
     constructor(mssqlConfig: mssql.config);
+    /**
+     * Retrieves equipment based on filters.
+     * @param filters - The equipment filters.
+     * @returns The equipment list.
+     */
+    getEquipment(filters: GetEquipmentFilters): Promise<EquipmentItem[]>;
     /**
      * Retrieves a piece of equipment.
      * @param equipmentId - The equipment id.
@@ -165,13 +172,13 @@ export declare class WorkTechAPI {
      * @param employeeFilters - The employee filters.
      * @returns The employees.
      */
-    getEmployees(employeeFilters: GetEmployeesFilters): Promise<Employee[]>;
+    getEmployees(employeeFilters: GetEmployeesFilters): Promise<EmployeeItem[]>;
     /**
      * Retrieves an employee.
      * @param employeeNumber - The employee number
      * @returns The employee, if available.
      */
-    getEmployeeByEmployeeNumber(employeeNumber: string): Promise<Employee | undefined>;
+    getEmployeeByEmployeeNumber(employeeNumber: string): Promise<EmployeeItem | undefined>;
     /**
      * Retrieves employee pay codes.
      * @param employeeNumber - The employee number.
@@ -200,7 +207,8 @@ export { getEmployeeTimeCodes } from './queries/employees/getEmployeeTimeCodes.j
 export { getTimeCodes } from './queries/employees/getTimeCodes.js';
 export { type GetTimesheetBatchEntriesFilters, getTimesheetBatchEntries } from './queries/employees/getTimesheetBatchEntries.js';
 export { addEquipment } from './queries/equipment/addEquipment.js';
-export { getEquipmentByEquipmentId } from './queries/equipment/getEquipment.js';
+export { type GetEquipmentFilters, getEquipment } from './queries/equipment/getEquipment.js';
+export { getEquipmentByEquipmentId } from './queries/equipment/getEquipmentByEquipmentId.js';
 export { type UpdateEquipmentFields, updateEquipmentFields } from './queries/equipment/updateEquipment.js';
 export { type AddResourceItem, addResourceItem } from './queries/items/addResourceItem.js';
 export { getItemByItemId } from './queries/items/getItems.js';
@@ -214,7 +222,7 @@ export { addWorkOrderResource } from './queries/workOrders/addWorkOrderResource.
 export { deleteWorkOrderResource } from './queries/workOrders/deleteWorkOrderResource.js';
 export { getWorkOrderResourcesByStartDate, getWorkOrderResourcesByStartDateTimeRange, getWorkOrderResourcesByWorkOrderNumber } from './queries/workOrders/getWorkOrderResources.js';
 export { updateWorkOrderResource } from './queries/workOrders/updateWorkOrderResource.js';
-export type { Employee, EmployeePayCode, TimeCode, TimesheetBatchEntry } from './queries/employees/types.js';
+export type { EmployeeItem, EmployeePayCode, TimeCode, TimesheetBatchEntry } from './queries/employees/types.js';
 export type { EquipmentItem } from './queries/equipment/types.js';
 export type { ResourceItem } from './queries/items/types.js';
 export type { Activity, Job, JobActivityObjectCode, ObjectCode } from './queries/jobs/types.js';

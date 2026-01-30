@@ -1,7 +1,14 @@
+import NodeCache from '@cacheable/node-cache'
 import { type mssql, connect } from '@cityssm/mssql-multi-pool'
 import type { DateString } from '@cityssm/utils-datetime'
 
+import { cacheTimeToLiveSeconds } from '../../apiConfig.js'
+
 import type { TimesheetBatchEntry } from './types.js'
+
+const cache = new NodeCache<TimesheetBatchEntry[]>({
+  stdTTL: cacheTimeToLiveSeconds
+})
 
 export const getTimesheetBatchEntriesLimit = 2000
 
@@ -22,41 +29,50 @@ export interface GetTimesheetBatchEntriesFilters {
  * Retrieves timesheet batch entries based on provided filters.
  * @param mssqlConfig - SQL Server configuration.
  * @param filters - Entry filters.
+ * @param useCache - Whether to use caching (default: false).
  * @returns The matching timesheet batch entries.
  */
 export async function getTimesheetBatchEntries(
   mssqlConfig: mssql.config,
-  filters: GetTimesheetBatchEntriesFilters
+  filters: GetTimesheetBatchEntriesFilters,
+  useCache = false
 ): Promise<TimesheetBatchEntry[]> {
+  const cacheKey = JSON.stringify(filters)
+
+  let timesheetBatchEntries = useCache ? cache.get(cacheKey) : undefined
+
+  if (timesheetBatchEntries !== undefined) {
+    return timesheetBatchEntries
+  }
+
   const pool = await connect(mssqlConfig)
 
   const request = pool.request()
 
   let sql = /* sql */ `
-    SELECT TOP (${getTimesheetBatchEntriesLimit})
-      [BatchSysID] as batchSystemId,
-      [Batch_ID] as batchId,
-      [SeqNo] as batchEntryNumber,
-
-      [DateTime] as timesheetDate,
-      format([DateTime], 'yyyy-MM-dd') as timesheetDateString,
-
-      [Item_ID] as employeeNumber,
-      rtrim([POS_ID]) as positionId,
-      rtrim([EPCode]) as payCode,
-      [TC_ID] as timeCode,
-
-      [ExJob_ID] as jobId,
-      [ExActv_ID] as activityId,
-      [WONOS] as workOrderNumber,
-      [ExObjCode] as objectCode,
-
-      [Qty] as timesheetHours
-
-    FROM [WMTSI] WITH (NOLOCK)
-
-    where transType = 'Time Sheets'
-      and type = 'Employee'
+    SELECT
+      TOP (${getTimesheetBatchEntriesLimit}) [BatchSysID] AS batchSystemId,
+      [Batch_ID] AS batchId,
+      [SeqNo] AS batchEntryNumber,
+      [DateTime] AS timesheetDate,
+      format([DateTime], 'yyyy-MM-dd') AS timesheetDateString,
+      [Item_ID] AS employeeNumber,
+      rtrim([POS_ID]) AS positionId,
+      rtrim([EPCode]) AS payCode,
+      [TC_ID] AS timeCode,
+      [ExJob_ID] AS jobId,
+      [ExActv_ID] AS activityId,
+      [WONOS] AS workOrderNumber,
+      [ExObjCode] AS objectCode,
+      [Qty] AS timesheetHours
+    FROM
+      [WMTSI]
+    WITH
+      (NOLOCK)
+    WHERE
+      transType = 'Time Sheets'
+      AND
+    TYPE = 'Employee'
   `
 
   if (filters.employeeNumber !== undefined) {
@@ -68,7 +84,8 @@ export async function getTimesheetBatchEntries(
   }
 
   if (filters.timesheetMaxAgeDays !== undefined) {
-    sql += ' AND [DateTime] >= DATEADD(day, -1 * @timesheetMaxAgeDays, CAST(GETDATE() AS date))'
+    sql +=
+      ' AND [DateTime] >= DATEADD(day, -1 * @timesheetMaxAgeDays, CAST(GETDATE() AS date))'
   }
 
   if (filters.jobId !== undefined) {
@@ -99,5 +116,11 @@ export async function getTimesheetBatchEntries(
     .input('timesheetHours', filters.timesheetHours)
     .query(sql)) as mssql.IResult<TimesheetBatchEntry>
 
-  return result.recordset
+  timesheetBatchEntries = result.recordset
+
+  if (useCache) {
+    cache.set(cacheKey, timesheetBatchEntries)
+  }
+
+  return timesheetBatchEntries
 }

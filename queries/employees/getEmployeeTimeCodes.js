@@ -22,24 +22,36 @@ export async function getEmployeeTimeCodes(mssqlConfig, employeeNumber, timeshee
     const result = (await pool
         .request()
         .input('employeeNumber', employeeNumber)
-        .input('timesheetMaxAgeDays', timesheetMaxAgeDays).query(/* sql */ `
+        .input('timesheetMaxAgeDays', timesheetMaxAgeDays)
+        .query(/* sql */ `
       SELECT
-        TC_ID as timeCode,
-        DESCRIPTION as timeCodeDescription,
-        EXTCODE as externalCode
-      FROM WMTCD WITH (NOLOCK)
-      WHERE 
+        TC_ID AS timeCode,
+        DESCRIPTION AS timeCodeDescription,
+        EXTCODE AS externalCode
+      FROM
+        WMTCD
+      WITH
+        (NOLOCK)
+      WHERE
         Inactive = 0
-        and AdminOnly = 0
-        and TC_ID in (
-          select TC_ID
-          from WMTSI with (nolock)
-          where transType = 'Time Sheets'
-            and type = 'Employee'
-            and Item_ID = @employeeNumber
-            and DateTime >= dateadd(day, -1 * @timesheetMaxAgeDays, getdate())
+        AND AdminOnly = 0
+        AND TC_ID IN (
+          SELECT
+            TC_ID
+          FROM
+            WMTSI
+          WITH
+            (nolock)
+          WHERE
+            transType = 'Time Sheets'
+            AND
+          TYPE = 'Employee'
+          AND Item_ID = @employeeNumber
+          AND DateTime >= dateadd(day, -1 * @timesheetMaxAgeDays, getdate())
         )
-      ORDER BY TC_ID`));
+      ORDER BY
+        TC_ID
+    `));
     timeCodes = result.recordset;
     cache.set(cacheKey, timeCodes);
     return timeCodes;

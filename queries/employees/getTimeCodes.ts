@@ -13,15 +13,20 @@ export async function getTimeCodes(
   const pool = await connect(mssqlConfig)
 
   const result = (await pool.request().query(/* sql */ `
-      SELECT
-        TC_ID as timeCode,
-        DESCRIPTION as timeCodeDescription,
-        EXTCODE as externalCode
-      FROM WMTCD WITH (NOLOCK)
-      WHERE 
-        Inactive = 0
-        and AdminOnly = 0
-      ORDER BY TC_ID`)) as mssql.IResult<TimeCode>
+    SELECT
+      TC_ID AS timeCode,
+      DESCRIPTION AS timeCodeDescription,
+      EXTCODE AS externalCode
+    FROM
+      WMTCD
+    WITH
+      (NOLOCK)
+    WHERE
+      Inactive = 0
+      AND AdminOnly = 0
+    ORDER BY
+      TC_ID
+  `)) as mssql.IResult<TimeCode>
 
   return result.recordset
 }

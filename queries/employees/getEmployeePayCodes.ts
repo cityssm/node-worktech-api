@@ -32,23 +32,36 @@ export async function getEmployeePayCodes(
   const pool = await connect(mssqlConfig)
 
   let query = /* sql */ `
-    SELECT Item_ID as employeeNumber,
-      rtrim(epc.EPCode) as payCode,
-      isnull(pc.level, epc.level) as level,
-      rtrim(epc.POS_ID) as positionId,
-      p.[Desc] as position,
-      isnull(pc.effectiveDateTime, epc.effectiveDate) as effectiveDate,
-      cast ([Primary] as bit) as isPrimary
-    FROM WMEPCI epc WITH (NOLOCK)
-    left join WMEPD pc WITH (NOLOCK)
-      on epc.EPCode = pc.EPCode
-      and (pc.EffectiveDateTime is null or pc.EffectiveDateTime >= epc.EffectiveDate)
-      and pc.NotUsedForOverride = 0
-    left join WMPOD p WITH (NOLOCK)
-      on epc.POS_ID = p.POS_ID
-      and p.Status <> 1
-      and (p.EndDateTime is null or p.EndDateTime >= epc.EffectiveDate)
-    WHERE epc.Item_ID = @employeeNumber
+    SELECT
+      Item_ID AS employeeNumber,
+      rtrim(epc.EPCode) AS payCode,
+      isnull(pc.level, epc.level) AS level,
+      rtrim(epc.POS_ID) AS positionId,
+      p.[Desc] AS position,
+      isnull(pc.effectiveDateTime, epc.effectiveDate) AS effectiveDate,
+      cast([Primary] AS BIT) AS isPrimary
+    FROM
+      WMEPCI epc
+    WITH
+      (NOLOCK)
+      LEFT JOIN WMEPD pc
+    WITH
+      (NOLOCK) ON epc.EPCode = pc.EPCode
+      AND (
+        pc.EffectiveDateTime IS NULL
+        OR pc.EffectiveDateTime >= epc.EffectiveDate
+      )
+      AND pc.NotUsedForOverride = 0
+      LEFT JOIN WMPOD p
+    WITH
+      (NOLOCK) ON epc.POS_ID = p.POS_ID
+      AND p.Status <> 1
+      AND (
+        p.EndDateTime IS NULL
+        OR p.EndDateTime >= epc.EffectiveDate
+      )
+    WHERE
+      epc.Item_ID = @employeeNumber
   `
 
   if (effectiveDate !== undefined) {

@@ -15,6 +15,7 @@ export interface GetTimesheetBatchEntriesFilters {
  * Retrieves timesheet batch entries based on provided filters.
  * @param mssqlConfig - SQL Server configuration.
  * @param filters - Entry filters.
+ * @param useCache - Whether to use caching (default: false).
  * @returns The matching timesheet batch entries.
  */
-export declare function getTimesheetBatchEntries(mssqlConfig: mssql.config, filters: GetTimesheetBatchEntriesFilters): Promise<TimesheetBatchEntry[]>;
+export declare function getTimesheetBatchEntries(mssqlConfig: mssql.config, filters: GetTimesheetBatchEntriesFilters, useCache?: boolean): Promise<TimesheetBatchEntry[]>;

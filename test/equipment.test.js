@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable no-console */
 import assert from 'node:assert';
 import { randomUUID } from 'node:crypto';
@@ -54,11 +53,12 @@ await describe('queries/equipment', async () => {
         const equipmentId = `TEST-${Math.round(millisToSeconds(Date.now())).toString()}`;
         const equipmentDescription = randomUUID();
         console.log(`Adding new equipment: ${equipmentId}`);
-        const equipmentRecord = Object.assign({
-            equipmentId,
+        const equipmentRecord = {
+            departmentOwned: validEquipmentDepartment,
             equipmentDescription,
-            departmentOwned: validEquipmentDepartment
-        }, equipmentToAdd);
+            equipmentId,
+            ...equipmentToAdd
+        };
         const equipmentSystemId = await worktechApi.addEquipment(equipmentRecord);
         console.log(`New equipment system id: ${equipmentSystemId}`);
         const equipment = await worktechApi.getEquipmentByEquipmentId(equipmentId);

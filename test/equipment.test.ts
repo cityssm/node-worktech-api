@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable no-console */
 
 import assert from 'node:assert'
@@ -87,14 +86,12 @@ await describe('queries/equipment', async () => {
 
     console.log(`Adding new equipment: ${equipmentId}`)
 
-    const equipmentRecord = Object.assign(
-      {
-        equipmentId,
-        equipmentDescription,
-        departmentOwned: validEquipmentDepartment
-      },
-      equipmentToAdd
-    ) as AddEquipment
+    const equipmentRecord: AddEquipment = {
+      departmentOwned: validEquipmentDepartment,
+      equipmentDescription,
+      equipmentId,
+      ...equipmentToAdd
+    }
 
     const equipmentSystemId = await worktechApi.addEquipment(equipmentRecord)
 

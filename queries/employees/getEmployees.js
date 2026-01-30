@@ -10,36 +10,38 @@ export async function getEmployees(mssqlConfig, filters = {}) {
     const pool = await connect(mssqlConfig);
     let request = pool.request();
     let sql = /* sql */ `
-    SELECT ITM.ITMSYSID as itemSystemId,
-      ITM.ITEM_ID as employeeNumber,
-      ITM."DESC" as employeeName,
-      ITM.ITEMCLASS as employeeClass,
-      ITM.STATUS as employeeStatus,
-      ITM.DEPT as department,
-      ITM.DATEIN as startDate,
-      ITM.ADDRESS as address1,
-      ITM.ADDRESS2 as address2,
-      ITM.ADDRESS3 as address3,
-      ITM.ADDRESS4 as address4,
-      ITM.BIRTHD as birthDate,
-
-      coalesce(ITM.PHONE1, '') as phoneNumber1,
-      coalesce(ITM.PHONEDESC1, '') as phoneNumberType1,
-
-      coalesce(ITM.EMAIL, '') as emailAddress,
-
-      coalesce(ITM."POSITION", '') as positionId,
-
-      ITM.HRSPERPP as hoursPerPayPeriod,
-      cast(ITM.PAYOT as bit) as payOvertime,
-      cast(ITM.BANKOT as bit) as bankOvertime,
-      coalesce(ITM.DEFVEH_ID, '') as defaultEquipmentId,
-      ITM.PATROL as patrol
-
-      FROM dbo.WMITM ITM WITH (NOLOCK)
-
-      WHERE ( TYPE = 'Employee' AND Status <> 'EstOnly' )
-    `;
+    SELECT
+      ITM.ITMSYSID AS itemSystemId,
+      ITM.ITEM_ID AS employeeNumber,
+      ITM."DESC" AS employeeName,
+      ITM.ITEMCLASS AS employeeClass,
+      ITM.STATUS AS employeeStatus,
+      ITM.DEPT AS department,
+      ITM.DATEIN AS startDate,
+      ITM.ADDRESS AS address1,
+      ITM.ADDRESS2 AS address2,
+      ITM.ADDRESS3 AS address3,
+      ITM.ADDRESS4 AS address4,
+      ITM.BIRTHD AS birthDate,
+      coalesce(ITM.PHONE1, '') AS phoneNumber1,
+      coalesce(ITM.PHONEDESC1, '') AS phoneNumberType1,
+      coalesce(ITM.EMAIL, '') AS emailAddress,
+      coalesce(ITM."POSITION", '') AS positionId,
+      ITM.HRSPERPP AS hoursPerPayPeriod,
+      cast(ITM.PAYOT AS BIT) AS payOvertime,
+      cast(ITM.BANKOT AS BIT) AS bankOvertime,
+      coalesce(ITM.DEFVEH_ID, '') AS defaultEquipmentId,
+      ITM.PATROL AS patrol
+    FROM
+      dbo.WMITM ITM
+    WITH
+      (NOLOCK)
+    WHERE
+      (
+        TYPE = 'Employee'
+        AND Status <> 'EstOnly'
+      )
+  `;
     if (filters.employeeIsActive !== undefined) {
         sql += filters.employeeIsActive
             ? ` AND ITM.STATUS = 'Active' `
@@ -80,8 +82,7 @@ export async function getEmployees(mssqlConfig, filters = {}) {
         }
         sql += ' ) ';
     }
-    if (filters.positionIds !== undefined &&
-        filters.positionIds.length > 0) {
+    if (filters.positionIds !== undefined && filters.positionIds.length > 0) {
         sql += ' AND ( 1=0 ';
         for (const [index, positionId] of filters.positionIds.entries()) {
             sql += ` OR ITM.POSITION = @positionId${index} `;

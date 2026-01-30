@@ -1,4 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable no-console */
 import assert from 'node:assert';
 import { after, describe, it } from 'node:test';
@@ -53,7 +52,7 @@ await describe('queries/employees', async () => {
             }
         });
     });
-    await describe.skip('getEmployeePayCodes()', async () => {
+    await describe('getEmployeePayCodes()', async () => {
         await it('Retrieves employee pay codes', async () => {
             const employeePayCodes = await getEmployeePayCodes(mssqlConfig, validEmployeeNumber);
             console.log(employeePayCodes);
@@ -65,7 +64,7 @@ await describe('queries/employees', async () => {
             }
         });
     });
-    await describe.skip('getTimeCodes()', async () => {
+    await describe('getTimeCodes()', async () => {
         await it('Retrieves employee time codes', async () => {
             const timeCodes = await getTimeCodes(mssqlConfig);
             console.log(timeCodes);
@@ -74,7 +73,7 @@ await describe('queries/employees', async () => {
             }
         });
     });
-    await describe.skip('getEmployeeTimeCodes()', async () => {
+    await describe('getEmployeeTimeCodes()', async () => {
         await it('Retrieves employee time codes', async () => {
             const startMillis = Date.now();
             const timeCodes = await getEmployeeTimeCodes(mssqlConfig, validEmployeeNumber, 180);
@@ -92,8 +91,8 @@ await describe('queries/employees', async () => {
             }
         });
     });
-    await describe.skip('getTimesheetBatchEntries()', async () => {
-        await it('Retrieves timesheet batch entries by employee number and hours', async () => {
+    await describe('getTimesheetBatchEntries()', async () => {
+        await it.skip('Retrieves timesheet batch entries by employee number and hours', async () => {
             const timesheetHours = 8;
             const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
                 employeeNumber: validEmployeeNumber,
@@ -105,7 +104,7 @@ await describe('queries/employees', async () => {
                 assert.strictEqual(timesheetBatchEntry.timesheetHours, timesheetHours);
             }
         });
-        await it('Retrieves timesheet batch entries by employee number and date', async () => {
+        await it.skip('Retrieves timesheet batch entries by employee number and date', async () => {
             const timesheetDateString = '2025-03-14';
             const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
                 employeeNumber: validEmployeeNumber,
@@ -117,7 +116,7 @@ await describe('queries/employees', async () => {
                 assert.strictEqual(timesheetBatchEntry.timesheetDateString, timesheetDateString);
             }
         });
-        await it('Retrieves timesheet batch entries by max age days', async () => {
+        await it.skip('Retrieves timesheet batch entries by max age days', async () => {
             const timesheetMaxAgeDays = 90;
             const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
                 timesheetMaxAgeDays
@@ -132,15 +131,29 @@ await describe('queries/employees', async () => {
             }
         });
         await it('Retrieves timesheet batch entries by job ID', async () => {
+            const startMillis = Date.now();
             const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
                 jobId: validJobId
-            });
+            }, true);
+            const endMillis = Date.now();
             assert.ok(timesheetBatchEntries.length > 0);
             for (const timesheetBatchEntry of timesheetBatchEntries) {
                 assert.strictEqual(timesheetBatchEntry.jobId, validJobId);
             }
+            const startAfterCacheMillis = Date.now();
+            await getTimesheetBatchEntries(mssqlConfig, {
+                jobId: validJobId
+            }, true);
+            const endAfterCacheMillis = Date.now();
+            const firstDurationMillis = endMillis - startMillis;
+            const secondDurationMillis = endAfterCacheMillis - startAfterCacheMillis;
+            console.log(`First call duration: ${firstDurationMillis} ms`);
+            console.log(`Second call duration: ${secondDurationMillis} ms`);
+            if (secondDurationMillis >= firstDurationMillis) {
+                throw new Error(`Cache not used: first call ${firstDurationMillis} ms, second call ${secondDurationMillis} ms`);
+            }
         });
-        await it('Retrieves timesheet batch entries by activity ID', async () => {
+        await it.skip('Retrieves timesheet batch entries by activity ID', async () => {
             const timesheetBatchEntries = await getTimesheetBatchEntries(mssqlConfig, {
                 activityId: validActivityId
             });
